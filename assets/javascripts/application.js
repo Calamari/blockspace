@@ -6,6 +6,7 @@
 //= require libs/particle
 //= require libs/canvas
 //= require libs/gator
+//= require libs/event_emitter
 
 // Here comes the real code
 //= require ship_parts

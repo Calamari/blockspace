@@ -1,10 +1,10 @@
-/*globals Base:true, Vector: true */
+/*globals Base, Vector, EventEmitter */
 
 ;(function(win) {
   "use strict";
 
   var ShipPart = Base.extend({
-    _baseColor: '#ffffff',
+    _baseColor: [255, 255, 255],
     /**
      *
      * @param {Object}  config
@@ -12,23 +12,40 @@
      */
     constructor: function(position, config) {
       this._config = Object.extend({
-        blockSize: 10
+        blockSize: 10,
+        health: 100
       }, config);
       this.position = position;
+      this.health = this._config.health;
     },
 
     draw: function(canvas, x, y) {
-      var blockSize = this._config.blockSize;
+      var blockSize = this._config.blockSize,
+          // TODO: that is a basic version, better draw with cracks and stuff if damaged
+          alpha     = this.health / this._config.health;
       // This has to be adapted to make sharp lines:
       // canvas.strokeStyle = this._baseColor;
       // canvas.strokeRect(x, y, blockSize-1, blockSize-1);
-      canvas.fillStyle = this._baseColor;
+      canvas.fillStyle = 'rgba(' + this._baseColor.join(',') + ',' + alpha + ')';
       canvas.fillRect(x, y, blockSize-1, blockSize-1);
+    },
+
+    damage: function(value) {
+      this.health -= value;
+      // TODO: damage animation
+      this._config.ship.redraw();
+      if (this.health <= 0) {
+        this.emit('destroyed', this);
+      }
     }
   });
 
+  Object.extend(ShipPart.prototype, EventEmitter.prototype);
+
   var Engine = ShipPart.extend({
-    _baseColor: '#40ff40',
+    _baseColor: [64, 255, 64],
+    type: 'Engine',
+
     constructor: function(position, config) {
       this.base(position, config);
       this.ship = config.ship;
@@ -55,15 +72,19 @@
   });
 
   var Cockpit = ShipPart.extend({
-    _baseColor: '#4040ff'
+    _baseColor: [64, 64, 255],
+    type: 'Cockpit'
   });
 
   var Cannon = ShipPart.extend({
-    _baseColor: '#ff80f0'
+    _baseColor: [255, 128, 240],
+    type: 'Cannon'
   });
 
   var Hull = ShipPart.extend({
+    type: 'Hull'
   });
+
 
   win.Engine = Engine;
   win.Cockpit = Cockpit;

@@ -6,7 +6,9 @@
       HULL    = Hull,
       COCKPIT = Cockpit,
       CANNON  = Cannon,
-      ENGINE  = Engine;
+      ENGINE  = Engine,
+
+      ENGINE_DAMAGE = 120;
 
   var SpaceShip = Base.extend({
     /**
@@ -21,8 +23,12 @@
         blockSize: 10,
         blueprint: [
           [EMPTY, CANNON, EMPTY],
+          [EMPTY, HULL, EMPTY],
+          [EMPTY, HULL, EMPTY],
+          [EMPTY, HULL, EMPTY],
           [HULL, COCKPIT, HULL],
-          [ENGINE, EMPTY, ENGINE]
+          [ENGINE, EMPTY, ENGINE],
+          [HULL, EMPTY, HULL]
         ],
         position: new Vector(),
         velocity: new Vector(),
@@ -44,9 +50,11 @@
       this._engines = [];
 
       // TODO: CALCULATE THOSE:
-      this.width = config.blueprint.length * blockSize;
-      this.height = config.blueprint[0].length * blockSize;
+      this.width = config.blueprint[0].length * blockSize;
+      this.height = config.blueprint.length * blockSize;
       this.middlePoint = new Vector(this.width/2, this.height/2);
+
+      this._onDestroyedBlock = this._onDestroyedBlock.bind(this);
 
       for (var y=0; y<config.blueprint.length; ++y) {
         blueprint[y] = [];
@@ -65,6 +73,7 @@
             if (config.blueprint[y][x] === COCKPIT) {
               this._blueprintOffset = new Vector(-x, -y);
             }
+            blueprint[y][x].once('destroyed', this._onDestroyedBlock);
           } else {
             blueprint[y][x] = EMPTY;
           }
@@ -73,7 +82,25 @@
       this._blueprint = blueprint;
     },
 
+    // find block and remove it
+    _onDestroyedBlock: function(block) {
+      this._forEachBlock(function(b, x, y) {
+        if (b === block) {
+          this._blueprint[y][x] = null;
+        }
+      }.bind(this));
+    },
+
     _calcBoundingBox: function() {},
+
+    _forEachBlock: function(cb) {
+      cb = cb.bind(this);
+      for (var y=0; y<this._blueprint.length; ++y) {
+        for (var x=0; x<this._blueprint[y].length; ++x) {
+          cb(this._blueprint[y][x], x, y);
+        }
+      }
+    },
 
     loop: function(frameDuration) {
       var passedSeconds = frameDuration/1000,
@@ -91,6 +118,11 @@
         }
 
         // TODO: if engine blocked, damage blocking block
+        this._forEachBlock(function(block, x, y) {
+          if (block && block.type === 'Engine' && this._blueprint[y+1] && this._blueprint[y+1][x]) {
+            this._blueprint[y+1][x].damage(ENGINE_DAMAGE * passedSeconds);
+          }
+        });
       }
 
       if (this.rotationLeft || this.rotationRight) {
@@ -99,6 +131,11 @@
 
       // move ship
       this.position.add(this.velocity.clone().skalar(passedSeconds));
+    },
+
+    // remove cached drawn object so it gets redrawn
+    redraw: function() {
+      this.object = null;
     },
 
     draw: function(canvas, context) {
