@@ -3,6 +3,8 @@
 ;(function(win) {
   "use strict";
 
+  var TIME_DAMAGE_IS_VISIBLE = 1000; // in ms
+
   var ShipPart = Base.extend({
     _baseColor: [255, 255, 255],
     /**
@@ -28,11 +30,26 @@
       // canvas.strokeRect(x, y, blockSize-1, blockSize-1);
       canvas.fillStyle = 'rgba(' + this._baseColor.join(',') + ',' + alpha + ')';
       canvas.fillRect(x, y, blockSize-1, blockSize-1);
+
+      if (this._damagedTime) {
+        // var now = new Date().getTime();
+        // if (this._damagedTime + TIME_DAMAGE_IS_VISIBLE < now) {
+        //   this._damagedTime = null;
+        // } else {
+          canvas.fillStyle = 'red';
+          canvas.fillRect(x-1, y-1, blockSize+1, blockSize+1);
+        // }
+        this._config.ship.redraw();
+      }
     },
 
     damage: function(value) {
+      this._damagedTime = new Date().getTime();
       this.health -= value;
-      // TODO: damage animation
+      setTimeout(function() {
+        this._damagedTime = null;
+        this._config.ship.redraw();
+      }.bind(this), TIME_DAMAGE_IS_VISIBLE);
       this._config.ship.redraw();
       if (this.health <= 0) {
         this.emit('destroyed', this);
