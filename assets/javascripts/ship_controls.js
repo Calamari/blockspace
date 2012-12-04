@@ -116,6 +116,7 @@
           ship.rotate('left');
           break;
         case KEYCODE.SPACE:
+          ship.firing(true);
           break;
       }
     },
@@ -139,6 +140,7 @@
           ship.rotate(false);
           break;
         case KEYCODE.SPACE:
+          ship.firing(false);
           break;
       }
     }

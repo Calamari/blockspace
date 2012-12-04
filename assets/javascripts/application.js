@@ -10,6 +10,9 @@
 
 // Here comes the real code
 //= require ship_parts
+//= require engine
+//= require bullet
+//= require cannon
 //= require ship_controls
 //= require spaceship
 //= require blockspace

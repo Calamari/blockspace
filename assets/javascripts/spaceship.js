@@ -25,7 +25,6 @@
           [EMPTY, CANNON, EMPTY],
           [EMPTY, HULL, EMPTY],
           [EMPTY, HULL, EMPTY],
-          [EMPTY, HULL, EMPTY],
           [HULL, COCKPIT, HULL],
           [ENGINE, EMPTY, ENGINE],
           [HULL, EMPTY, HULL]
@@ -48,6 +47,7 @@
           config    = this._config,
           blockSize = config.blockSize;
       this._engines = [];
+      this._cannons = [];
 
       // TODO: CALCULATE THOSE:
       this.width = config.blueprint[0].length * blockSize;
@@ -60,15 +60,19 @@
         blueprint[y] = [];
         for (var x=0; x<config.blueprint[y].length; ++x) {
           if (config.blueprint[y][x] !== EMPTY) {
-            blueprint[y][x] = new config.blueprint[y][x](new Vector(x * blockSize + blockSize/2 - this.width/2, y * blockSize + blockSize - this.height/2), {
+            blueprint[y][x] = new config.blueprint[y][x](new Vector(x * blockSize - this.width/2, y * blockSize - this.height/2), {
               blockSize: config.blockSize,
-
+              ship: this,
               // needed for Engines:
               particleSystem: config.particleSystem,
-              ship: this
+              // needed for Cannons:
+              bulletSystem: config.bulletSystem
             });
             if (config.blueprint[y][x] === ENGINE) {
               this._engines.push(blueprint[y][x]);
+            }
+            if (config.blueprint[y][x] === CANNON) {
+              this._cannons.push(blueprint[y][x]);
             }
             if (config.blueprint[y][x] === COCKPIT) {
               this._blueprintOffset = new Vector(-x, -y);
@@ -84,9 +88,11 @@
 
     // find block and remove it
     _onDestroyedBlock: function(block) {
+      // TODO: if damaged part was only part holding things together, let them break away
       this._forEachBlock(function(b, x, y) {
         if (b === block) {
           this._blueprint[y][x] = null;
+          // TODO: remove from _engine and _cannon if needed
         }
       }.bind(this));
     },
@@ -164,10 +170,20 @@
     },
 
     accelerate: function(accel) {
-      if (typeof accel === 'undefined') {
-        accel = true;
-      }
       this.isAccel = accel;
+    },
+
+    firing: function(value) {
+      this.isValue = value;
+      if (value) {
+        this._fire();
+      }
+    },
+
+    _fire: function() {
+      for (var i=this._cannons.length; i--;) {
+        this._cannons[i].fire();
+      }
     }
   });
 

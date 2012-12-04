@@ -10,10 +10,12 @@
         canvas,
 
         particleSystem      = new ParticleSystem(),
+        bulletSystem        = new ParticleSystem(),
 
         playerShip = new SpaceShip({
           position: new Vector(0, 0),
-          particleSystem: particleSystem
+          particleSystem: particleSystem,
+          bulletSystem: bulletSystem
         }),
 
         controls = new ShipControls(playerShip);
@@ -32,6 +34,10 @@
       // draw particles
       particleSystem.loop(frameDuration);
       particleSystem.draw(this);
+
+      // draw bullets
+      bulletSystem.loop(frameDuration);
+      bulletSystem.draw(this);
     });
 
     window.controls = controls;
