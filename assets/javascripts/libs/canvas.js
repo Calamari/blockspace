@@ -17,6 +17,12 @@
     this.element = document.getElementById(id);
     this.context = this.element.getContext('2d');
     this.fps = fps;
+
+    // for counting fps rate:
+    this.currentFps = 0;
+    this._countingFps = 0;
+    this._lastFpsTime = 0;
+
     this.loopFunction = loopFunction;
     this.firstFrame = true;
     this.frameNumber = 0;
@@ -74,6 +80,12 @@
       this.firstFrame = false;
       this.lastTime = now;
       if (this.fps) {
+        ++this._countingFps;
+        if (this._lastFpsTime < now - 1000) {
+          this.currentFps = this._countingFps;
+          this._countingFps = 0;
+          this._lastFpsTime = now;
+        }
         requestAnimFrame(function() {
           self._loop();
         }, this.fps);

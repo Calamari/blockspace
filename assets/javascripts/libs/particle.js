@@ -18,7 +18,6 @@
     this.position.y += (this.velocity.y + config.gravity) * timeDiff;
     this.position.x += this.velocity.x * timeDiff;
     this.alpha -= config.fade * timeDiff || 0;
-    console.log(this.alpha);
     this.size *= config.shrink * timeDiff || 1;
 
     return this.alpha >= VISIBILITY_THRESHOLD;
@@ -27,9 +26,7 @@
   Particle.prototype.draw = function(canvas) {
     // render it
     canvas.context.fillStyle = 'rgba(' + this.config.color + ',' + this.alpha + ')';
-//    console.log(Math.round(this.position.x) - canvas.camera.x, Math.round(this.position.y) - canvas.camera.y, this.size, this.size);;
     canvas.context.fillRect(Math.round(this.position.x) - canvas.camera.x, Math.round(this.position.y) - canvas.camera.y, this.size, this.size);
-
   };
 
 

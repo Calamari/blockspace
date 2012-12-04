@@ -7,3 +7,9 @@ body {
   overflow: hidden;
 }
 
+#showfps {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #fff;
+}

@@ -7,6 +7,8 @@
     var canvasElement = document.getElementById('canvas'),
         ctx = canvasElement.getContext('2d'),
 
+        fpsDiv = document.getElementById('showfps'),
+
         canvas,
 
         particleSystem      = new ParticleSystem(),
@@ -38,6 +40,7 @@
       // draw bullets
       bulletSystem.loop(frameDuration);
       bulletSystem.draw(this);
+      fpsDiv.innerHTML = this.currentFps;
     });
 
     window.controls = controls;
