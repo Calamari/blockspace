@@ -26,17 +26,18 @@
           // TODO: that is a basic version, better draw with cracks and stuff if damaged
           alpha     = this.health / this._config.health;
       // This has to be adapted to make sharp lines:
-      // canvas.strokeStyle = this._baseColor;
-      // canvas.strokeRect(x, y, blockSize-1, blockSize-1);
+      canvas.strokeStyle = 'rgba(' + this._baseColor.join(',') + ', 1)';
+      canvas.strokeRect(x+0.5, y+0.5, blockSize-1.5, blockSize-1.5);
       canvas.fillStyle = 'rgba(' + this._baseColor.join(',') + ',' + alpha + ')';
       canvas.fillRect(x, y, blockSize-1, blockSize-1);
 
       if (this._damagedTime) {
+        // TODO: We need this time, if we want to make a smooth hit animation
         // var now = new Date().getTime();
         // if (this._damagedTime + TIME_DAMAGE_IS_VISIBLE < now) {
         //   this._damagedTime = null;
         // } else {
-          canvas.fillStyle = 'red';
+          canvas.fillStyle = 'rgba(255, 0, 0, .6)';
           canvas.fillRect(x-1, y-1, blockSize+1, blockSize+1);
         // }
         this._config.ship.redraw();

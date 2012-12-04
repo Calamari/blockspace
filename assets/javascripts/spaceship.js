@@ -8,7 +8,7 @@
       CANNON  = Cannon,
       ENGINE  = Engine,
 
-      ENGINE_DAMAGE = 120;
+      ENGINE_DAMAGE = 30;
 
   var SpaceShip = Base.extend({
     /**
