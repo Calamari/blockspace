@@ -65,7 +65,7 @@
         offsetY = height;
       }
       this.context.save();
-      this.context.translate(x-offsetX, y-offsetY);
+      this.context.translate(x, y);
       this.context.rotate(this.deg2rad(rotation));
       this.context.drawImage(img, -offsetX, -offsetY);
       this.context.restore();
