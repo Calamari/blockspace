@@ -22,8 +22,8 @@
       this._config = Object.extend({
         blockSize: 10,
         blueprint: [
-          [EMPTY, CANNON, EMPTY],
-          [EMPTY, HULL, EMPTY],
+          [CANNON, EMPTY, CANNON],
+          [HULL, HULL, HULL],
           [EMPTY, HULL, EMPTY],
           [HULL, COCKPIT, HULL],
           [ENGINE, EMPTY, ENGINE],

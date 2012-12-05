@@ -1,18 +1,19 @@
-/*globals Base, Vector, Canvas, SpaceShip */
+/*globals Base, Vector, Canvas, SpaceShip, ParticleSystem, ShipControls */
 
-;(function(win) {
+;(function(win, doc) {
   "use strict";
 
-  window.addEventListener('DOMContentLoaded', function() {
-    var canvasElement = document.getElementById('canvas'),
+  win.addEventListener('DOMContentLoaded', function() {
+    var canvasElement = doc.getElementById('canvas'),
         ctx = canvasElement.getContext('2d'),
 
-        fpsDiv = document.getElementById('showfps'),
+        fpsDiv = doc.getElementById('showfps'),
+        posDiv = doc.getElementById('showpos'),
 
         canvas,
 
-        particleSystem      = new ParticleSystem(),
-        bulletSystem        = new ParticleSystem(),
+        particleSystem = new ParticleSystem(),
+        bulletSystem   = new ParticleSystem(),
 
         playerShip = new SpaceShip({
           position: new Vector(0, 0),
@@ -40,9 +41,14 @@
       // draw bullets
       bulletSystem.loop(frameDuration);
       bulletSystem.draw(this);
+
+      // draw fps rate
       fpsDiv.innerHTML = this.currentFps;
+
+      // draw ships position
+      posDiv.innerHTML = Math.round(playerShip.position.x) + ':' + Math.round(playerShip.position.y);
     });
 
-    window.controls = controls;
+    win.controls = controls;
   });
-}(window));
+}(window, document));

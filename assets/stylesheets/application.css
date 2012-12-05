@@ -13,3 +13,10 @@ body {
   top: 0;
   color: #fff;
 }
+
+#showpos {
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: #fff;
+}
