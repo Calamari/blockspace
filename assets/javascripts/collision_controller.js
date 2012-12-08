@@ -1,4 +1,4 @@
-/*globals Base, Vector, Hull, Cockpit, Cannon, Engine, Canvas */
+/*globals Base, Vector, Hull, Cockpit, Cannon, Engine, Canvas, SpaceShip */
 
 ;(function(win, CollisionDetection, Collidable) {
   "use strict";

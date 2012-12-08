@@ -73,8 +73,13 @@
       }.bind(this), TIME_DAMAGE_IS_VISIBLE);
       this._config.ship.redraw();
       if (this.health <= 0) {
-        this.emit('destroyed', this);
+        this.destroy();
       }
+    },
+
+    destroy: function() {
+      this.health = 0;
+      this.emit('destroyed', this);
     }
   });
 

@@ -39,7 +39,6 @@
       }, config);
       this._processBlueprint();
       this.position = this._config.position;
-      this._calcBoundingBox();
       this.rotation = this._config.rotation;
       this.velocity = this._config.velocity;
 
@@ -100,7 +99,7 @@
               this._cannons.push(blueprint[y][x]);
             }
             if (config.blueprint[y][x] === COCKPIT) {
-              this._blueprintOffset = new Vector(-x, -y);
+              this._blueprintOffset = new Vector(x, y);
             }
             blueprint[y][x].once('destroyed', this._onDestroyedBlock);
           } else {
@@ -109,20 +108,44 @@
         }
       }
       this._blueprint = blueprint;
+      this._checkHullIntegrity();
     },
 
     // find block and remove it
     _onDestroyedBlock: function(block) {
-      // TODO: if damaged part was only part holding things together, let them break away
       this._forEachBlock(function(b, x, y) {
         if (b === block) {
           this._blueprint[y][x] = null;
           // TODO: remove from _engine and _cannon if needed
         }
       }.bind(this));
+      this._checkHullIntegrity();
     },
 
-    _calcBoundingBox: function() {},
+    _checkHullIntegrity: function() {
+      this._forEachBlock(function(block, x, y) {
+        block._isConnected = false;
+      });
+      this._checkPathsToCockpit(this._blueprintOffset.x, this._blueprintOffset.y)
+      this._forEachBlock(function(block, x, y) {
+        if (!block._isConnected) {
+          // TODO: make them drift away
+          // but for now they will destroy right away
+          block.destroy();
+        }
+      }.bind(this));
+    },
+
+    _checkPathsToCockpit: function(x, y) {
+      var block = this._blueprint[y] && this._blueprint[y][x];
+      if (block && !block._isConnected) {
+        block._isConnected = true;
+        this._checkPathsToCockpit(x-1, y);
+        this._checkPathsToCockpit(x+1, y);
+        this._checkPathsToCockpit(x, y-1);
+        this._checkPathsToCockpit(x, y+1);
+      }
+    },
 
     _forEachBlock: function(cb) {
       cb = cb.bind(this);

@@ -30,6 +30,9 @@
           rotation: -90,
           blueprint: [
             [Cannon, Hull],
+            [null, Hull],
+            [null, Hull],
+            [null, Hull],
             [Hull, Cockpit],
             [Engine, Engine]
           ],
