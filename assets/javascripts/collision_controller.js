@@ -51,6 +51,10 @@
     _handleBlockCollisions: function(collision) {
       var obj1 = collision[0].parent,
           obj2 = collision[1].parent;
+          // TODO: FIX THAT TWO HITS ARE MEASURED
+      if (obj1.destroyed || obj2.destroyed) {
+        return;
+      }
       if (obj1.type === 'Bullet') {
         if (obj1.ship !== obj2.ship) {
           obj2.damage(obj1.damageValue);
