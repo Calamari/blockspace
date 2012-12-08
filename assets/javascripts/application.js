@@ -2,11 +2,15 @@
 //= require libs/base
 //= require libs/object.extend
 //= require libs/function.bind
+//= require libs/array.for_each
 //= require libs/vector
 //= require libs/particle
 //= require libs/canvas
 //= require libs/gator
 //= require libs/event_emitter
+//= require libs/jaz-engine2d/projection
+//= require libs/jaz-engine2d/collidable
+//= require libs/jaz-engine2d/collision_detection
 
 // Here comes the real code
 //= require ship_parts
@@ -15,4 +19,5 @@
 //= require cannon
 //= require ship_controls
 //= require spaceship
+//= require collision_controller
 //= require blockspace

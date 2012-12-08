@@ -8,8 +8,7 @@
 
     constructor: function(position, config) {
       this.base(position, config);
-      this.position.add(new Vector(this._config.blockSize/2, this._config.blockSize));
-      this.ship = config.ship;
+      this.engineRear = new Vector(this._config.blockSize/2, this._config.blockSize).add(this.position);
       if (config.particleSystem) {
         this._particleEmitter = config.particleSystem.createEmitter(this.position.x, this.position.y, {
           variance: 60,
@@ -24,7 +23,7 @@
 
     fire: function() {
       if (this._particleEmitter) {
-        this._particleEmitter.position = this.position.clone().rotate(this._config.ship.rotation).add(this._config.ship.position).sub(this._config.ship.middlePoint);
+        this._particleEmitter.position = this.engineRear.clone().rotate(this._config.ship.rotation).add(this._config.ship.position);
         //console.log(this._particleEmitter.direction.x, this._particleEmitter.direction.y, this.rotation);
         this._particleEmitter.direction = new Vector(0, 1).rotate(this._config.ship.rotation);
         this._particleEmitter.shoot();

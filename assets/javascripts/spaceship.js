@@ -1,6 +1,6 @@
 /*globals Base, Vector, Hull, Cockpit, Cannon, Engine, Canvas */
 
-;(function(win) {
+;(function(win, Collidable) {
   "use strict";
   var EMPTY   = null,
       HULL    = Hull,
@@ -31,15 +31,38 @@
         ],
         position: new Vector(),
         velocity: new Vector(),
+        rotation: 0,
         acceleration: 100,
         maxSpeed: 60,
-        rotationSpeed: 60
+        rotationSpeed: 60,
+        collisionSystem: null
       }, config);
       this._processBlueprint();
       this.position = this._config.position;
       this._calcBoundingBox();
-      this.rotation = 0;
+      this.rotation = this._config.rotation;
       this.velocity = this._config.velocity;
+
+      this._setupCollisionDetection();
+    },
+
+    _setupCollisionDetection: function() {
+      var wh = Math.max(this.width, this.height),
+          off = Math.max(Math.abs(this.middlePoint.x), Math.abs(this.middlePoint.y));
+      // Basic is-in-ship collision detection:
+      this.collidable = new Collidable.Rectangle({
+        width: wh,
+        height: wh,
+        position: new Vector(this.position.x - off, this.position.y - off)
+      });
+      this.collidable.parent = this;
+
+      // add itself
+      this._config.collisionSystem.add(this.collidable);
+    },
+
+    getCollidable: function() {
+      return this.collidable;
     },
 
     _processBlueprint: function() {
@@ -63,6 +86,8 @@
             blueprint[y][x] = new config.blueprint[y][x](new Vector(x * blockSize - this.width/2, y * blockSize - this.height/2), {
               blockSize: config.blockSize,
               ship: this,
+              collisionSystem: config.collisionSystem,
+
               // needed for Engines:
               particleSystem: config.particleSystem,
               // needed for Cannons:
@@ -103,7 +128,9 @@
       cb = cb.bind(this);
       for (var y=0; y<this._blueprint.length; ++y) {
         for (var x=0; x<this._blueprint[y].length; ++x) {
-          cb(this._blueprint[y][x], x, y);
+          if (this._blueprint[y][x]) {
+            cb(this._blueprint[y][x], x, y);
+          }
         }
       }
     },
@@ -157,7 +184,6 @@
           }
         }
       });
-
       // ALIGN CENTER IS WRONG, it has to be done by this ship??
       canvas.drawImage(this.object, this.position.x - canvas.camera.x , this.position.y - canvas.camera.y, Canvas.ALIGN.CENTER.MIDDLE, this.rotation);
       canvas.fillStyle = 'red';
@@ -188,4 +214,4 @@
   });
 
   win.SpaceShip = SpaceShip;
-}(window));
+}(window, Collidable));

@@ -1,4 +1,7 @@
-;(function (module) {"use strict";
+/*globals Base, Vector */
+
+;(function (module) {
+  "use strict";
 
   var VISIBILITY_THRESHOLD = 0.01;
 

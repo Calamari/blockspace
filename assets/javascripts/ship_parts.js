@@ -1,4 +1,4 @@
-/*globals Base, Vector, EventEmitter */
+/*globals Base, Vector, EventEmitter, Collidable */
 
 ;(function(win) {
   "use strict";
@@ -8,9 +8,10 @@
   var ShipPart = Base.extend({
     _baseColor: [255, 255, 255],
     /**
-     *
-     * @param {Object}  config
-     * @param {Number} [config.blockSize] Size of each block
+     * @param {Object}     config
+     * @param {Number}    [config.blockSize] Size of each block
+     * @param {Number}    [config.health]    Amount of healt of that block
+     * @param {SpaceShip}  config.ship       Ship that block belongs to
      */
     constructor: function(position, config) {
       this._config = Object.extend({
@@ -19,6 +20,25 @@
       }, config);
       this.position = position;
       this.health = this._config.health;
+      this.ship = this._config.ship;
+    },
+
+    getCollidable: function() {
+      var wh     = this._config.blockSize - 1,
+          p      = this.position,
+          ship   = this.ship,
+          r      = ship.rotation,
+          points = [new Vector(p.x, p.y), new Vector(p.x + wh, p.y), new Vector(p.x + wh, p.y + wh), new Vector(p.x, p.y + wh)],
+          collidable;
+      for (var i=points.length; i--;) {
+        points[i].rotate(r);
+      }
+      collidable = new Collidable.Polygon({
+        position: ship.position.clone(),
+        points: points
+      });
+      collidable.parent = this;
+      return collidable;
     },
 
     draw: function(canvas, x, y) {
