@@ -1,6 +1,6 @@
 /*globals Base, Vector, Hull, Cockpit, Cannon, Engine, Canvas */
 
-;(function(win, Collidable) {
+;(function(win, EventEmitter, Collidable) {
   "use strict";
   var EMPTY   = null,
       HULL    = Hull,
@@ -115,6 +115,9 @@
     _onDestroyedBlock: function(block) {
       this._forEachBlock(function(b, x, y) {
         if (b === block) {
+          if (block.type === 'Cockpit') {
+            this.destroy();
+          }
           this._blueprint[y][x] = null;
           // TODO: remove from _engine and _cannon if needed
         }
@@ -213,6 +216,10 @@
       context.fillRect(this.position.x-1, this.position.y-1, 2, 2);
     },
 
+    destroy: function() {
+      this.emit('destroyed', this);
+    },
+
     rotate: function(direction) {
       this.rotationLeft = direction === 'left';
       this.rotationRight = direction === 'right';
@@ -236,5 +243,7 @@
     }
   });
 
+  Object.extend(SpaceShip.prototype, EventEmitter.prototype);
+
   win.SpaceShip = SpaceShip;
-}(window, Collidable));
+}(window, EventEmitter, Collidable));
