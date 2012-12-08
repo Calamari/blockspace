@@ -32,11 +32,11 @@
         position: new Vector(),
         velocity: new Vector(),
         rotation: 0,
-        acceleration: 100,
-        maxSpeed: 60,
         rotationSpeed: 60,
         collisionSystem: null
       }, config);
+      this.maxSpeed = 0;
+      this.acceleration = 0;
       this._processBlueprint();
       this.position = this._config.position;
       this.rotation = this._config.rotation;
@@ -89,6 +89,8 @@
 
               // needed for Engines:
               particleSystem: config.particleSystem,
+              maxSpeed: 50,
+              acceleration: 70,
               // needed for Cannons:
               bulletSystem: config.bulletSystem
             });
@@ -109,6 +111,16 @@
       }
       this._blueprint = blueprint;
       this._checkHullIntegrity();
+      this._calcEngineValues();
+    },
+
+    _calcEngineValues: function() {
+      this.maxSpeed = 0;
+      this.acceleration = 0;
+      this._engines.forEach(function(engine) {
+        this.maxSpeed += engine.maxSpeed;
+        this.acceleration += engine.acceleration;
+      }.bind(this));
     },
 
     // find block and remove it
@@ -129,7 +141,7 @@
       this._forEachBlock(function(block, x, y) {
         block._isConnected = false;
       });
-      this._checkPathsToCockpit(this._blueprintOffset.x, this._blueprintOffset.y)
+      this._checkPathsToCockpit(this._blueprintOffset.x, this._blueprintOffset.y);
       this._forEachBlock(function(block, x, y) {
         if (!block._isConnected) {
           // TODO: make them drift away
@@ -166,9 +178,9 @@
           config        = this._config;
 
       if (this.isAccel) {
-        this.velocity.add(new Vector(0, -config.acceleration * passedSeconds).rotate(this.rotation));
-        if (this.velocity.length() > config.maxSpeed) {
-          this.velocity.normalize(config.maxSpeed);
+        this.velocity.add(new Vector(0, -this.acceleration * passedSeconds).rotate(this.rotation));
+        if (this.velocity.length() > this.maxSpeed) {
+          this.velocity.normalize(this.maxSpeed);
         }
 
         // let the engine fire TODO:

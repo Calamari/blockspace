@@ -8,6 +8,8 @@
 
     constructor: function(position, config) {
       this.base(position, config);
+      this.maxSpeed = config.maxSpeed;
+      this.acceleration = config.acceleration;
       this.engineRear = new Vector(this._config.blockSize/2, this._config.blockSize).add(this.position);
       if (config.particleSystem) {
         this._particleEmitter = config.particleSystem.createEmitter(this.position.x, this.position.y, {
