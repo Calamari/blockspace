@@ -175,7 +175,8 @@
 
     loop: function(frameDuration) {
       var passedSeconds = frameDuration/1000,
-          config        = this._config;
+          config        = this._config,
+          off           = Math.max(Math.abs(this.middlePoint.x), Math.abs(this.middlePoint.y));
 
       if (this.isAccel) {
         this.velocity.add(new Vector(0, -this.acceleration * passedSeconds).rotate(this.rotation));
@@ -202,6 +203,7 @@
 
       // move ship
       this.position.add(this.velocity.clone().skalar(passedSeconds));
+      this.collidable.position = new Vector(this.position.x - off, this.position.y - off);
     },
 
     // remove cached drawn object so it gets redrawn
