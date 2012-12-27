@@ -48,6 +48,8 @@
         this.camera = new Vector(-win.innerWidth/2, -win.innerHeight/2);
         canvasElement.width = win.innerWidth;
         canvasElement.height = win.innerHeight;
+      } else {
+        this.camera = new Vector(-win.innerWidth/2, -win.innerHeight/2).add(playerShip.position);
       }
       this.clear();
 
