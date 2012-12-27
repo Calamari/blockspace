@@ -11,6 +11,7 @@
       ENGINE_DAMAGE = 30;
 
   var SpaceShip = Base.extend({
+    type: 'SpaceShip',
     /**
      *
      * @param {Object}  config
@@ -75,6 +76,7 @@
       this.width = config.blueprint[0].length * blockSize;
       this.height = config.blueprint.length * blockSize;
       this.middlePoint = new Vector(this.width/2, this.height/2);
+      this.mass = 0;
 
       this._onDestroyedBlock = this._onDestroyedBlock.bind(this);
 
@@ -104,6 +106,7 @@
               this._blueprintOffset = new Vector(x, y);
             }
             blueprint[y][x].once('destroyed', this._onDestroyedBlock);
+            this.mass += blueprint[y][x].mass;
           } else {
             blueprint[y][x] = EMPTY;
           }

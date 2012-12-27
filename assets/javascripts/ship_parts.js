@@ -7,6 +7,7 @@
 
   var ShipPart = Base.extend({
     _baseColor: [255, 255, 255],
+    type: 'ShipPart',
     /**
      * @param {Object}     config
      * @param {Number}    [config.blockSize] Size of each block
@@ -16,11 +17,13 @@
     constructor: function(position, config) {
       this._config = Object.extend({
         blockSize: 10,
-        health: 100
+        health: 100,
+        mass: 10
       }, config);
       this.position = position;
       this.health = this._config.health;
       this.ship = this._config.ship;
+      this.mass = this._config.mass;
     },
 
     getCollidable: function() {
