@@ -13,6 +13,7 @@
 //= require libs/jaz-engine2d/collision_detection
 
 // Here comes the real code
+//= require audio
 //= require ship_parts
 //= require engine
 //= require bullet

@@ -9,6 +9,7 @@
 
     constructor: function(position, config) {
       config = Object.extend({
+        audio: '/sounds/shoot-bullet',
         shootSpeed: 200,
         direction: new Vector(0, 1),
         collisionSystem: null,
@@ -21,6 +22,7 @@
       this.base(position, config);
       this.cannonNose = new Vector(this._config.blockSize/2 - this._config.pixelSize/2, 0).add(this.position);
       this.lastFired  = config.lastFired || 0;
+      this._audio = new Audio(this._config.audio);
 
       this._overrideEmitterLoop();
     },
@@ -55,6 +57,7 @@
       if (config.collisionSystem) {
         config.collisionSystem.add(bullet.getCollidable());
       }
+      this._audio.play();
     },
 
     _overrideEmitterLoop: function() {
