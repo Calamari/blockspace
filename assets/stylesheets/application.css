@@ -20,3 +20,9 @@ body {
   top: 0;
   color: #fff;
 }
+
+canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+}

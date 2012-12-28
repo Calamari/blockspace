@@ -14,6 +14,7 @@
 
 // Here comes the real code
 //= require audio
+//= require space_background
 //= require ship_parts
 //= require engine
 //= require bullet

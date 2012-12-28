@@ -1,4 +1,4 @@
-/*globals Base, Vector, Canvas, SpaceShip, ParticleSystem, CollisionDetection, ShipControls, Collidable, CollisionController, Bullet */
+/*globals Base, Vector, Canvas, SpaceShip, ParticleSystem, CollisionDetection, ShipControls, Collidable, CollisionController, Bullet, SpaceBackground */
 
 ;(function(win, doc) {
   "use strict";
@@ -41,6 +41,8 @@
           bulletSystem: bulletSystem
         }),
 
+        space = new SpaceBackground('canvas-bg'),
+
         controls = new ShipControls(playerShip);
 
     canvas = new Canvas('canvas', 60, function(context, frameDuration, totalDuration, frameNumber) {
@@ -52,6 +54,7 @@
         this.camera = new Vector(-win.innerWidth/2, -win.innerHeight/2).add(playerShip.position);
       }
       this.clear();
+      space.draw(playerShip.position);
 
       playerShip.draw(this, context);
       playerShip.loop(frameDuration);
