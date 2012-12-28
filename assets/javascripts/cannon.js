@@ -16,7 +16,7 @@
         pixelSize: 3,
         range: 200,
         color: [255, 255, 255],
-        damageValue: 10,
+        damageValue: 50,
         fireRatio: 1000 // once per second
       }, config);
       this.base(position, config);

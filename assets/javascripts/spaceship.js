@@ -88,9 +88,9 @@
               blockSize: config.blockSize,
               ship: this,
               collisionSystem: config.collisionSystem,
+              particleSystem: config.particleSystem,
 
               // needed for Engines:
-              particleSystem: config.particleSystem,
               maxSpeed: 50,
               acceleration: 70,
               // needed for Cannons:

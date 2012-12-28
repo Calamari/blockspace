@@ -1,4 +1,4 @@
-/*globals Base, Vector, EventEmitter, Collidable */
+/*globals Base, Vector, EventEmitter, Collidable, Particle */
 
 ;(function(win) {
   "use strict";
@@ -9,10 +9,11 @@
     _baseColor: [255, 255, 255],
     type: 'ShipPart',
     /**
-     * @param {Object}     config
-     * @param {Number}    [config.blockSize] Size of each block
-     * @param {Number}    [config.health]    Amount of healt of that block
-     * @param {SpaceShip}  config.ship       Ship that block belongs to
+     * @param {Object}          config
+     * @param {Number}         [config.blockSize]      Size of each block
+     * @param {Number}         [config.health]         Amount of healt of that block
+     * @param {SpaceShip}       config.ship            Ship that block belongs to
+     * @param {ParticleSystem}  config.particleSystem  ParticleSystem for exploding and for engines
      */
     constructor: function(position, config) {
       this._config = Object.extend({
@@ -83,6 +84,37 @@
     destroy: function() {
       this.health = 0;
       this.emit('destroyed', this);
+      this._explode();
+    },
+
+    _explode: function() {
+      var config         = this._config,
+          particleSystem = config.particleSystem,
+          blockSize      = config.blockSize,
+          position       = this.position.clone().rotate(this._config.ship.rotation).add(this.ship.position);
+
+      for (var x=0; x<blockSize-1; ++x) {
+        for (var y=0; y<blockSize-1; ++y) {
+          // create a Particle (it is similar to standard ParticleEmitter)
+          var colors = [],
+              dir    = new Vector(0, 1).rotate(Math.random() * 360),
+              shootSpeed = Math.random() * 25 + 20;
+          for (var i=3; i--;) {
+            colors[i] = Math.min(255, Math.max(0, Math.round(this._baseColor[i] + (Math.random() * 60 - 30))));
+          }
+          particleSystem.add(new Particle({
+            color:     colors.join(','),
+            pixelSize: 1,
+            x: position.x + x,
+            y: position.y - y,
+            velX: dir.x * shootSpeed,
+            velY: dir.y * shootSpeed,
+            gravity: 0,
+            drag: 0.995,
+            fade: 0.26 + (Math.random() * 0.01)
+          }));
+        }
+      }
     }
   });
 
