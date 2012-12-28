@@ -125,7 +125,7 @@
     }, options || {});
 
     // calculate canvas Size
-    options.canvas.width = 5 * text.length * (options.pixelSize + options.gutter);
+    options.canvas.width = 6 * text.length * (options.pixelSize + options.gutter);
     options.canvas.height = 7 * options.pixelSize;
 
     // draws the text onto own canvas
@@ -160,7 +160,9 @@
           context.drawImage(options.canvas, options.x, options.y);
         }
         return options.canvas;
-      }
+      },
+      width: options.canvas.width,
+      height: options.canvas.height
     };
   };
 

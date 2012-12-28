@@ -30,7 +30,6 @@
     fire: function() {
       var now = new Date().getTime();
       if (now - this.lastFired > this._config.fireRatio) {
-
         var position = this.cannonNose.clone().rotate(this._config.ship.rotation).add(this._config.ship.position),
             directionVector = new Vector(0, -1).rotate(this._config.ship.rotation);
 

@@ -21,8 +21,32 @@ body {
   color: #fff;
 }
 
-canvas {
+#canvas,
+#canvas-bg {
   position: absolute;
   left: 0;
   top: 0;
+}
+
+#gamemenu {
+  background: rgba(0,0,0, 0.6);
+  border: 1px solid #999;
+  position: absolute;
+  left: 30%;
+  top: 100px;
+  margin: 0 auto;
+  width: 40%;
+  height: 400px;
+  text-align: center;
+}
+
+#gamemenu canvas {
+  cursor: pointer;
+  position: absolute;
+}
+
+#gamemenu #gametitle {
+  cursor: default;
+  position: relative;
+  margin: 10px auto;
 }

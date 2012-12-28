@@ -45,6 +45,8 @@
 
         space = new SpaceBackground('canvas-bg'),
 
+        gameLogic = new GameLogic(),
+
         controls = new ShipControls(playerShip);
 
     canvas = new Canvas('canvas', 60, function(context, frameDuration, totalDuration, frameNumber) {

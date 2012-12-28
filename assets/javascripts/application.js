@@ -9,11 +9,14 @@
 //= require libs/gator
 //= require libs/event_emitter
 //= require libs/arcade_text
+//= require libs/state-machine
 //= require libs/jaz-engine2d/projection
 //= require libs/jaz-engine2d/collidable
 //= require libs/jaz-engine2d/collision_detection
 
 // Here comes the real code
+//= require game_logic
+//= require game_menu
 //= require audio
 //= require space_background
 //= require ship_parts
