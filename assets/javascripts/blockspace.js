@@ -1,4 +1,6 @@
-/*globals Base, Vector, Canvas, SpaceShip, ParticleSystem, CollisionDetection, ShipControls, Collidable, CollisionController, Bullet, SpaceBackground */
+/*globals Base, Vector, Canvas, SpaceShip, ParticleSystem, CollisionDetection,
+          ShipControls, Collidable, CollisionController, Bullet, SpaceBackground,
+          ArcadeText */
 
 ;(function(win, doc) {
   "use strict";

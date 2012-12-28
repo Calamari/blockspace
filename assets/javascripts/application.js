@@ -8,6 +8,7 @@
 //= require libs/canvas
 //= require libs/gator
 //= require libs/event_emitter
+//= require libs/arcade_text
 //= require libs/jaz-engine2d/projection
 //= require libs/jaz-engine2d/collidable
 //= require libs/jaz-engine2d/collision_detection
