@@ -51,16 +51,19 @@
           letter, letterCode, line, g, i, l, j;
       text = text.toUpperCase();
       for (i in text) {
-        letterCode = this.alphabet[text[i]].split(',');
+        letter = this.alphabet[text[i]];
+        if (letter) {
+          letterCode = letter.split(',');
 
-        for (j = 0, l = letterCode.length; j<l; ++j) {
-          line = EightBit.decodeNumber(letterCode[j], 7);
-          if (!blueprint[j]) {
-            blueprint[j] = '';
-          }
-          blueprint[j] += line;
-          for (g = this.gutter; g--;) {
-            blueprint[j] += '0';
+          for (j = 0, l = letterCode.length; j<l; ++j) {
+            line = EightBit.decodeNumber(letterCode[j], 7);
+            if (!blueprint[j]) {
+              blueprint[j] = '';
+            }
+            blueprint[j] += line;
+            for (g = this.gutter; g--;) {
+              blueprint[j] += '0';
+            }
           }
         }
       }
