@@ -15,7 +15,7 @@
 //= require libs/jaz-engine2d/collision_detection
 
 // Here comes the real code
-//= require game_logic
+//= require game_engine
 //= require game_menu
 //= require audio
 //= require space_background
