@@ -75,7 +75,6 @@
      */
     constructor: function(ship) {
       this.setShip(ship);
-      this.start();
     },
 
     setShip: function(ship) {
@@ -147,4 +146,5 @@
   });
 
   win.ShipControls = ShipControls;
+  win.KEYCODE = KEYCODE;
 }(window, document, Gator));

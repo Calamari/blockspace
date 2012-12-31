@@ -50,3 +50,42 @@ body {
   position: relative;
   margin: 10px auto;
 }
+
+#creatormenu {
+  background: rgba(0,0,0, 0.6);
+  border-left: 1px solid #999;
+  position: absolute;
+  left: 400px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 10000;
+}
+
+#creatormenu #creator-headline {
+  position: absolute;
+  left: 30px;
+  top: 30px;
+}
+#creatormenu #creator-done-btn {
+  cursor: pointer;
+  position: absolute;
+  left: 30px;
+  bottom: 30px;
+}
+
+#creatormenu #creator-desc {
+  position: absolute;
+  left: 30px;
+  top: 70px;
+}
+
+#creatormenu #creator-blocks {
+  position: absolute;
+  left: 30px;
+  top: 160px;
+}
+
+.pointer {
+  cursor: pointer;
+}

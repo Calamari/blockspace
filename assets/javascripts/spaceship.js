@@ -46,6 +46,11 @@
       this._setupCollisionDetection();
     },
 
+    setNewBlueprint: function(blueprint) {
+      this._config.blueprint = blueprint;
+      this._processBlueprint();
+    },
+
     _setupCollisionDetection: function() {
       var wh = Math.max(this.width, this.height),
           off = Math.max(Math.abs(this.middlePoint.x), Math.abs(this.middlePoint.y));
@@ -83,7 +88,7 @@
       for (var y=0; y<config.blueprint.length; ++y) {
         blueprint[y] = [];
         for (var x=0; x<config.blueprint[y].length; ++x) {
-          if (config.blueprint[y][x] !== EMPTY) {
+          if (config.blueprint[y][x] && config.blueprint[y][x] !== EMPTY) {
             blueprint[y][x] = new config.blueprint[y][x](new Vector(x * blockSize - this.width/2, y * blockSize - this.height/2), {
               blockSize: config.blockSize,
               ship: this,
@@ -128,7 +133,7 @@
 
     // find block and remove it
     _onDestroyedBlock: function(block) {
-      this._forEachBlock(function(b, x, y) {
+      this.forEachBlock(function(b, x, y) {
         if (b === block) {
           if (block.type === 'Cockpit') {
             this.destroy();
@@ -141,11 +146,11 @@
     },
 
     _checkHullIntegrity: function() {
-      this._forEachBlock(function(block, x, y) {
+      this.forEachBlock(function(block, x, y) {
         block._isConnected = false;
       });
       this._checkPathsToCockpit(this._blueprintOffset.x, this._blueprintOffset.y);
-      this._forEachBlock(function(block, x, y) {
+      this.forEachBlock(function(block, x, y) {
         if (!block._isConnected) {
           // TODO: make them drift away
           // but for now they will destroy right away
@@ -165,7 +170,7 @@
       }
     },
 
-    _forEachBlock: function(cb) {
+    forEachBlock: function(cb) {
       cb = cb.bind(this);
       for (var y=0; y<this._blueprint.length; ++y) {
         for (var x=0; x<this._blueprint[y].length; ++x) {
@@ -193,7 +198,7 @@
         }
 
         // TODO: if engine blocked, damage blocking block
-        this._forEachBlock(function(block, x, y) {
+        this.forEachBlock(function(block, x, y) {
           if (block && block.type === 'Engine' && this._blueprint[y+1] && this._blueprint[y+1][x]) {
             this._blueprint[y+1][x].damage(ENGINE_DAMAGE * passedSeconds);
           }

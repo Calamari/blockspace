@@ -1,6 +1,6 @@
 /*globals Base, Vector, Canvas, SpaceShip, ParticleSystem, CollisionDetection,
           ShipControls, Collidable, CollisionController, Bullet, SpaceBackground,
-          ArcadeText, GameMenu, StateMachine,
+          GameMenu, StateMachine, Player, ShipCreator,
           Cannon, Hull, Cockpit, Engine */
 
 ;(function(win, doc) {
@@ -23,13 +23,15 @@
             onleavemenu: function() {
               console.log("close menu");
               menu.removeFromDom();
-              controls.start();
             },
             onentershipcreation: function() {
               console.log("Create an awesome ship");
+              shipCreator.open();
             },
             onentergame: function() {
               console.log("START GAME");
+              shipCreator.close();
+              controls.start();
             }
           }
         }),
@@ -41,7 +43,6 @@
             fsm[action]();
           }
         }),
-
 
         canvasElement = doc.getElementById(canvasId),
         ctx = canvasElement.getContext('2d'),
@@ -56,39 +57,47 @@
 
         collisionController = new CollisionController(),
 
-        playerShip = new SpaceShip({
-          position: new Vector(0, 0),
+        player = new Player({
+          credits: 10,
           particleSystem: particleSystem,
-          collisionSystem: collisionController.getSystem(),
-          rotation: 0,
+          collisionController: collisionController,
           bulletSystem: bulletSystem
         }),
 
+        playerShip = player.ship,
+
+        shipCreator = new ShipCreator(player, 'canvas', {
+          onDone: function() {
+            fsm.startgame();
+          }
+        }),
+
         ships = [
-          playerShip,
-          new SpaceShip({
-            position: new Vector(10, -60),
-            rotation: -90,
-            blueprint: [
-              [Cannon, Hull],
-              [null, Hull],
-              [null, Hull],
-              [Hull, Cockpit],
-              [Engine, Engine]
-            ],
-            velocity: new Vector(-10, -30),
-            particleSystem: particleSystem,
-            collisionSystem: collisionController.getSystem(),
-            bulletSystem: bulletSystem
-          })
+          playerShip
+          // new SpaceShip({
+          //   position: new Vector(10, -60),
+          //   rotation: -90,
+          //   blueprint: [
+          //     [Cannon, Hull],
+          //     [null, Hull],
+          //     [null, Hull],
+          //     [Hull, Cockpit],
+          //     [Engine, Engine]
+          //   ],
+          //   velocity: new Vector(-10, -30),
+          //   particleSystem: particleSystem,
+          //   collisionSystem: collisionController.getSystem(),
+          //   bulletSystem: bulletSystem
+          // })
         ],
 
         space = new SpaceBackground('canvas-bg'),
 
         controls = new ShipControls(playerShip);
-    controls.stop();
 
     fsm.initialize();
+    // FOR TESTING:
+    fsm.createship();
 
     canvas = new Canvas('canvas', 60, function(context, frameDuration, totalDuration, frameNumber) {
       var self = this;
@@ -98,16 +107,24 @@
         canvasElement.width = win.innerWidth;
         canvasElement.height = win.innerHeight;
       } else {
-        this.camera = new Vector(-win.innerWidth/2, -win.innerHeight/2).add(playerShip.position);
+        if (fsm.is('shipcreation')) {
+          this.camera = shipCreator.cameraPosition;
+        } else {
+          this.camera = new Vector(-win.innerWidth/2, -win.innerHeight/2).add(playerShip.position);
+        }
       }
       this.clear();
       space.draw(playerShip.position);
 
-      // draw ships
-      ships.forEach(function(ship) {
-        ship.draw(self, context);
-        ship.loop(frameDuration);
-      });
+      if (fsm.is('shipcreation') && shipCreator.blocks) {
+        shipCreator.drawBlocks(context);
+      } else {
+        // draw ships
+        ships.forEach(function(ship) {
+          ship.draw(self, context);
+          ship.loop(frameDuration);
+        });
+      }
 
       // draw particles
       particleSystem.loop(frameDuration);

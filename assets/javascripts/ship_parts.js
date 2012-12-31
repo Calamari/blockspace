@@ -115,6 +115,10 @@
           }));
         }
       }
+    },
+
+    clone: function() {
+      return new window[this.type](this.position, this._config);
     }
   });
 
