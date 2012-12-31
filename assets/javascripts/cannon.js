@@ -6,6 +6,7 @@
   var Cannon = ShipPart.extend({
     _baseColor: [255, 64, 64],
     type: 'Cannon',
+    price: 3,
 
     constructor: function(position, config) {
       config = Object.extend({

@@ -73,6 +73,12 @@ body {
   left: 30px;
   bottom: 30px;
 }
+#creatormenu #creator-credits {
+  cursor: pointer;
+  position: absolute;
+  left: 30px;
+  bottom: 70px;
+}
 
 #creatormenu #creator-desc {
   position: absolute;

@@ -8,6 +8,8 @@
   var ShipPart = Base.extend({
     _baseColor: [255, 255, 255],
     type: 'ShipPart',
+    price: 1,
+
     /**
      * @param {Object}          config
      * @param {Number}         [config.blockSize]      Size of each block

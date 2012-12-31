@@ -5,6 +5,7 @@
   var Engine = ShipPart.extend({
     _baseColor: [64, 255, 64],
     type: 'Engine',
+    price: 2,
 
     constructor: function(position, config) {
       this.base(position, config);

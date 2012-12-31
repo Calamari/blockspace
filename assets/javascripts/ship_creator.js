@@ -64,6 +64,11 @@
       this._ship.setNewBlueprint(blueprint);
     },
 
+    _redrawCredits: function() {
+      this._creditsText.text(this._player.credits + ' Credits left');
+      this._creditsText.draw();
+    },
+
     _initContainer: function() {
       this._container = doc.getElementById('creatormenu');
 
@@ -78,6 +83,12 @@
       text = new ArcadeText("Done...", { pixelSize: 2 });
       canvas = text.draw();
       canvas.id = 'creator-done-btn';
+      this._container.appendChild(canvas);
+
+      // Credits hint
+      this._creditsText = new ArcadeText(this._player.credits + ' Credits left', { pixelSize: 2 });
+      canvas = this._creditsText.draw();
+      canvas.id = 'creator-credits';
       this._container.appendChild(canvas);
 
       // Description text
@@ -224,8 +235,10 @@
           ship = self._ship,
          block = self._selectedBlock;
 
-      if (block && self._isBlockAdjacentTo(block.position) && !self._isCockpitPosition(block.position)) {
+      if (block && self._player.credits >= block.price && self._isBlockAdjacentTo(block.position) && !self._isCockpitPosition(block.position)) {
         self.blocks.push(block.clone());
+        self._player.credits -= block.price;
+        self._redrawCredits();
       }
     },
 
