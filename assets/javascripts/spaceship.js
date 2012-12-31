@@ -74,7 +74,6 @@
       var blueprint = [],
           config    = this._config,
           blockSize = config.blockSize;
-      this._engines = [];
       this._cannons = [];
 
       // TODO: CALCULATE THOSE:
@@ -101,9 +100,6 @@
               // needed for Cannons:
               bulletSystem: config.bulletSystem
             });
-            if (config.blueprint[y][x] === ENGINE) {
-              this._engines.push(blueprint[y][x]);
-            }
             if (config.blueprint[y][x] === CANNON) {
               this._cannons.push(blueprint[y][x]);
             }
@@ -123,6 +119,14 @@
     },
 
     _calcEngineValues: function() {
+      this._engines = [];
+      for (var y=0; y<this._blueprint.length; ++y) {
+        for (var x=0; x<this._blueprint[y].length; ++x) {
+          if (this._blueprint[y][x] && this._blueprint[y][x].type === 'Engine') {
+            this._engines.push(this._blueprint[y][x]);
+          }
+        }
+      }
       this.maxSpeed = 0;
       this.acceleration = 0;
       this._engines.forEach(function(engine) {
@@ -143,6 +147,7 @@
         }
       }.bind(this));
       this._checkHullIntegrity();
+      this._calcEngineValues();
     },
 
     _checkHullIntegrity: function() {
@@ -208,6 +213,7 @@
       if (this.rotationLeft || this.rotationRight) {
         this.rotation += (this.rotationLeft ? -1 : (this.rotationRight ? 1 : 0)) * config.rotationSpeed * passedSeconds;
       }
+      console.log("VELO", this.maxSpeed, this.velocity.length());
 
       // move ship
       this.position.add(this.velocity.clone().skalar(passedSeconds));
