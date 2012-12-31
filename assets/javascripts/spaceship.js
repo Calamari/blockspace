@@ -74,7 +74,6 @@
       var blueprint = [],
           config    = this._config,
           blockSize = config.blockSize;
-      this._cannons = [];
 
       // TODO: CALCULATE THOSE:
       this.width = config.blueprint[0].length * blockSize;
@@ -100,9 +99,6 @@
               // needed for Cannons:
               bulletSystem: config.bulletSystem
             });
-            if (config.blueprint[y][x] === CANNON) {
-              this._cannons.push(blueprint[y][x]);
-            }
             if (config.blueprint[y][x] === COCKPIT) {
               this._blueprintOffset = new Vector(x, y);
             }
@@ -115,18 +111,26 @@
       }
       this._blueprint = blueprint;
       this._checkHullIntegrity();
+      this._calcCannonValues();
       this._calcEngineValues();
+    },
+
+    _calcCannonValues: function() {
+      this._cannons = [];
+      this.forEachBlock(function(block) {
+        if (block.type === 'Cannon') {
+          this._cannons.push(block);
+        }
+      }.bind(this));
     },
 
     _calcEngineValues: function() {
       this._engines = [];
-      for (var y=0; y<this._blueprint.length; ++y) {
-        for (var x=0; x<this._blueprint[y].length; ++x) {
-          if (this._blueprint[y][x] && this._blueprint[y][x].type === 'Engine') {
-            this._engines.push(this._blueprint[y][x]);
-          }
+      this.forEachBlock(function(block) {
+        if (block.type === 'Engine') {
+          this._engines.push(block);
         }
-      }
+      }.bind(this));
       this.maxSpeed = 0;
       this.acceleration = 0;
       this._engines.forEach(function(engine) {
@@ -147,6 +151,7 @@
         }
       }.bind(this));
       this._checkHullIntegrity();
+      this._calcCannonValues();
       this._calcEngineValues();
     },
 
@@ -213,7 +218,6 @@
       if (this.rotationLeft || this.rotationRight) {
         this.rotation += (this.rotationLeft ? -1 : (this.rotationRight ? 1 : 0)) * config.rotationSpeed * passedSeconds;
       }
-      console.log("VELO", this.maxSpeed, this.velocity.length());
 
       // move ship
       this.position.add(this.velocity.clone().skalar(passedSeconds));
