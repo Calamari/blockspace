@@ -97,7 +97,8 @@
       this._blockCanvas = canvas;
 
       // Hull block
-      block = new Hull();
+      block = new Hull(new Vector());
+      this._stdHull = block;
       block.draw(ctx, 0, 2);
       text = new ArcadeText('Hull', { x: 40, pixelSize: 2 });
       text.draw(ctx);
@@ -107,12 +108,14 @@
         maxSpeed: 10,
         acceleration: 10
       });
+      this._stdEngine = block;
       block.draw(ctx, 0, 32);
       text = new ArcadeText('Engine', { x: 40, y: 30, pixelSize: 2 });
       text.draw(ctx);
 
       // Cannon block
       block = new Cannon(new Vector());
+      this._stdCannon = block;
       block.draw(ctx, 0, 62);
       text = new ArcadeText('Cannon', { x: 40, y: 60, pixelSize: 2 });
       text.draw(ctx);
@@ -241,7 +244,8 @@
 
     _blockClickHandler: function(event) {
       var canvasOffset = 160, // from css
-          y = event.y - canvasOffset;
+          y = event.y - canvasOffset,
+          self = this._creator;
 
       // remove block from blocks
       if (this._creator._selectedBlock) {
@@ -249,16 +253,11 @@
       }
 
       if (y > 0 && y < 20) {
-        this._creator._selectedBlock = this._creator._selectedBlock !== 'hull' ? new Hull(new Vector()) : null;
+        self._selectedBlock = self._selectedBlock !== 'hull' ? self._stdHull.clone() : null;
       } else if (y > 30 && y < 50) {
-        this._creator._selectedBlock = this._creator._selectedBlock !== 'engine' ? 'engine' : null;
+        self._selectedBlock = self._selectedBlock !== 'engine' ? self._stdEngine.clone() : null;
       } else if (y > 60 && y < 80) {
-        this._creator._selectedBlock = this._creator._selectedBlock !== 'cannon' ? 'cannon' : null;
-      }
-
-      // add block to blocks
-      if (this._creator._selectedBlock) {
-        //this._creator.blocks.push(this._creator._selectedBlock);
+        self._selectedBlock = self._selectedBlock !== 'cannon' ? self._stdCannon.clone() : null;
       }
     },
 

@@ -44,7 +44,7 @@
         var subSystem = new CollisionDetection();
         subSystem.add(object.getCollidable());
         // add all blocks of ship
-        ship._forEachBlock(function(block) {
+        ship.forEachBlock(function(block) {
           subSystem.add(block.getCollidable());
         });
         subSystem.test();
@@ -57,10 +57,10 @@
       console.log("ship ship collision", ship1, ship2);
         var subSystem = new CollisionDetection();
         // add all blocks of ship
-        ship1._forEachBlock(function(block) {
+        ship1.forEachBlock(function(block) {
           subSystem.add(block.getCollidable());
         });
-        ship2._forEachBlock(function(block) {
+        ship2.forEachBlock(function(block) {
           subSystem.add(block.getCollidable());
         });
         subSystem.test();
