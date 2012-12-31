@@ -53,7 +53,7 @@
       }
       this.blocks.forEach(function(block) {
         p = block.position;
-        blueprint[(p.y+camY - minY) / BLOCKSIZE][(p.x+camX - minX) / BLOCKSIZE] = window[block.type];
+        blueprint[(p.y+camY - minY) / BLOCKSIZE][(p.x+camX - minX) / BLOCKSIZE] = win[block.type];
       });
       // fill up array with nulls
       for (var y=(maxY - minY) / BLOCKSIZE+1;y--;) {
@@ -167,8 +167,12 @@
         .on('mousemove', this._blockMouseMoveHandler);
 
       $(doc.getElementById('creator-done-btn')).on('click', function() {
-        self._reconstructPlayerShip();
-        self._config.onDone();
+        if (self._isShipComplete()) {
+          self._reconstructPlayerShip();
+          self._config.onDone();
+        } else {
+          alert("Ship not complete.\n TODO: make a better error message for this ;-)");
+        }
       });
       this._container.style.display = 'block';
     },
@@ -187,7 +191,6 @@
 
     drawBlocks: function(context) {
       var self = this;
-      console.log(this.blocks.length);
       this.blocks.forEach(function(block,i) {
         self._drawBlock(block, context);
       });
@@ -206,10 +209,17 @@
       this._drawBlock(this._selectedBlock, context);
     },
 
-    // Checks if at least a cockpit and an engine are built in
+    // Checks if at least a cockpit, a cannon and an engine are built in
     _isShipComplete: function() {
       // TODO
-      return true;
+      var hasCannon = false,
+          hasEngine = false,
+          hasCockpit = true; // can't be removed
+      this.blocks.forEach(function(block) {
+        hasCannon = hasCannon || block.type === 'Cannon';
+        hasEngine = hasEngine || block.type === 'Engine';
+      });
+      return hasCannon && hasEngine && hasCockpit;
     },
 
     _isBlockAdjacentTo: function(p) {
