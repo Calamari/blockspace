@@ -3,6 +3,7 @@
 //= require libs/object.extend
 //= require libs/function.bind
 //= require libs/array.for_each
+//= require libs/array.remove
 //= require libs/vector
 //= require libs/particle
 //= require libs/canvas

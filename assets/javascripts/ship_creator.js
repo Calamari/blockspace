@@ -230,15 +230,45 @@
       return p.x === p2.x && p.y === p2.y;
     },
 
-    _clickHandler: function(event) {
-      var self = this._creator,
-          ship = self._ship,
-         block = self._selectedBlock;
+    _getBlockOnPosition: function(p) {
+      var blockOnPos = null,
+          p2;
+      this.blocks.forEach(function(block) {
+        p2 = block.position;
+        if (p.x === p2.x && p.y === p2.y) {
+          blockOnPos = block;
+        }
+      });
+      return blockOnPos;
+    },
 
-      if (block && self._player.credits >= block.price && self._isBlockAdjacentTo(block.position) && !self._isCockpitPosition(block.position)) {
-        self.blocks.push(block.clone());
-        self._player.credits -= block.price;
-        self._redrawCredits();
+    _removeBlock: function(block) {
+      for (var i = this.blocks.length; i--;) {
+        if (this.blocks[i] === block) {
+          this.blocks.remove(i);
+          this._player.credits += block.price;
+        }
+      }
+    },
+
+    _clickHandler: function(event) {
+      var self              = this._creator,
+          ship              = self._ship,
+          block             = self._selectedBlock,
+          additionalCredits = 0,
+          blockOnPos;
+
+      if (block) {
+        blockOnPos = self._getBlockOnPosition(block.position);
+        if (blockOnPos) {
+          additionalCredits = blockOnPos.price;
+        }
+        if ((self._player.credits + additionalCredits) >= block.price && self._isBlockAdjacentTo(block.position) && !self._isCockpitPosition(block.position)) {
+          self.blocks.push(block.clone());
+          self._player.credits -= block.price;
+          self._removeBlock(blockOnPos);
+          self._redrawCredits();
+        }
       }
     },
 
