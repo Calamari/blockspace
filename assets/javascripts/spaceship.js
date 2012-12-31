@@ -88,7 +88,7 @@
       for (var y=0; y<config.blueprint.length; ++y) {
         blueprint[y] = [];
         for (var x=0; x<config.blueprint[y].length; ++x) {
-          if (config.blueprint[y][x] && config.blueprint[y][x] !== EMPTY) {
+          if (config.blueprint[y][x] !== EMPTY) {
             blueprint[y][x] = new config.blueprint[y][x](new Vector(x * blockSize - this.width/2, y * blockSize - this.height/2), {
               blockSize: config.blockSize,
               ship: this,

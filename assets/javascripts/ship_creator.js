@@ -47,7 +47,6 @@
         minY = Math.min(minY, p.y+camY);
         maxX = Math.max(maxX, p.x+camX);
         maxY = Math.max(maxY, p.y+camY);
-        console.log(p);
       });
       for (var i=(maxY-minY) / BLOCKSIZE + 1; i--;) {
         blueprint[i] = [];
@@ -56,8 +55,13 @@
         p = block.position;
         blueprint[(p.y+camY - minY) / BLOCKSIZE][(p.x+camX - minX) / BLOCKSIZE] = window[block.type];
       });
+      // fill up array with nulls
+      for (var y=(maxY - minY) / BLOCKSIZE+1;y--;) {
+        for (var x=(maxX - minX) / BLOCKSIZE+1;x--;) {
+          blueprint[y][x] = blueprint[y][x] || null;
+        }
+      }
       this._ship.setNewBlueprint(blueprint);
-      console.log("NEW blue", blueprint);
     },
 
     _initContainer: function() {
