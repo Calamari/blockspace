@@ -2,7 +2,9 @@
           ShipControls, Collidable, CollisionController, Bullet, SpaceBackground,
           Cannons, Engines, Cockpits, Hulls,
           ArcadeText, GameLogic */
+
 //= require ../application
+//= require ../block_definition_layer
 
 ;(function(win, doc) {
   "use strict";
@@ -45,6 +47,8 @@
           })
         ],
 
+        defLayer = new BlockDefinitionLayer(new Vector(50,50), ships[1]._engines[0]),
+
         space = new SpaceBackground('canvas-bg'),
 
         hEngines = new ArcadeText('Engines & cannons:', { x: 10, y: 10 });
@@ -79,6 +83,8 @@
       // draw bullets
       bulletSystem.loop(frameDuration);
       bulletSystem.draw(this);
+
+      defLayer.draw(this, context);
     });
 
   };
