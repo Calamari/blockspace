@@ -1,25 +1,51 @@
 /*globals Base, Vector */
 
-;(function(win, ShipPart, Bullet) {
+;(function(win, ShipPart, ShipPartDef, Bullet) {
   "use strict";
+
+  var Cannons = {
+    'default': new ShipPartDef('Cannon', 'default', {
+      title: 'Regular Cannon',
+      description: 'Something you definitly need.',
+      config: {
+        price: 3,
+        audio: '/sounds/shoot-bullet',
+        direction: new Vector(0, 1),
+        range: 200,
+        shootSpeed: 200,
+        damageValue: 50,
+        pixelSize: 3,
+        color: [255, 255, 255],
+        fireRatio: 1000 // once per second
+      }
+    }),
+    'type2': new ShipPartDef('Cannon', 'type2', {
+      title: 'Another Regular Cannon',
+      description: 'Something you definitly need more.',
+      config: {
+        price: 3,
+        audio: '/sounds/shoot-bullet',
+        direction: new Vector(0, 1),
+        range: 50,
+        shootSpeed: 300,
+        damageValue: 50,
+        pixelSize: 4,
+        color: [127, 255, 255],
+        fireRatio: 400 // once per second
+      }
+    })
+  };
 
   var Cannon = ShipPart.extend({
     _baseColor: [255, 64, 64],
     type: 'Cannon',
-    price: 3,
+    subtype: 'default',
 
     constructor: function(position, config) {
-      config = Object.extend({
-        audio: '/sounds/shoot-bullet',
-        shootSpeed: 200,
-        direction: new Vector(0, 1),
-        collisionSystem: null,
-        pixelSize: 3,
-        range: 200,
-        color: [255, 255, 255],
-        damageValue: 50,
-        fireRatio: 1000 // once per second
-      }, config);
+      var cannonConfig = Cannons[config.subtype || 'default'];
+      config = Object.extend(Object.extend({
+        collisionSystem: null
+      }, cannonConfig.config), config);
       this.base(position, config);
       this.cannonNose = new Vector(this._config.blockSize/2 - this._config.pixelSize/2, 0).add(this.position);
       this.lastFired  = config.lastFired || 0;
@@ -79,4 +105,5 @@
   });
 
   win.Cannon = Cannon;
-}(window, ShipPart, Bullet));
+  win.Cannons = Cannons;
+}(window, ShipPart, ShipPartDef, Bullet));

@@ -14,8 +14,8 @@
         rotation: 0,
         bulletSystem: this.bulletSystem,
         blueprint: [
-          [Cockpit],
-          [Engine]
+          [Cockpits.default],
+          [Engine.default]
         ]
       });
     };

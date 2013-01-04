@@ -22,6 +22,7 @@
 //= require game_menu
 //= require audio
 //= require space_background
+//= require ship_part_def
 //= require ship_parts
 //= require engine
 //= require bullet

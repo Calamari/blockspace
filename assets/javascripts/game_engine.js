@@ -1,7 +1,6 @@
 /*globals Base, Vector, Canvas, SpaceShip, ParticleSystem, CollisionDetection,
           ShipControls, Collidable, CollisionController, Bullet, SpaceBackground,
-          GameMenu, StateMachine, Player, ShipCreator,
-          Cannon, Hull, Cockpit, Engine */
+          GameMenu, StateMachine, Player, ShipCreator */
 
 ;(function(win, doc) {
   "use strict";
@@ -74,21 +73,6 @@
 
         ships = [
           playerShip
-          // new SpaceShip({
-          //   position: new Vector(10, -60),
-          //   rotation: -90,
-          //   blueprint: [
-          //     [Cannon, Hull],
-          //     [null, Hull],
-          //     [null, Hull],
-          //     [Hull, Cockpit],
-          //     [Engine, Engine]
-          //   ],
-          //   velocity: new Vector(-10, -30),
-          //   particleSystem: particleSystem,
-          //   collisionSystem: collisionController.getSystem(),
-          //   bulletSystem: bulletSystem
-          // })
         ],
 
         space = new SpaceBackground('canvas-bg'),

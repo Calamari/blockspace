@@ -1,4 +1,4 @@
-/*globals Base, Vector, EventEmitter, Collidable, Particle */
+/*globals Base, Vector, ShipPartDef, EventEmitter, Collidable, Particle */
 
 ;(function(win) {
   "use strict";
@@ -8,7 +8,6 @@
   var ShipPart = Base.extend({
     _baseColor: [255, 255, 255],
     type: 'ShipPart',
-    price: 1,
 
     /**
      * @param {Object}          config
@@ -21,8 +20,11 @@
       this._config = Object.extend({
         blockSize: 10,
         health: 100,
-        mass: 10
+        mass: 10,
+        price: 1
       }, config);
+      this.subtype = config.subtype;
+      this.price = config.price;
       this.position = position;
       this.health = this._config.health;
       this.ship = this._config.ship;
@@ -126,16 +128,29 @@
 
   Object.extend(ShipPart.prototype, EventEmitter.prototype);
 
+
+  var Cockpits = {
+    'default': new ShipPartDef('Cockpit', 'default', {
+    })
+  };
+
   var Cockpit = ShipPart.extend({
     _baseColor: [64, 64, 255],
     type: 'Cockpit'
   });
+
+  var Hulls = {
+    'default': new ShipPartDef('Hull', 'default', {
+    })
+  };
 
   var Hull = ShipPart.extend({
     type: 'Hull'
   });
 
   win.ShipPart = ShipPart;
+  win.Cockpits = Cockpits;
   win.Cockpit = Cockpit;
+  win.Hulls = Hulls;
   win.Hull = Hull;
 }(window));

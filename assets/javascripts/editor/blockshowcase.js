@@ -1,5 +1,6 @@
 /*globals Base, Vector, Canvas, SpaceShip, ParticleSystem, CollisionDetection,
           ShipControls, Collidable, CollisionController, Bullet, SpaceBackground,
+          Cannons, Engines, Cockpits, Hulls,
           ArcadeText, GameLogic */
 //= require ../application
 
@@ -16,41 +17,32 @@
 
         collisionController = new CollisionController(),
 
-        player = new Player({
-          credits: 6,
-          particleSystem: particleSystem,
-          collisionController: collisionController,
-          bulletSystem: bulletSystem
-        }),
-
-        ship1 = new SpaceShip({
-          position: new Vector(30, 160),
-          blueprint: [
-            [Cannon],
-            [Cockpit],
-            [Engine]
-          ],
-          velocity: new Vector(0,0),
-          particleSystem: particleSystem,
-          collisionSystem: collisionController.getSystem(),
-          bulletSystem: bulletSystem
-        }),
-
-        ship2 = new SpaceShip({
-          position: new Vector(30, 160),
-          blueprint: [
-            [Cannon],
-            [Cockpit],
-            [Engine]
-          ],
-          velocity: new Vector(0,0),
-          particleSystem: particleSystem,
-          collisionSystem: collisionController.getSystem(),
-          bulletSystem: bulletSystem
-        }),
-
         ships = [
-          ship1
+          new SpaceShip({
+            position: new Vector(30, 160),
+            blueprint: [
+              [Cannons.default],
+              [Cockpits.default],
+              [Engines.default]
+            ],
+            velocity: new Vector(0,0),
+            particleSystem: particleSystem,
+            collisionSystem: collisionController.getSystem(),
+            bulletSystem: bulletSystem
+          }),
+
+          new SpaceShip({
+            position: new Vector(80, 160),
+            blueprint: [
+              [Cannons.type2],
+              [Cockpits.default],
+              [Engines.default]
+            ],
+            velocity: new Vector(0,0),
+            particleSystem: particleSystem,
+            collisionSystem: collisionController.getSystem(),
+            bulletSystem: bulletSystem
+          })
         ],
 
         space = new SpaceBackground('canvas-bg'),
