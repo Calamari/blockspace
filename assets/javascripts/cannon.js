@@ -6,7 +6,7 @@
   var Cannons = {
     'default': new ShipPartDef('Cannon', 'default', {
       title: 'Regular Cannon',
-      description: 'Something you definitly need.',
+      description: 'You want to have one. Seriously. Space is dangerous. With this simple regular cannon you will be able to defend against harmless rocks. Better then nothing, huh?',
       config: {
         price: 3,
         audio: '/sounds/shoot-bullet',

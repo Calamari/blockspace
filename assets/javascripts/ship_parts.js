@@ -1,4 +1,5 @@
-/*globals Base, Vector, ShipPartDef, EventEmitter, Collidable, Particle */
+/*globals Base, Vector, ShipPartDef, EventEmitter, Collidable, Particle,
+          Cannons, Engines, Hull, Cockpits */
 
 ;(function(win) {
   "use strict";
@@ -121,6 +122,17 @@
       }
     },
 
+    getDefinition: function() {
+      var defs;
+      switch (this.type) {
+        case 'Cannon': defs = Cannons; break;
+        case 'Engine': defs = Engines; break;
+        case 'Cockpit': defs = Cockpits; break;
+        case 'Hull': defs = Hulls; break;
+      }
+      return defs[this.subtype];
+    },
+
     clone: function() {
       return new window[this.type](this.position, this._config);
     }
@@ -131,6 +143,8 @@
 
   var Cockpits = {
     'default': new ShipPartDef('Cockpit', 'default', {
+      title: 'cockpit',
+      description: 'The command center of every ship. If this is destroyed the ship is as well. This standard cockpit produces a bit of energy to power your ship as well.'
     })
   };
 
@@ -141,6 +155,8 @@
 
   var Hulls = {
     'default': new ShipPartDef('Hull', 'default', {
+      title: 'A simple hull',
+      description: 'The integral part of every ship is its hull. It does not do anything useful except allowing you to shape the ship.'
     })
   };
 

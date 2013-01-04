@@ -1,5 +1,5 @@
 /*globals Base, SpaceShip, Vector,
-          Cockpit, Engine, Hull, Cannon */
+          Cockpits, Engines, Hulls, Cannons */
 
 ;(function(win, doc) {
   "use strict";
@@ -14,8 +14,9 @@
         rotation: 0,
         bulletSystem: this.bulletSystem,
         blueprint: [
+          [Cannons.default],
           [Cockpits.default],
-          [Engine.default]
+          [Engines.default]
         ]
       });
     };

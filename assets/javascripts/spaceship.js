@@ -1,14 +1,8 @@
-/*globals Base, Vector, Hull, Cockpit, Cannon, Engine, Canvas */
+/*globals Base, Vector, Canvas */
 
 ;(function(win, EventEmitter, Collidable) {
   "use strict";
-  var EMPTY   = null,
-      HULL    = Hull,
-      COCKPIT = Cockpit,
-      CANNON  = Cannon,
-      ENGINE  = Engine,
-
-      ENGINE_DAMAGE = 30;
+  var ENGINE_DAMAGE = 30; // TODO has to be configured by engine
 
   var SpaceShip = Base.extend({
     type: 'SpaceShip',
@@ -22,14 +16,6 @@
     constructor: function(config) {
       this._config = Object.extend({
         blockSize: 10,
-        blueprint: [
-          [CANNON, EMPTY, CANNON],
-          [HULL, HULL, HULL],
-          [EMPTY, HULL, EMPTY],
-          [HULL, COCKPIT, HULL],
-          [ENGINE, EMPTY, ENGINE],
-          [HULL, EMPTY, HULL]
-        ],
         position: new Vector(),
         velocity: new Vector(),
         rotation: 0,
@@ -49,6 +35,7 @@
     setNewBlueprint: function(blueprint) {
       this._config.blueprint = blueprint;
       this._processBlueprint();
+      this.redraw();
     },
 
     _setupCollisionDetection: function() {
@@ -73,7 +60,8 @@
     _processBlueprint: function() {
       var blueprint = [],
           config    = this._config,
-          blockSize = config.blockSize;
+          blockSize = config.blockSize,
+          x,y;
 
       // TODO: CALCULATE THOSE:
       this.width = config.blueprint[0].length * blockSize;
@@ -83,10 +71,10 @@
 
       this._onDestroyedBlock = this._onDestroyedBlock.bind(this);
 
-      for (var y=0; y<config.blueprint.length; ++y) {
+      for (y=0; y<config.blueprint.length; ++y) {
         blueprint[y] = [];
-        for (var x=0; x<config.blueprint[y].length; ++x) {
-          if (config.blueprint[y][x] !== EMPTY) {
+        for (x=0; x<config.blueprint[y].length; ++x) {
+          if (config.blueprint[y][x]) {
             blueprint[y][x] = config.blueprint[y][x].construct(new Vector(x * blockSize - this.width/2, y * blockSize - this.height/2), {
               blockSize: config.blockSize,
               ship: this,
@@ -102,7 +90,7 @@
             blueprint[y][x].once('destroyed', this._onDestroyedBlock);
             this.mass += blueprint[y][x].mass;
           } else {
-            blueprint[y][x] = EMPTY;
+            blueprint[y][x] = null;
           }
         }
       }
@@ -227,24 +215,24 @@
 
     // remove cached drawn object so it gets redrawn
     redraw: function() {
-      this.object = null;
+      this.drawingObject = null;
     },
 
     draw: function(canvas, context) {
       var self      = this,
           blockSize = self._config.blockSize;
 
-      this.object = this.object || canvas.renderToCanvas(this.width, this.height, function(ctx) {
+      this.drawingObject = this.drawingObject || canvas.renderToCanvas(this.width, this.height, function(ctx) {
         for (var y=0; y<self._blueprint.length; ++y) {
           for (var x=0; x<self._blueprint[y].length; ++x) {
-            if (self._blueprint[y][x] !== EMPTY) {
+            if (self._blueprint[y][x]) {
               self._blueprint[y][x].draw(ctx, x*blockSize, y*blockSize);
             }
           }
         }
       });
       // ALIGN CENTER IS WRONG, it has to be done by this ship??
-      canvas.drawImage(this.object, this.position.x - canvas.camera.x , this.position.y - canvas.camera.y, Canvas.ALIGN.CENTER.MIDDLE, this.rotation);
+      canvas.drawImage(this.drawingObject, this.position.x - canvas.camera.x , this.position.y - canvas.camera.y, Canvas.ALIGN.CENTER.MIDDLE, this.rotation);
       canvas.fillStyle = 'red';
       context.fillRect(this.position.x-1, this.position.y-1, 2, 2);
     },

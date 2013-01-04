@@ -57,7 +57,7 @@
         collisionController = new CollisionController(),
 
         player = new Player({
-          credits: 6,
+          credits: 3,
           particleSystem: particleSystem,
           collisionController: collisionController,
           bulletSystem: bulletSystem

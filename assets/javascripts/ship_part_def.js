@@ -9,10 +9,9 @@
     return Object.extend({
       // used to construct instance of real ship part
       construct: function(position, config) {
+        config = config || {};
         config.subtype = subtype;
-        var instance = new win[type](position, config);
-        instance.definition = this;
-        return instance;
+        return new win[type](position, config);
       }
 
     // allow to access the default config for this block

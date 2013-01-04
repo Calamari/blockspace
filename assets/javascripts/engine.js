@@ -6,7 +6,7 @@
   var Engines = {
     'default': new ShipPartDef('Engine', 'default', {
       title: 'Regular Combustion Engine',
-      description: 'Move it!',
+      description: 'Do you want to get anywhere? Then this simple combustion engine is for you. Having an engine means having a gas pedal. And this means you can floor it. Yaaay',
       emitter: {
         variance: 60,
         direction: new Vector(0, -1),

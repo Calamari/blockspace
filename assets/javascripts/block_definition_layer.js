@@ -28,7 +28,7 @@
           height     = 300,
           padding    = 10,
           block      = this._block,
-          definition = block.definition,
+          definition = block.getDefinition(),
 
           title   = new ArcadeText(definition.title, { x: padding + 40, y: padding, lineWidth: 20 }),
           desc    = new ArcadeText(definition.description, { x: padding, y: padding + title.height + 10, pixelSize: 1, lineWidth: 40 }),

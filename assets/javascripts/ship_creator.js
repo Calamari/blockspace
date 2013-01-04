@@ -1,5 +1,5 @@
 /*globals Base, SpaceShip, Vector, ArcadeText,
-          Cockpit, Engine, Hull, Cannon */
+          Cockpits, Engines, Hulls, Cannons */
 
 ;(function(win, doc, $) {
   "use strict";
@@ -53,7 +53,7 @@
       }
       this.blocks.forEach(function(block) {
         p = block.position;
-        blueprint[(p.y+camY - minY) / BLOCKSIZE][(p.x+camX - minX) / BLOCKSIZE] = win[block.type];
+        blueprint[(p.y+camY - minY) / BLOCKSIZE][(p.x+camX - minX) / BLOCKSIZE] = block.getDefinition();
       });
       // fill up array with nulls
       for (var y=(maxY - minY) / BLOCKSIZE+1;y--;) {
@@ -108,14 +108,14 @@
       this._blockCanvas = canvas;
 
       // Hull block
-      block = new Hull(new Vector());
+      block = Hulls.default.construct(new Vector());
       this._stdHull = block;
       block.draw(ctx, 0, 2);
       text = new ArcadeText('Hull', { x: 40, pixelSize: 2 });
       text.draw(ctx);
 
       // Engine block
-      block = new Engine(new Vector(), {
+      block = Engines.default.construct(new Vector(), {
         maxSpeed: 10,
         acceleration: 10
       });
@@ -125,10 +125,17 @@
       text.draw(ctx);
 
       // Cannon block
-      block = new Cannon(new Vector());
+      block = Cannons.default.construct(new Vector());
       this._stdCannon = block;
       block.draw(ctx, 0, 62);
       text = new ArcadeText('Cannon', { x: 40, y: 60, pixelSize: 2 });
+      text.draw(ctx);
+
+      // Cockpit block
+      block = Cockpits.default.construct(new Vector());
+      this._stdCockpit = block;
+      block.draw(ctx, 0, 92);
+      text = new ArcadeText('Cockpit', { x: 40, y: 90, pixelSize: 2 });
       text.draw(ctx);
     },
 
@@ -313,17 +320,20 @@
 
     _blockMouseMoveHandler: function(event) {
       var canvasOffset = 160, // from css
-          y = event.y - canvasOffset;
+          y    = event.y - canvasOffset,
+          self = this._creator;
 
       this.setAttribute('class', 'pointer');
       this.className = 'pointer';
 
       if (y > 0 && y < 20) {
-        this._creator._writeDescription('The integral part of every ship is its hull. It does not do anything useful except allowing you to shape the ship.');
+        self._writeDescription(self._stdHull.getDefinition().description);
       } else if (y > 30 && y < 50) {
-        this._creator._writeDescription('Do you want to get anywhere? Then this is for you. Having an engine means having a gas pedal. And this means you can floor it. Yaaay');
+        self._writeDescription(self._stdEngine.getDefinition().description);
       } else if (y > 60 && y < 80) {
-        this._creator._writeDescription('You want to have one. Seriously. Space is dangerous. With this simple cannon you will be able to defend against harmless rocks. Better then nothing, huh?');
+        self._writeDescription(self._stdCannon.getDefinition().description);
+      } else if (y > 90 && y < 110) {
+        self._writeDescription(self._stdCockpit.getDefinition().description);
       } else {
         this.setAttribute('class', '');
         this.className = '';
