@@ -98,11 +98,7 @@
       canvas.width = 400;
       canvas.height = 70;
       this._descContext = canvas.getContext('2d');
-      this._writeDescription([
-        "This is your personal Ship'o'matic 3000.",
-        'Here you can buy some more parts for your',
-        'ship and make it awesome.'
-      ]);
+      this._writeDescription("This is your personal Ship'o'matic 3000. Here you can buy some more parts for your ship and make it awesome.");
 
       // Blocks
       canvas = doc.createElement('canvas');
@@ -136,14 +132,11 @@
       text.draw(ctx);
     },
 
-    _writeDescription: function(lines) {
-      var ctx = this._descContext,
-          text;
+    _writeDescription: function(str) {
+      var ctx  = this._descContext,
+          text = new ArcadeText(str, { pixelSize: 1, lineWidth: 40, lineSpacing: 3 });
       ctx.clearRect(0, 0, 400, 70);
-      lines.forEach(function(line, i) {
-        text = new ArcadeText(line, { y: i * 12, pixelSize: 1 });
-        text.draw(ctx);
-      });
+      text.draw(ctx);
     },
 
     // opens the menu and starts mouse controls
@@ -326,24 +319,11 @@
       this.className = 'pointer';
 
       if (y > 0 && y < 20) {
-        this._creator._writeDescription([
-          'The integral part of every ship is its hull.',
-          'It does not do anything useful except',
-          'allowing you to shape the ship.'
-        ]);
+        this._creator._writeDescription('The integral part of every ship is its hull. It does not do anything useful except allowing you to shape the ship.');
       } else if (y > 30 && y < 50) {
-        this._creator._writeDescription([
-          'Do you want to get anywhere? Then this is for',
-          'you. Having an engine means having a gas',
-          'pedal. And this means you can floor it. Yaaay'
-        ]);
+        this._creator._writeDescription('Do you want to get anywhere? Then this is for you. Having an engine means having a gas pedal. And this means you can floor it. Yaaay');
       } else if (y > 60 && y < 80) {
-        this._creator._writeDescription([
-          'You want to have one. Seriously. Space',
-          'is dangerous. With this simple cannon you',
-          'will be able to defend against harmless',
-          'rocks. Better then nothing, huh?'
-        ]);
+        this._creator._writeDescription('You want to have one. Seriously. Space is dangerous. With this simple cannon you will be able to defend against harmless rocks. Better then nothing, huh?');
       } else {
         this.setAttribute('class', '');
         this.className = '';
