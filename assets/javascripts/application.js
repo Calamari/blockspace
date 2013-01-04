@@ -29,4 +29,3 @@
 //= require ship_controls
 //= require spaceship
 //= require collision_controller
-//= require blockspace

@@ -19,5 +19,9 @@ app.get('/', function(req, res) {
   res.render('index.ejs');
 });
 
+app.get('/blocks', function(req, res) {
+  res.render('blocks.ejs');
+});
+
 app.listen(8124);
 console.log("server started on localhost:8124");

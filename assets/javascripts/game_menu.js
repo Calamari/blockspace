@@ -5,7 +5,7 @@
   var BODY;
   var menu = [
     {
-      title: 'play',
+      title: 'start game',
       action: 'createship'
     },
     {

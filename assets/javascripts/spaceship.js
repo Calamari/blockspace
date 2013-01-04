@@ -219,6 +219,10 @@
         this.rotation += (this.rotationLeft ? -1 : (this.rotationRight ? 1 : 0)) * config.rotationSpeed * passedSeconds;
       }
 
+      if (this.isFiring) {
+        this._fire();
+      }
+
       // move ship
       this.position.add(this.velocity.clone().skalar(passedSeconds));
       this.collidable.position = new Vector(this.position.x - off, this.position.y - off);
@@ -257,12 +261,20 @@
       this.rotationRight = direction === 'right';
     },
 
+    /**
+     *
+     * @param {Boolean} accel True if it should accelerate, false or nothing else
+     */
     accelerate: function(accel) {
       this.isAccel = accel;
     },
 
+    /**
+     *
+     * @param {Boolean} value True if it is actually firing, false or nothing else
+     */
     firing: function(value) {
-      this.isValue = value;
+      this.isFiring = value;
       if (value) {
         this._fire();
       }

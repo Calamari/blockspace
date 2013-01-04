@@ -1,6 +1,7 @@
 /*globals Base, Vector, Canvas, SpaceShip, ParticleSystem, CollisionDetection,
           ShipControls, Collidable, CollisionController, Bullet, SpaceBackground,
           ArcadeText, GameLogic */
+//= require application
 
 ;(function(win, doc) {
   "use strict";
