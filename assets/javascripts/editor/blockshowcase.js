@@ -47,7 +47,7 @@
           })
         ],
 
-        defLayer = new BlockDefinitionLayer(new Vector(50,50), ships[1]._engines[0]),
+        defLayer = new BlockDefinitionLayer(new Vector(win.innerWidth - 450, win.innerHeight - 450)),
 
         space = new SpaceBackground('canvas-bg'),
 
@@ -60,13 +60,48 @@
     });
 
     canvas = new Canvas('canvas', 60, function(context, frameDuration, totalDuration, frameNumber) {
+      var self = this;
       if (this.firstFrame) {
         this.camera = new Vector();
         canvasElement.width = win.innerWidth;
         canvasElement.height = win.innerHeight;
+
+        // The click on a block
+        Gator(canvasElement).on('click', function(event) {
+          // hide definitoin layer if one is visible right now
+          defLayer.hide();
+          var clickCollision = new CollisionDetection(),
+              clickCollider  = new Collidable.Rectangle({ position: new Vector(event.pageX - self.camera.x, event.pageY - self.camera.y), width: 0.2, height: 0.2 }),
+              clickCollider2  = new Collidable.Polygon({ position: new Vector(event.pageX - self.camera.x, event.pageY - self.camera.y), points: [new Vector(), new Vector(0,0.1), new Vector(0.1,0)] }),
+              collisions;
+          ships.forEach(function(ship) {
+            clickCollision.add(ship.getCollidable());
+          });
+          clickCollision.add(clickCollider);
+          clickCollision.test();
+          collisions = clickCollision.getCollisions();
+          if (collisions.length) {
+            // check each block of that ship
+            var subSystem = new CollisionDetection();
+            subSystem.add(clickCollider2);
+            (collisions[0][0].parent || collisions[0][1].parent).forEachBlock(function(block) {
+              subSystem.add(block.getCollidable());
+            });
+            subSystem.test();
+            subSystem
+              .getCollisions()
+              .forEach(function(collision) {
+                var block = collision[0].parent || collision[1].parent;
+                defLayer.setBlock(block);
+                defLayer.show();
+              });
+
+          }
+        });
+
       }
       this.clear();
-      space.draw(this.camera);
+      space.draw(self.camera);
       hEngines.draw(context);
 
       // draw ships

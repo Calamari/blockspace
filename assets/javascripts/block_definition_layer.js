@@ -8,13 +8,23 @@
       acceleration: 'Acceleration',
       price: 'Costs',
       maxSpeed: 'Maximum speed',
-      rotationSpeed: 'Rotation speed'
+      rotationSpeed: 'Rotation speed',
+
+      range: 'Range',
+      shootSpeed: 'Shootspeed',
+      damageValue: 'Damage',
+      fireRatio: 'Fire ratio'
     },
     descs: {
       acceleration: 'Acceleration one engine can give you. (Can be accumulated)',
       price: 'How much does this a new block of this type cost?',
       maxSpeed: 'Maximum speed one of those engines can reach. (Can be accumulated)',
-      rotationSpeed: "How fast can the ship rotate? It's measured in degree per second"
+      rotationSpeed: "How fast can the ship rotate? It's measured in degree per second.",
+
+      range: 'Range of the bullets.',
+      shootSpeed: 'How fast does the bullet travel?',
+      damageValue: 'How much damage will it deal?',
+      fireRatio: 'How many bullets per second does this cannon fire?'
     }
   };
 
@@ -24,7 +34,20 @@
       this._block = block;
     },
 
+    setBlock: function(block) {
+      this._block = block;
+    },
+
+    hide: function() {
+      this._visible = false;
+    },
+
+    show: function() {
+      this._visible = true;
+    },
+
     draw: function(canvas) {
+      if (!this._visible || !this._block) { return; }
       var p          = this.position,
           width      = 400,
           height     = 300,
@@ -52,11 +75,13 @@
                 yOffset=0;
             // TODO: this could also be done with only one text, and building a text block before it
             for (key in definition.config) {
-              typeText = new ArcadeText(texts.types[key] + ':', { x: padding + 50, y: bodyY + yOffset, pixelSize: 1, lineWidth: 30 });
-              typeText.draw(ctx);
-              valueText = new ArcadeText(definition.config[key], { x: padding + 50 + 30 * 8, y: bodyY + yOffset, pixelSize: 1 });
-              valueText.draw(ctx);
-              yOffset += typeText.height + 8;
+              if (texts.types[key]) {
+                typeText = new ArcadeText(texts.types[key] + ':', { x: padding + 50, y: bodyY + yOffset, pixelSize: 1, lineWidth: 30 });
+                typeText.draw(ctx);
+                valueText = new ArcadeText(definition.config[key], { x: padding + 50 + 30 * 8, y: bodyY + yOffset, pixelSize: 1 });
+                valueText.draw(ctx);
+                yOffset += typeText.height + 8;
+              }
             }
           });
 
