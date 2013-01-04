@@ -7,12 +7,14 @@
     types: {
       acceleration: 'Acceleration',
       price: 'Costs',
-      maxSpeed: 'Maximum speed'
+      maxSpeed: 'Maximum speed',
+      rotationSpeed: 'Rotation speed'
     },
     descs: {
       acceleration: 'Acceleration one engine can give you. (Can be accumulated)',
       price: 'How much does this a new block of this type cost?',
-      maxSpeed: 'Maximum speed one of those engines can reach. (Can be accumulated)'
+      maxSpeed: 'Maximum speed one of those engines can reach. (Can be accumulated)',
+      rotationSpeed: "How fast can the ship rotate? It's measured in degree per second"
     }
   };
 

@@ -19,7 +19,6 @@
         position: new Vector(),
         velocity: new Vector(),
         rotation: 0,
-        rotationSpeed: 60,
         collisionSystem: null
       }, config);
       this.maxSpeed = 0;
@@ -118,9 +117,11 @@
       }.bind(this));
       this.maxSpeed = 0;
       this.acceleration = 0;
+      this.rotationSpeed = 0;
       this._engines.forEach(function(engine) {
         this.maxSpeed += engine.maxSpeed;
         this.acceleration += engine.acceleration;
+        this.rotationSpeed += engine.rotationSpeed;
       }.bind(this));
     },
 
@@ -201,7 +202,7 @@
       }
 
       if (this.rotationLeft || this.rotationRight) {
-        this.rotation += (this.rotationLeft ? -1 : (this.rotationRight ? 1 : 0)) * config.rotationSpeed * passedSeconds;
+        this.rotation += (this.rotationLeft ? -1 : (this.rotationRight ? 1 : 0)) * this.rotationSpeed * passedSeconds;
       }
 
       if (this.isFiring) {

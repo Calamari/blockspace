@@ -1,5 +1,8 @@
 /*globals Base, Vector */
 
+// TODO: think about rotationAcceleration and rotationMaxSpeed instead
+// TODO: Or maybe even better: rotation and acceleration should use the mass of the ship
+
 ;(function(win, ShipPart) {
   "use strict";
 
@@ -17,6 +20,7 @@
       },
       config: {
         maxSpeed: 50,
+        rotationSpeed: 60,
         acceleration: 70,
         price: 2
       }
@@ -36,6 +40,7 @@
       this.base(position, config);
       this.maxSpeed = config.maxSpeed;
       this.acceleration = config.acceleration;
+      this.rotationSpeed = config.rotationSpeed;
       this.engineRear = new Vector(this._config.blockSize/2, this._config.blockSize).add(this.position);
       if (config.particleSystem) {
         this._particleEmitter = config.particleSystem.createEmitter(this.position.x, this.position.y, engineConfig.emitter);
