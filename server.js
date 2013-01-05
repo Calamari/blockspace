@@ -23,5 +23,9 @@ app.get('/blocks', function(req, res) {
   res.render('blocks.ejs');
 });
 
+app.get('/ships', function(req, res) {
+  res.render('ships.ejs');
+});
+
 app.listen(8124);
 console.log("server started on localhost:8124");
