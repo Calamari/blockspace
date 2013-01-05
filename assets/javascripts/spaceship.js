@@ -52,6 +52,10 @@
       this._config.collisionSystem.add(this.collidable);
     },
 
+    _removeFromCollisionDetection: function() {
+      this._config.collisionSystem.remove(this.collidable);
+    },
+
     getCollidable: function() {
       return this.collidable;
     },
@@ -239,6 +243,7 @@
     },
 
     destroy: function() {
+      this._removeFromCollisionDetection();
       this.emit('destroyed', this);
     },
 
