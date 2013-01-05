@@ -1,4 +1,4 @@
-/*globals Base, Vector, Canvas, SpaceShip, ParticleSystem, CollisionDetection,
+/*globals Base, Vector, Canvas, SpaceShip, SpaceMine, ParticleSystem, CollisionDetection,
           ShipControls, Collidable, CollisionController, Bullet, SpaceBackground,
           GameMenu, StateMachine, Player, ShipCreator */
 
@@ -12,7 +12,8 @@
           events: [
             { name: 'initialize',  from: 'none',  to: 'menu' },
             { name: 'createship',  from: 'menu',  to: 'shipcreation' },
-            { name: 'startgame',  from: 'shipcreation',  to: 'game' }
+            { name: 'startgame',   from: 'shipcreation',  to: 'game' },
+            { name: 'gameover',    from: 'game',  to: 'endscreen' }
           ],
           callbacks: {
             onentermenu: function() {
@@ -71,17 +72,38 @@
           }
         }),
 
+        spaceMine = new SpaceMine({
+          particleSystem: particleSystem,
+          collisionSystem: collisionController.getSystem(),
+          bulletSystem: bulletSystem,
+          position: new Vector(-140, -120)
+        }),
+
         ships = [
-          playerShip
+          playerShip,
+          spaceMine
         ],
 
         space = new SpaceBackground('canvas-bg'),
 
         controls = new ShipControls(playerShip);
 
+    ships.forEach(function(ship) {
+      ship.on('destroyed', function() {
+        // remove ship from drawing objects
+        for (var i=ships.length; i--;) {
+          if (ships[i] === ship) {
+            ships.splice(i, 1);
+            break;
+          }
+        }
+      });
+    });
+
     fsm.initialize();
     // FOR TESTING:
     fsm.createship();
+    fsm.startgame();
 
     canvas = new Canvas('canvas', 60, function(context, frameDuration, totalDuration, frameNumber) {
       var self = this;

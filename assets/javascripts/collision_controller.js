@@ -32,9 +32,9 @@
           obj2 = collision[1].parent;
       if (obj1.constructor === SpaceShip && obj2.constructor === SpaceShip) {
         this._handleShipShipCollision(obj1, obj2);
-      } else if (obj1.constructor === SpaceShip) {
+      } else if (obj1.constructor === SpaceShip || obj1.constructor === SpaceMine) {
         this._handleShipCollision(obj1, obj2);
-      } else if (obj2.constructor === SpaceShip) {
+      } else if (obj2.constructor === SpaceShip || obj2.constructor === SpaceMine) {
         this._handleShipCollision(obj2, obj1);
       }
     },

@@ -29,4 +29,5 @@
 //= require cannon
 //= require ship_controls
 //= require spaceship
+//= require spacemine
 //= require collision_controller

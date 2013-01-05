@@ -45,7 +45,7 @@
       var cannonConfig = Cannons[config.subtype || 'default'];
       config = Object.extend(Object.extend({
         collisionSystem: null
-      }, cannonConfig.config), config);
+      }, cannonConfig ? cannonConfig.config : {}), config);
       this.base(position, config);
       this.cannonNose = new Vector(this._config.blockSize/2 - this._config.pixelSize/2, 0).add(this.position);
       this.lastFired  = config.lastFired || 0;
