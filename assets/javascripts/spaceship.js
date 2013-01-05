@@ -224,6 +224,7 @@
     },
 
     draw: function(canvas, context) {
+      if (this._destroyed) { return; }
       var self      = this,
           blockSize = self._config.blockSize;
 
@@ -243,6 +244,7 @@
     },
 
     destroy: function() {
+      this._destroyed = true;
       this._removeFromCollisionDetection();
       this.emit('destroyed', this);
     },
