@@ -8,9 +8,7 @@
       title: 'Regular Cannon',
       description: 'You want to have one. Seriously. Space is dangerous. With this simple regular cannon you will be able to defend against harmless rocks. Better then nothing, huh?',
       config: {
-        price: 3,
         audio: '/sounds/shoot-bullet',
-        direction: new Vector(0, -1),
         range: 200,
         shootSpeed: 200,
         damageValue: 50,
@@ -23,9 +21,7 @@
       title: 'Another Regular Cannon',
       description: 'Something you definitly need more.',
       config: {
-        price: 3,
         audio: '/sounds/shoot-bullet',
-        direction: new Vector(0, -1),
         range: 50,
         shootSpeed: 300,
         damageValue: 50,
@@ -44,6 +40,8 @@
     constructor: function(position, config) {
       var cannonConfig = Cannons[config.subtype || 'default'];
       config = Object.extend(Object.extend({
+        price: 3,
+        direction: new Vector(0, -1),
         collisionSystem: null
       }, cannonConfig ? cannonConfig.config : {}), config);
       this.base(position, config);
@@ -55,12 +53,20 @@
       this._overrideEmitterLoop();
     },
 
-    fire: function() {
+    fire: function(shootPosition) {
       var now    = new Date().getTime(),
-          config = this._config;
+          config = this._config,
+          ship   = config.ship,
+          directionVector;
+          console.log(config);
       if (now - this.lastFired > config.fireRatio) {
-        var position = this.cannonNose.clone().rotate(config.ship.rotation).add(config.ship.position),
-            directionVector = config.direction.clone().rotate(config.ship.rotation);
+        var position = this.cannonNose.clone().rotate(ship.rotation).add(ship.position);
+        if (!shootPosition) {
+          directionVector = config.direction.clone().rotate(ship.rotation);
+        }  else {
+          directionVector = shootPosition.clone().sub(ship.position).normalize(1);
+        }
+        console.log("DRI", directionVector, ship.position, shootPosition);
 
         this._shoot(position, directionVector);
         this.lastFired = now;

@@ -273,9 +273,14 @@
       }
     },
 
-    _fire: function() {
+    fire: function(vector) {
+      console.log(1, this._cannons);
+      this._fire(vector);
+    },
+
+    _fire: function(vector) {
       for (var i=this._cannons.length; i--;) {
-        this._cannons[i].fire();
+        this._cannons[i].fire(vector);
       }
     }
   });

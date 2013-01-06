@@ -12,7 +12,8 @@
         range: 200,
         shootSpeed: 200,
         damageValue: 50,
-        pixelSize: 2,
+        pixelSize: 3,
+        direction: 'variable',
         color: [255, 255, 255],
         fireRatio: 1000 // once per second
       }
@@ -39,18 +40,15 @@
     type: 'SpaceMineBlock',
     subtype: 'simpleCannon',
 
-    // constructor: function(position, config) {
-    //   var cannonConfig = SpaceMineCannons[config.subtype || 'simpleCannon'];
-    //   config = Object.extend(Object.extend({
-    //     collisionSystem: null
-    //   }, cannonConfig.config), config);
-    //   this.base(position, config);
-    //   this.cannonNose = new Vector(this._config.blockSize/2 - this._config.pixelSize/2, 0).add(this.position);
-    //   this.lastFired  = config.lastFired || 0;
-    //   this._audio = new Audio(this._config.audio);
-
-    //   this._overrideEmitterLoop();
-    // },
+    constructor: function(position, config) {
+      var cannonConfig = SpaceMineCannons[config.subtype || 'simpleCannon'];
+      config = Object.extend(Object.extend({
+        collisionSystem: null
+      }, cannonConfig.config), config);
+      this.base(position, config);
+      // override cannonNose, because it does not work well with not directional cannons
+      this.cannonNose = this.position.clone();
+    },
 
     draw: function(canvas, x, y) {
       var blockSize = this._config.blockSize,
