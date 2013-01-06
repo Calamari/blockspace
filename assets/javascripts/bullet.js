@@ -25,6 +25,11 @@
     return this.collidable;
   };
 
+  // defines what it is
+  Bullet.prototype.is = function(what) {
+    return this.type === what;
+  };
+
   Bullet.prototype.loop = function(frameDuration) {
     var config   = this.config,
         timeDiff = frameDuration/1000;

@@ -175,17 +175,17 @@ console.log(overlap, shipToDisplace.velocity);
       if (obj1.destroyed || obj2.destroyed) {
         return;
       }
-      if (obj1.type === 'Bullet') {
+      if (obj1.is('Bullet')) {
         if (obj1.ship !== obj2.ship) {
           obj2.damage(obj1.damageValue);
           obj1.destroy();
         }
-      } else if (obj2.type === 'Bullet') {
+      } else if (obj2.is('Bullet')) {
         if (obj2.ship !== obj1.ship) {
           obj1.damage(obj2.damageValue);
           obj2.destroy();
         }
-      } else if (obj1.type === 'ShipPart' && obj2.type === 'ShipPart') {
+      } else if (obj1.is('ShipPart') && obj2.is('ShipPart')) {
         // TODO: Both were ships?
         console.log("Ships!", obj1, obj2);
       } else {

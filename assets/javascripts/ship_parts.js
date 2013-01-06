@@ -133,6 +133,11 @@
       return defs[this.subtype];
     },
 
+    // defines what it is
+    is: function(what) {
+      return this.type === what;
+    },
+
     clone: function() {
       return new window[this.type](this.position, this._config);
     }

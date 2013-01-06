@@ -25,8 +25,6 @@
       this.base(config);
     },
 
-    _checkHullIntegrity: function() {
-    },
 
     // If the block is destroyed, destroy the whole mine
     _onDestroyedBlock: function(block) {
@@ -75,6 +73,11 @@
         // }
         this._config.ship.redraw();
       }
+    },
+
+    // defines what it is
+    is: function(what) {
+      return 'Cannon' === what || 'Cockpit' === what;
     }
   });
 

@@ -87,7 +87,7 @@
               // needed for Cannons:
               bulletSystem: config.bulletSystem
             });
-            if (blueprint[y][x].type === 'Cockpit') {
+            if (blueprint[y][x].is('Cockpit')) {
               this._blueprintOffset = new Vector(x, y);
             }
             blueprint[y][x].once('destroyed', this._onDestroyedBlock);
@@ -106,7 +106,7 @@
     _calcCannonValues: function() {
       this._cannons = [];
       this.forEachBlock(function(block) {
-        if (block.type === 'Cannon') {
+        if (block.is('Cannon')) {
           this._cannons.push(block);
         }
       }.bind(this));
@@ -115,7 +115,7 @@
     _calcEngineValues: function() {
       this._engines = [];
       this.forEachBlock(function(block) {
-        if (block.type === 'Engine') {
+        if (block.is('Engine')) {
           this._engines.push(block);
         }
       }.bind(this));
@@ -133,7 +133,7 @@
     _onDestroyedBlock: function(block) {
       this.forEachBlock(function(b, x, y) {
         if (b === block) {
-          if (block.type === 'Cockpit') {
+          if (block.is('Cockpit')) {
             this.destroy();
           }
           this._blueprint[y][x] = null;
@@ -199,7 +199,7 @@
 
         // TODO: if engine blocked, damage blocking block
         this.forEachBlock(function(block, x, y) {
-          if (block && block.type === 'Engine' && this._blueprint[y+1] && this._blueprint[y+1][x]) {
+          if (block && block.is('Engine') && this._blueprint[y+1] && this._blueprint[y+1][x]) {
             this._blueprint[y+1][x].damage(ENGINE_DAMAGE * passedSeconds);
           }
         });

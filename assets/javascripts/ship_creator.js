@@ -25,7 +25,7 @@
       this._ship.forEachBlock(function(block, x, y) {
         block.position = new Vector(x * BLOCKSIZE, y * BLOCKSIZE).sub(self.cameraPosition);
         self.blocks.push(block);
-        if (block.type === 'Cockpit') {
+        if (block.is('Cockpit')) {
           self._cockpit = block;
         }
       });
@@ -216,8 +216,8 @@
           hasEngine = false,
           hasCockpit = true; // can't be removed
       this.blocks.forEach(function(block) {
-        hasCannon = hasCannon || block.type === 'Cannon';
-        hasEngine = hasEngine || block.type === 'Engine';
+        hasCannon = hasCannon || block.is('Cannon');
+        hasEngine = hasEngine || block.is('Engine');
       });
       return hasCannon && hasEngine && hasCockpit;
     },
