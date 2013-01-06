@@ -10,7 +10,7 @@
       config: {
         price: 3,
         audio: '/sounds/shoot-bullet',
-        direction: new Vector(0, 1),
+        direction: new Vector(0, -1),
         range: 200,
         shootSpeed: 200,
         damageValue: 50,
@@ -25,7 +25,7 @@
       config: {
         price: 3,
         audio: '/sounds/shoot-bullet',
-        direction: new Vector(0, 1),
+        direction: new Vector(0, -1),
         range: 50,
         shootSpeed: 300,
         damageValue: 50,
@@ -47,6 +47,7 @@
         collisionSystem: null
       }, cannonConfig ? cannonConfig.config : {}), config);
       this.base(position, config);
+      // TODO: this works only with direction 0;-1
       this.cannonNose = new Vector(this._config.blockSize/2 - this._config.pixelSize/2, 0).add(this.position);
       this.lastFired  = config.lastFired || 0;
       this._audio = new Audio(this._config.audio);
@@ -55,10 +56,11 @@
     },
 
     fire: function() {
-      var now = new Date().getTime();
-      if (now - this.lastFired > this._config.fireRatio) {
-        var position = this.cannonNose.clone().rotate(this._config.ship.rotation).add(this._config.ship.position),
-            directionVector = new Vector(0, -1).rotate(this._config.ship.rotation);
+      var now    = new Date().getTime(),
+          config = this._config;
+      if (now - this.lastFired > config.fireRatio) {
+        var position = this.cannonNose.clone().rotate(config.ship.rotation).add(config.ship.position),
+            directionVector = config.direction.clone().rotate(config.ship.rotation);
 
         this._shoot(position, directionVector);
         this.lastFired = now;
