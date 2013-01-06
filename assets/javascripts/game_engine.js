@@ -76,7 +76,7 @@
           particleSystem: particleSystem,
           collisionSystem: collisionController.getSystem(),
           bulletSystem: bulletSystem,
-          position: new Vector(-140, -120)
+          position: new Vector(-150, -160)
         }),
 
         ships = [
@@ -112,6 +112,12 @@
         this.camera = new Vector(-win.innerWidth/2, -win.innerHeight/2);
         canvasElement.width = win.innerWidth;
         canvasElement.height = win.innerHeight;
+
+        Gator(canvasElement).on('click', function(event) {
+          var clickedPoint = new Vector(event.pageX + self.camera.x, event.pageY + self.camera.y);
+          console.log(clickedPoint);
+          spaceMine.fire(clickedPoint);
+        });
       } else {
         if (fsm.is('shipcreation')) {
           this.camera = shipCreator.cameraPosition;
