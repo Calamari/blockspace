@@ -210,7 +210,7 @@
       }
 
       if (this.isFiring) {
-        this._fire();
+        this._fire(this.isFiring);
       }
 
       // move ship
@@ -264,23 +264,22 @@
 
     /**
      *
-     * @param {Boolean} value True if it is actually firing, false or nothing else
+     * @param {Boolean|Vector} value Trueish if it is actually firing, false or nothing else (if given Vector shoot to the vector)
      */
     firing: function(value) {
       this.isFiring = value;
       if (value) {
-        this._fire();
+        this._fire(value);
       }
     },
 
     fire: function(vector) {
-      console.log(1, this._cannons);
       this._fire(vector);
     },
 
     _fire: function(vector) {
       for (var i=this._cannons.length; i--;) {
-        this._cannons[i].fire(vector);
+        this._cannons[i].fire(vector && vector.constructor === Vector ? vector : null);
       }
     }
   });

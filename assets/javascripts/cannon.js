@@ -58,15 +58,14 @@
           config = this._config,
           ship   = config.ship,
           directionVector;
-          console.log(config);
+
       if (now - this.lastFired > config.fireRatio) {
         var position = this.cannonNose.clone().rotate(ship.rotation).add(ship.position);
-        if (!shootPosition) {
-          directionVector = config.direction.clone().rotate(ship.rotation);
-        }  else {
+        if (shootPosition && config.direction === 'variable') {
           directionVector = shootPosition.clone().sub(ship.position).normalize(1);
+        }  else {
+          directionVector = config.direction.clone().rotate(ship.rotation);
         }
-        console.log("DRI", directionVector, ship.position, shootPosition);
 
         this._shoot(position, directionVector);
         this.lastFired = now;
