@@ -28,7 +28,16 @@
       this.rotation = this._config.rotation;
       this.velocity = this._config.velocity;
 
+      if (this._config.behavior) {
+        this.registerBehavior(this._config.behavior);
+      }
+
       this._setupCollisionDetection();
+    },
+
+    registerBehavior: function(behavior) {
+      this._behavior = behavior;
+      behavior.setup(this, this._config.game);
     },
 
     setNewBlueprint: function(blueprint) {
@@ -108,6 +117,7 @@
       this.forEachBlock(function(block) {
         if (block.is('Cannon')) {
           this._cannons.push(block);
+          this.range = Math.max(this.range || 0, block.range);
         }
       }.bind(this));
     },
@@ -185,6 +195,10 @@
       var passedSeconds = frameDuration/1000,
           config        = this._config,
           off           = Math.max(Math.abs(this.middlePoint.x), Math.abs(this.middlePoint.y));
+
+      if (this._behavior) {
+        this._behavior.loop(frameDuration);
+      }
 
       if (this.isAccel) {
         this.velocity.add(new Vector(0, -this.acceleration * passedSeconds).rotate(this.rotation));
@@ -281,6 +295,11 @@
       for (var i=this._cannons.length; i--;) {
         this._cannons[i].fire(vector && vector.constructor === Vector ? vector : null);
       }
+    },
+
+    // defines what it is
+    is: function(what) {
+      return 'SpaceShip' === what;
     }
   });
 

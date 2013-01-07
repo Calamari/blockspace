@@ -1,4 +1,4 @@
-/*globals Base, Vector, ShipPartDef, Cannon */
+/*globals Base, ShipPartDef, Cannon */
 
 ;(function(win, SpaceShip) {
   "use strict";
@@ -26,12 +26,21 @@
       this.base(config);
     },
 
-
     // If the block is destroyed, destroy the whole mine
     _onDestroyedBlock: function(block) {
       this.forEachBlock(function(b, x, y) {
         this.destroy();
       }.bind(this));
+    },
+
+    draw: function(canvas, context) {
+      this.base(canvas, context);
+      // draw a circle for proximity trigger
+      context.strokeStyle = '#666';
+      context.beginPath();
+      context.arc(this.position.x - canvas.camera.x , this.position.y - canvas.camera.y, this.range, 0, Math.PI*2, true);
+      context.closePath();
+      context.stroke();
     }
   });
 

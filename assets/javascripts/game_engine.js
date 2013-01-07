@@ -1,6 +1,7 @@
 /*globals Base, Vector, Canvas, SpaceShip, SpaceMine, ParticleSystem, CollisionDetection,
           ShipControls, Collidable, CollisionController, Bullet, SpaceBackground,
-          GameMenu, StateMachine, Player, ShipCreator */
+          Game, GameMenu, StateMachine, Player, ShipCreator,
+          ShootOnSightBehavior */
 
 ;(function(win, doc) {
   "use strict";
@@ -80,6 +81,7 @@
           collisionSystem: collisionController.getSystem(),
           bulletSystem: bulletSystem,
           position: new Vector(-220, -160),
+          behavior: new ShootOnSightBehavior(),
           game: game
         }),
 
@@ -117,7 +119,7 @@
         Gator(canvasElement).on('click', function(event) {
           var clickedPoint = new Vector(event.pageX + self.camera.x, event.pageY + self.camera.y);
           console.log(clickedPoint);
-          spaceMine.fire(clickedPoint);
+          spaceMine.firing(clickedPoint);
         });
       } else {
         if (fsm.is('shipcreation')) {

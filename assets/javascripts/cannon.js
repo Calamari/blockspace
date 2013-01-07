@@ -49,6 +49,7 @@
       this.cannonNose = new Vector(this._config.blockSize/2 - this._config.pixelSize/2, 0).add(this.position);
       this.lastFired  = config.lastFired || 0;
       this._audio = new Audio(this._config.audio);
+      this.range = this._config.range;
 
       this._overrideEmitterLoop();
     },

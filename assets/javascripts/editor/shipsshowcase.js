@@ -98,6 +98,7 @@
           // hide definitoin layer if one is visible right now
           defLayer.hide();
           var clickCollision = new CollisionDetection(),
+          // TODO: - is wrong, should be + when self.camera
               clickCollider  = new Collidable.Rectangle({ position: new Vector(event.pageX - self.camera.x, event.pageY - self.camera.y), width: 0.2, height: 0.2 }),
               clickCollider2  = new Collidable.Polygon({ position: new Vector(event.pageX - self.camera.x, event.pageY - self.camera.y), points: [new Vector(), new Vector(0,0.1), new Vector(0.1,0)] }),
               collisions;
