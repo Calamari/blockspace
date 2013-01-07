@@ -12,6 +12,10 @@
     }, config);
     this.position = new Vector(config.x, config.y);
     this.velocity = new Vector(config.velX, config.velY);
+    if (!this.velocity.length()) {
+      console.log("ERROR Bullet speed");
+      throw new Error("ERROR Bullet speed");
+    }
     this.traveled = new Vector();
     this.damageValue = this.config.damageValue;
   };
@@ -51,6 +55,7 @@
   };
 
   Bullet.prototype.draw = function(canvas) {
+    if (this.destroyed) { return; }
     // render it
     canvas.context.fillStyle = 'rgb(' + this.config.color + ')';
     canvas.context.fillRect(Math.round(this.position.x) - canvas.camera.x, Math.round(this.position.y) - canvas.camera.y, this.size, this.size);
