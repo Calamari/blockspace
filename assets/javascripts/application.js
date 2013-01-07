@@ -16,6 +16,7 @@
 //= require libs/jaz-engine2d/collision_detection
 
 // Here comes the real code
+//= require game
 //= require player
 //= require ship_creator
 //= require game_engine

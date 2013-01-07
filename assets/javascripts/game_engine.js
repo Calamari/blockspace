@@ -36,6 +36,8 @@
           }
         }),
 
+        game = new Game(),
+
         menu = new GameMenu('Blockspace', function(action) {
           if (action === 'todo') {
             console.log("ACTION IS TODO");
@@ -61,7 +63,8 @@
           credits: 3,
           particleSystem: particleSystem,
           collisionController: collisionController,
-          bulletSystem: bulletSystem
+          bulletSystem: bulletSystem,
+          game: game
         }),
 
         playerShip = player.ship,
@@ -76,24 +79,22 @@
           particleSystem: particleSystem,
           collisionSystem: collisionController.getSystem(),
           bulletSystem: bulletSystem,
-          position: new Vector(-150, -160)
+          position: new Vector(-220, -160),
+          game: game
         }),
-
-        ships = [
-          playerShip,
-          spaceMine
-        ],
 
         space = new SpaceBackground('canvas-bg'),
 
         controls = new ShipControls(playerShip);
 
-    ships.forEach(function(ship) {
+    game.ships = [playerShip, spaceMine];
+
+    game.ships.forEach(function(ship) {
       ship.on('destroyed', function() {
         // remove ship from drawing objects
-        for (var i=ships.length; i--;) {
-          if (ships[i] === ship) {
-            ships.splice(i, 1);
+        for (var i=game.ships.length; i--;) {
+          if (game.ships[i] === ship) {
+            game.ships.splice(i, 1);
             break;
           }
         }
@@ -132,7 +133,7 @@
         shipCreator.drawBlocks(context);
       } else {
         // draw ships
-        ships.forEach(function(ship) {
+        game.ships.forEach(function(ship) {
           ship.draw(self, context);
           ship.loop(frameDuration);
         });
