@@ -94,6 +94,7 @@
       this._audio.play();
     },
 
+    // if bullet particle has been destroyed, also remove from collisionSystem
     _overrideEmitterLoop: function() {
       if (this._config.collisionSystem) {
         var collisionSystem = this._config.collisionSystem;

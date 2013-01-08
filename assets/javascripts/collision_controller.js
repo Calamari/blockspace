@@ -43,35 +43,35 @@
 
     _handleShipCollision: function(ship, object) {
       console.log("ship collision", ship, object);
-        var subSystem = new CollisionDetection();
-        subSystem.add(object.getCollidable());
-        // add all blocks of ship
-        ship.forEachBlock(function(block) {
-          subSystem.add(block.getCollidable());
-        });
-        subSystem.test();
-        subSystem
-          .getCollisions()
-          .forEach(this._handleBlockCollisions);
+      var subSystem = new CollisionDetection();
+      subSystem.add(object.getCollidable());
+      // add all blocks of ship
+      ship.forEachBlock(function(block) {
+        subSystem.add(block.getCollidable());
+      });
+      subSystem.test();
+      subSystem
+        .getCollisions()
+        .forEach(this._handleBlockCollisions.bind(this));
     },
 
     _handleShipShipCollision: function(ship1, ship2) {
       console.log("ship ship collision", ship1, ship2);
-        var subSystem = new CollisionDetection();
-        // add all blocks of ship
-        ship1.forEachBlock(function(block) {
-          subSystem.add(block.getCollidable());
-        });
-        ship2.forEachBlock(function(block) {
-          subSystem.add(block.getCollidable());
-        });
-        subSystem.test();
-        console.log(subSystem);
-        // We need only to handle one block to block collision between the two ships
-        var collisions = subSystem.getCollisions();
-        if (collisions.length) {
-          this._handleBlockBlockCollisions(collisions[0]);
-        }
+      var subSystem = new CollisionDetection();
+      // add all blocks of ship
+      ship1.forEachBlock(function(block) {
+        subSystem.add(block.getCollidable());
+      });
+      ship2.forEachBlock(function(block) {
+        subSystem.add(block.getCollidable());
+      });
+      subSystem.test();
+      console.log(subSystem);
+      // We need only to handle one block to block collision between the two ships
+      var collisions = subSystem.getCollisions();
+      if (collisions.length) {
+        this._handleBlockBlockCollisions(collisions[0]);
+      }
     },
 
     _handleBlockBlockCollisions: function(collision) {
