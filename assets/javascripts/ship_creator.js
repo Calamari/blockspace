@@ -23,6 +23,7 @@
     _destructPlayerShip: function() {
       var self = this;
       this._ship.forEachBlock(function(block, x, y) {
+        block = block.clone();
         block.position = new Vector(x * BLOCKSIZE, y * BLOCKSIZE).sub(self.cameraPosition);
         self.blocks.push(block);
         if (block.is('Cockpit')) {
