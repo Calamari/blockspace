@@ -20,6 +20,14 @@
       this._game = game;
       this.started = true;
       this._onRegister();
+      this._ship.on('destroyed', function() {
+        this.stop();
+        this._onDestroy();
+      }.bind(this));
+    },
+
+    stop: function() {
+      this.started = false;
     },
 
     /**
