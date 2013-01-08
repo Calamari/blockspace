@@ -66,7 +66,6 @@
         subSystem.add(block.getCollidable());
       });
       subSystem.test();
-      console.log(subSystem);
       // We need only to handle one block to block collision between the two ships
       var collisions = subSystem.getCollisions();
       if (collisions.length) {

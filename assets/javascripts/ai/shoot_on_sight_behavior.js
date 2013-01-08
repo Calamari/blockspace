@@ -11,7 +11,7 @@
     // shoots if something is in sight
     loop: function(frameDuration) {
       if (this._currentTarget) {
-        if (this.inRange(this._currentTarget)) {
+        if (!this._currentTarget.destroyed && this.inRange(this._currentTarget)) {
           this._ship.firing(this._currentTarget.position);
         } else {
           this._currentTarget = null;

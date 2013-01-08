@@ -11,7 +11,7 @@
         audio: '/sounds/shoot-bullet',
         range: 200,
         shootSpeed: 200,
-        damageValue: 50,
+        damageValue: 30,
         pixelSize: 3,
         direction: 'variable',
         color: [255, 255, 255],
