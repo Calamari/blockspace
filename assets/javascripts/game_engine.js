@@ -116,11 +116,6 @@
         canvasElement.width = win.innerWidth;
         canvasElement.height = win.innerHeight;
 
-        Gator(canvasElement).on('click', function(event) {
-          var clickedPoint = new Vector(event.pageX + self.camera.x, event.pageY + self.camera.y);
-          console.log(clickedPoint);
-          spaceMine.firing(clickedPoint);
-        });
       } else {
         if (fsm.is('shipcreation')) {
           this.camera = shipCreator.cameraPosition;
