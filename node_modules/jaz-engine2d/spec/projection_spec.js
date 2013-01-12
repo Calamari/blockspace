@@ -2,7 +2,7 @@
 var Vector = require(__dirname + '/../libs/vector');
 var Projection = require(__dirname + '/../libs/projection');
 
-describe(Projection, function() {
+describe("Projection", function() {
   it("can be created and contains min and max", function(done) {
     var obj = new Projection(1, 4);
     expect(obj.min).toEqual(1);

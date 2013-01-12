@@ -1,4 +1,5 @@
-"use strict"
+/*jslint node: true */
+"use strict";
 
 /**
  *  An implementation of a vector
