@@ -200,7 +200,7 @@
         this._behavior.loop(frameDuration);
       }
 
-      if (this.isAccel) {
+      if (this.isAccel && this._engines.length) {
         this.velocity.add(new Vector(0, -this.acceleration * passedSeconds).rotate(this.rotation));
         if (this.velocity.length() > this.maxSpeed) {
           this.velocity.normalize(this.maxSpeed);
