@@ -1,7 +1,7 @@
 /*globals Base, Vector, Canvas, SpaceShip, SpaceMine, ParticleSystem, CollisionDetection,
           ShipControls, Collidable, CollisionController, Bullet, SpaceBackground,
           Game, GameMenu, StateMachine, Player, ShipCreator,
-          ShootOnSightBehavior */
+          BehaviorTree */
 
 ;(function(win, doc) {
   "use strict";
@@ -76,12 +76,31 @@
           }
         }),
 
+        enemyShip = new SpaceShip({
+          position: new Vector(0, -300),
+          particleSystem: particleSystem,
+          collisionSystem: collisionController.getSystem(),
+          rotation: -90,
+          bulletSystem: bulletSystem,
+          title: 'testEnemy1',
+          behavior: 'flying waypoints',
+          waypoints: [new Vector(-200, -200), new Vector(100, -200)],
+          blueprint: [
+            [Cannons.default, Hulls.default],
+            [Hulls.default, Cockpits.default],
+            [Engines.default, Hulls.default]
+          ],
+          game: game
+        }),
+
         spaceMine = new SpaceMine({
           particleSystem: particleSystem,
           collisionSystem: collisionController.getSystem(),
           bulletSystem: bulletSystem,
-          position: new Vector(-220, -160),
-          behavior: new ShootOnSightBehavior(),
+          position: new Vector(-130, -160),
+          // behavior: new ShootOnSightBehavior({
+          //   friends: [enemyShip]
+          // }),
           game: game
         }),
 
@@ -89,7 +108,7 @@
 
         controls = new ShipControls(playerShip);
 
-    game.ships = [playerShip, spaceMine];
+    game.ships = [playerShip, spaceMine, enemyShip];
 
     game.ships.forEach(function(ship) {
       ship.on('destroyed', function() {
@@ -105,8 +124,8 @@
 
     fsm.initialize();
     // FOR TESTING:
-    fsm.createship();
-    fsm.startgame();
+   fsm.createship();
+   fsm.startgame();
 
     canvas = new Canvas('canvas', 60, function(context, frameDuration, totalDuration, frameNumber) {
       var self = this;

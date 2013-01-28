@@ -2,7 +2,8 @@
 
 ;(function(win, EventEmitter, Collidable) {
   "use strict";
-  var ENGINE_DAMAGE = 30; // TODO has to be configured by engine
+  var ENGINE_DAMAGE = 30, // TODO has to be configured by engine
+      shipCount     = 0;
 
   var SpaceShip = Base.extend({
     type: 'SpaceShip',
@@ -21,6 +22,7 @@
         rotation: 0,
         collisionSystem: null
       }, config);
+      this.title = this._config.title || 'SpaceShip' + (++shipCount);
       this.maxSpeed = 0;
       this.acceleration = 0;
       this._processBlueprint();
@@ -35,9 +37,16 @@
       this._setupCollisionDetection();
     },
 
+    getViewVector: function() {
+      return new Vector(0, -1).rotate(this.rotation);
+    },
+
     registerBehavior: function(behavior) {
-      this._behavior = behavior;
-      behavior.setup(this, this._config.game);
+      this._behavior = new BehaviorTree({
+        title: this.title,
+        tree: behavior
+      });
+      this._behavior.setObject(this);
     },
 
     setNewBlueprint: function(blueprint) {
@@ -197,7 +206,7 @@
           off           = Math.max(Math.abs(this.middlePoint.x), Math.abs(this.middlePoint.y));
 
       if (this._behavior) {
-        this._behavior.loop(frameDuration);
+        this._behavior.step();
       }
 
       if (this.isAccel && this._engines.length) {
@@ -255,6 +264,15 @@
       canvas.drawImage(this.drawingObject, this.position.x - canvas.camera.x , this.position.y - canvas.camera.y, Canvas.ALIGN.CENTER.MIDDLE, this.rotation);
       canvas.fillStyle = 'red';
       context.fillRect(this.position.x-1, this.position.y-1, 2, 2);
+
+      // DEBUGGING STUFF: if waypoints, draw them:
+      if (this.waypoints) {
+        this.waypoints.forEach(function(waypoint) {
+          context.fillStyle = 'orange';
+          context.fillRect(waypoint.x-1 - canvas.camera.x, waypoint.y-1 - canvas.camera.y, 2, 2);
+
+        });
+      }
     },
 
     destroy: function() {
@@ -300,7 +318,42 @@
     // defines what it is
     is: function(what) {
       return 'SpaceShip' === what;
+    },
+
+    // is ship in view range
+    inViewRange: function() {
+      var distance = this.position.distanceTo(ship.position);
+      return distance < this._config.viewRange;
+    },
+
+    hasReachedWaypoint: function(point) {
+      var distance = this.position.distanceTo(point);
+      return distance <= this.waypointTolerance;
+    },
+
+    targetNextWaypoint: function() {
+      this.actualWaypoint = ++this.actualWaypoint % this.waypoints.length;
+    },
+
+    // is ship looking in target direction?
+    isDirectionRight: function(point) {
+      var a = point.clone().sub(this.position).normalize(1),
+          b = this.getViewVector();
+      return a.equals(b);
+    },
+
+    calcRotationToDo: function(point) {
+      var a = point.clone().sub(this.position).rotate(90 - this.rotation);
+      return Math.atan2(a.y,a.x) * 180/Math.PI;
+    },
+
+    // is ship flying in target direction?
+    isVelocityRight: function(point) {
+      var a = point.clone().sub(this.position).normalize(1),
+          b = this.velocity.clone().normalize(1);
+      return a.equals(b);
     }
+
   });
 
   Object.extend(SpaceShip.prototype, EventEmitter.prototype);

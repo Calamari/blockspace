@@ -14,6 +14,7 @@
 //= require libs/jaz-engine2d/projection
 //= require libs/jaz-engine2d/collidable
 //= require libs/jaz-engine2d/collision_detection
+//= require libs/btree.min
 
 // Here comes the real code
 //= require game
@@ -32,5 +33,6 @@
 //= require spaceship
 //= require spacemine
 //= require ai/behavior
+//= require ai/waypoint_behavior
 //= require ai/shoot_on_sight_behavior
 //= require collision_controller

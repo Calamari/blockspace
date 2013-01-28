@@ -1,5 +1,6 @@
+/*globals module */
 (function(win) {
-  "use strict"
+  "use strict";
 
   /**
    *  An implementation of a vector
@@ -81,8 +82,14 @@
     return this;
   };
 
+  Vector.prototype.rotationBetween = function(v) {
+    var cosAngle = this.dot(v) / (this.length() * v.length());
+    return Math.acos(cosAngle) * 180/Math.PI;
+  };
+
   if (typeof module !== 'undefined') {
     module.exports = Vector;
+  } else {
+    win.Vector = Vector;
   }
-  win.Vector = Vector;
 }(window));
