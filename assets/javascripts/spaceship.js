@@ -22,17 +22,19 @@
         rotation: 0,
         collisionSystem: null
       }, config);
-      this.title = this._config.title || 'SpaceShip' + (++shipCount);
+      config = this._config;
+      this.title = config.title || 'SpaceShip' + (++shipCount);
       this.maxSpeed = 0;
       this.acceleration = 0;
       this._processBlueprint();
-      this.position = this._config.position;
-      this.rotation = this._config.rotation;
-      this.velocity = this._config.velocity;
-      this.friends = this._config.friends || [];
+      this.position = config.position;
+      this.rotation = config.rotation;
+      this.velocity = config.velocity;
+      this.friends = config.friends || [];
+      this.isPlayer = config.player;
 
-      if (this._config.behavior) {
-        this.registerBehavior(this._config.behavior);
+      if (config.behavior) {
+        this.registerBehavior(config.behavior);
       }
 
       this._setupCollisionDetection();

@@ -8,6 +8,7 @@
     Object.extend(this, config || {});
     this._createShip = function() {
       this.ship = new SpaceShip({
+        title: 'PlayerShip',
         position: new Vector(0, 0),
         particleSystem: this.particleSystem,
         collisionSystem: this.collisionController.getSystem(),
@@ -17,7 +18,8 @@
           [Cannons.default],
           [Cockpits.default],
           [Engines.default]
-        ]
+        ],
+        player: true
       });
     };
 
