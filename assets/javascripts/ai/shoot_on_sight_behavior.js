@@ -9,7 +9,7 @@
       new BehaviorTree.Task({
         title: 'shoot at target',
         run: function(ship) {
-          if (ship.currentTarget && !ship.currentTarget.destroyed && ship.inRange(ship.currentTarget)) {
+          if (ship.currentTarget && !ship.currentTarget.destroyed && ship.inWeaponsRange(ship.currentTarget)) {
             ship.firing(ship.currentTarget.position);
             this.success();
           } else {
@@ -24,7 +24,7 @@
         run: function(ship) {
           ship.getShipsInRange().forEach(function(target) {
             if (ship.friends.indexOf(target) === -1) {
-              ship.currentTarget = target;
+              ship.setTarget(target);
             }
           }.bind(this));
           this.success();

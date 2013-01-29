@@ -3,6 +3,9 @@
           Game, GameMenu, StateMachine, Player, ShipCreator,
           BehaviorTree */
 
+var DEBUG_SHOW_WAY_POINTS = true,
+    DEBUG_SHOW_VIEW_RANGE = true;
+
 ;(function(win, doc) {
   "use strict";
 
@@ -76,6 +79,14 @@
           }
         }),
 
+        enemyBehavior = new BehaviorTree.Selector({
+          title: 'follow or waypoints',
+          nodes: [
+            'follow player',
+            'flying waypoints'
+          ]
+        }),
+
         enemyShip = new SpaceShip({
           position: new Vector(0, -300),
           particleSystem: particleSystem,
@@ -83,8 +94,8 @@
           rotation: -90,
           bulletSystem: bulletSystem,
           title: 'testEnemy1',
-          behavior: 'flying waypoints',
-          waypoints: [new Vector(-200, -200), new Vector(100, -200)],
+          behavior: enemyBehavior,
+          waypoints: [new Waypoint(-200, -200), new Waypoint(100, -200)],
           blueprint: [
             [Cannons.default, Hulls.default],
             [Hulls.default, Cockpits.default],

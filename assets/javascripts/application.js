@@ -17,6 +17,7 @@
 //= require libs/btree.min
 
 // Here comes the real code
+//= require waypoint
 //= require game
 //= require player
 //= require ship_creator
@@ -33,5 +34,6 @@
 //= require spaceship
 //= require spacemine
 //= require ai/waypoint_behavior
+//= require ai/follow_player_behavior
 //= require ai/shoot_on_sight_behavior
 //= require collision_controller

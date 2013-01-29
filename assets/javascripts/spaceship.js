@@ -32,6 +32,7 @@
       this.velocity = config.velocity;
       this.friends = config.friends || [];
       this.isPlayer = config.player;
+      this.viewRange = config.viewRange || 250;
 
       if (config.behavior) {
         this.registerBehavior(config.behavior);
@@ -129,7 +130,7 @@
       this.forEachBlock(function(block) {
         if (block.is('Cannon')) {
           this._cannons.push(block);
-          this.range = Math.max(this.range || 0, block.range);
+          this.weaponsRange = Math.max(this.weaponsRange || 0, block.range);
         }
       }.bind(this));
     },
@@ -269,12 +270,21 @@
       context.fillRect(this.position.x-1, this.position.y-1, 2, 2);
 
       // DEBUGGING STUFF: if waypoints, draw them:
-      if (this.waypoints) {
+      if (DEBUG_SHOW_WAY_POINTS && this.waypoints) {
         this.waypoints.forEach(function(waypoint) {
           context.fillStyle = 'orange';
           context.fillRect(waypoint.x-1 - canvas.camera.x, waypoint.y-1 - canvas.camera.y, 2, 2);
 
         });
+      }
+
+      // DEBUGGING STUFF: show view Range:
+      if (DEBUG_SHOW_VIEW_RANGE) {
+        context.strokeStyle = '#999';
+        context.beginPath();
+        context.arc(this.position.x - canvas.camera.x , this.position.y - canvas.camera.y, this.viewRange, 0, Math.PI*2, true);
+        context.closePath();
+        context.stroke();
       }
     },
 
@@ -323,25 +333,37 @@
       return 'SpaceShip' === what;
     },
 
-    inRange: function(ship) {
-      var distance = this.position.distanceTo(ship.position);
-      return distance < this.range;
+    // define actual target of this vessel
+    setTarget: function(target) {
+      this.currentTarget = target;
     },
 
-    getShipsInRange: function() {
-      var self = this,
+    inViewRange: function(ship) {
+      return this._inRange(ship.position, this.viewRange);
+    },
+
+    inWeaponsRange: function(ship) {
+      return this._inRange(ship.position, this.weaponsRange);
+    },
+
+    _inRange: function(point, range) {
+      var distance = this.position.distanceTo(point);
+      return distance < range;
+    },
+
+    getShipsInRange: function(range) {
+      var self         = this,
           shipsInRange = [];
       this._config.game.ships.forEach(function(ship) {
-        if (self !== ship && self.inRange(ship)) {
+        if (self !== ship && self._inRange(ship.position, range || self.weaponsRange)) {
           shipsInRange.push(ship);
         }
       });
       return shipsInRange;
     },
 
-    hasReachedWaypoint: function(point) {
-      var distance = this.position.distanceTo(point);
-      return distance <= this.waypointTolerance;
+    hasReachedWaypoint: function(waypoint) {
+      return this._inRange(waypoint.position, this.waypointTolerance);
     },
 
     targetNextWaypoint: function() {
@@ -365,6 +387,10 @@
       var a = point.clone().sub(this.position).normalize(1),
           b = this.velocity.clone().normalize(1);
       return a.equals(b);
+    },
+
+    getCurrentWaypoint: function() {
+      return this.waypoints[this.actualWaypoint];
     }
 
   });

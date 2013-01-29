@@ -15,7 +15,6 @@
           if (!ship.waypointsInitialized) {
             var config = ship._config;
 
-            ship.viewRange = config.viewRange || 100;
             ship.waypoints = config.waypoints;
             // tolerance should be height enough to make ship not fly in circle around waypoint
             ship.waypointTolerance = config.pointTolerance || 50;
@@ -41,7 +40,7 @@
           new BehaviorTree.Task({
             title: 'rotate to waypoint',
             run: function(ship) {
-              var rotationToWaypoint = ship.calcRotationToDo(ship.waypoints[ship.actualWaypoint]);
+              var rotationToWaypoint = ship.calcRotationToDo(ship.getCurrentWaypoint().position);
               if (Math.abs(rotationToWaypoint) > 4) {
                 ship.rotate(rotationToWaypoint > 0 ? 'right' : 'left');
                 ++ship.recentlyRotated;
@@ -55,7 +54,7 @@
             title: 'fly to waypoint',
             run: function(ship) {
               ship.rotate(false);
-              ship.accelerate(ship.recentlyRotated > 5 || ship.velocity.length() < ship.maxSpeed - 0.0001);
+              //ship.accelerate(ship.recentlyRotated > 5 || ship.velocity.length() < ship.maxSpeed - 0.0001);
               ship.accelerate(true);
               if (ship.recentlyRotated > 5) {
                 ship.recentlyRotated = 0;
