@@ -94,13 +94,13 @@
         }),
 
         spaceMine = new SpaceMine({
+          title: 'spaceMine1',
           particleSystem: particleSystem,
           collisionSystem: collisionController.getSystem(),
           bulletSystem: bulletSystem,
           position: new Vector(-130, -160),
-          // behavior: new ShootOnSightBehavior({
-          //   friends: [enemyShip]
-          // }),
+          friends: [enemyShip],
+          behavior: 'shoot on sight',
           game: game
         }),
 

@@ -29,6 +29,7 @@
       this.position = this._config.position;
       this.rotation = this._config.rotation;
       this.velocity = this._config.velocity;
+      this.friends = this._config.friends || [];
 
       if (this._config.behavior) {
         this.registerBehavior(this._config.behavior);
@@ -320,10 +321,20 @@
       return 'SpaceShip' === what;
     },
 
-    // is ship in view range
-    inViewRange: function() {
+    inRange: function(ship) {
       var distance = this.position.distanceTo(ship.position);
-      return distance < this._config.viewRange;
+      return distance < this.range;
+    },
+
+    getShipsInRange: function() {
+      var self = this,
+          shipsInRange = [];
+      this._config.game.ships.forEach(function(ship) {
+        if (self !== ship && self.inRange(ship)) {
+          shipsInRange.push(ship);
+        }
+      });
+      return shipsInRange;
     },
 
     hasReachedWaypoint: function(point) {

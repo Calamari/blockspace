@@ -1,16 +1,50 @@
-/*globals Base, Vector, Behavior, Collidable */
+/*globals Base, Vector, Behavior, Collidable, BehaviorTree */
 
 ;(function(win) {
   "use strict";
 
+  var behave = new BehaviorTree.Selector({
+    title: 'shoot on sight',
+    nodes: [
+      new BehaviorTree.Task({
+        title: 'shoot at target',
+        run: function(ship) {
+          if (ship.currentTarget && !ship.currentTarget.destroyed && ship.inRange(ship.currentTarget)) {
+            ship.firing(ship.currentTarget.position);
+            this.success();
+          } else {
+            ship.currentTarget = null;
+            ship.firing(false);
+            this.fail();
+          }
+        }
+      }),
+      new BehaviorTree.Task({
+        title: 'select new target',
+        run: function(ship) {
+          ship.getShipsInRange().forEach(function(target) {
+            if (ship.friends.indexOf(target) === -1) {
+              ship.currentTarget = target;
+            }
+          }.bind(this));
+          this.success();
+        }
+      })
+    ]
+  });
+
+
+// or better as function for initializing?
+  BehaviorTree.register('shoot on sight', behave);
+
   /**
    * Simple behavior that shoots on every foe that is in range of this ship cannon
    * @param {Array} [config.friends] Array of SpaceShips on which this ship will NOT shoot
-   */
+   *
   var ShootOnSightBehavior = Behavior.extend({
     // Setup proximity trigger, and shoot at the targets
     _onRegister: function() {
-      this._friends = this._config.friends;
+      this._friends = this._config.friends || [];
     },
 
     // shoots if something is in sight
@@ -29,13 +63,9 @@
           }
         }.bind(this));
       }
-    },
-
-    inRange: function(ship) {
-      var distance = this._ship.position.distanceTo(ship.position);
-      return distance < this._ship.range;
     }
   });
 
   win.ShootOnSightBehavior = ShootOnSightBehavior;
+  */
 }(window));
