@@ -35,7 +35,7 @@
           this.success();
         }
       }),
-      new BehaviorTree.Selector({
+      new BehaviorTree.Priority({
         nodes: [
           new BehaviorTree.Task({
             title: 'rotate to waypoint',

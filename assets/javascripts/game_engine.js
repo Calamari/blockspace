@@ -79,7 +79,7 @@ var DEBUG_SHOW_WAY_POINTS = true,
           }
         }),
 
-        enemyBehavior = new BehaviorTree.Selector({
+        enemyBehavior = new BehaviorTree.Priority({
           title: 'follow or waypoints',
           nodes: [
             'follow player',

@@ -3,7 +3,7 @@
 ;(function(win) {
   "use strict";
 
-  var behave = new BehaviorTree.Selector({
+  var behave = new BehaviorTree.Priority({
     title: 'shoot on sight',
     nodes: [
       new BehaviorTree.Task({

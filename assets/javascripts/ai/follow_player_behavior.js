@@ -22,7 +22,7 @@
           }
         }
       }),
-      new BehaviorTree.Selector({
+      new BehaviorTree.Priority({
         title: 'follow target',
         nodes: [
           new BehaviorTree.Task({
