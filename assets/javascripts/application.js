@@ -32,7 +32,6 @@
 //= require ship_controls
 //= require spaceship
 //= require spacemine
-//= require ai/behavior
 //= require ai/waypoint_behavior
 //= require ai/shoot_on_sight_behavior
 //= require collision_controller
