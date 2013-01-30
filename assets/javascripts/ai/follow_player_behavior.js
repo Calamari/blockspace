@@ -6,6 +6,15 @@
   var behave = new BehaviorTree.Sequence({
     nodes: [
       new BehaviorTree.Task({
+        title: 'stop shooting on destroyed target',
+        run: function(ship) {
+          if (ship.currentTarget && ship.currentTarget.destroyed) {
+            ship.setTarget(null);
+          }
+          this.success();
+        }
+      }),
+      new BehaviorTree.Task({
         title: 'target player if in sight',
         run: function(ship) {
           var playerShip;
