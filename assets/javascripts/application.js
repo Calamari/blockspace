@@ -31,6 +31,7 @@
 //= require bullet
 //= require cannon
 //= require ship_controls
+//= require game_controls
 //= require spaceship
 //= require spacemine
 //= require ai/waypoint_behavior

@@ -119,7 +119,10 @@ var DEBUG_SHOW_WAY_POINTS = true,
 
         mainMessage,
 
-        controls = new ShipControls(playerShip);
+        pauseMessage = new ArcadeText("PAUSE", { pixelSize: 4, color: '#fff', x: win.innerWidth/2 - 2*5*8, y: win.innerHeight/2 - 2*8 }),
+
+        controls = new ShipControls(playerShip),
+        gameControls = new GameControls(game);
 
     game.ships = [playerShip, spaceMine, enemyShip];
 
@@ -143,6 +146,12 @@ var DEBUG_SHOW_WAY_POINTS = true,
     canvas = new Canvas('canvas', 60, function(context, frameDuration, totalDuration, frameNumber) {
       var self = this;
       if (window.STOP) { return; }
+
+      if (game.pause()) {
+        pauseMessage.draw(context);
+        return;
+      }
+
       if (this.firstFrame) {
         this.camera = new Vector(-win.innerWidth/2, -win.innerHeight/2);
         canvasElement.width = win.innerWidth;
@@ -191,7 +200,6 @@ var DEBUG_SHOW_WAY_POINTS = true,
 
       if (mainMessage) {
         mainMessage.draw(context);
-
       }
     });
 
