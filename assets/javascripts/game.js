@@ -4,15 +4,20 @@
   "use strict";
 
   var Game = Base.extend({
-    constructor: function() {
+    constructor: function(fsm) {
       this.ships = [];
+      this.fsm = fsm;
     },
 
     pause: function(value) {
       if (value === undef) {
-        return this._pause;
+        return this.fsm.is('pause');
       } else {
-        this._pause = value;
+        if (value && this.fsm.can('pause')) {
+          this.fsm.pause();
+        } else if (!value && this.fsm.can('unpause')) {
+          this.fsm.unpause();
+        }
       }
     }
   });

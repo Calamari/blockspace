@@ -1,5 +1,5 @@
 /*globals Base, Vector, Canvas, SpaceShip, SpaceMine, ParticleSystem, CollisionDetection,
-          ShipControls, Collidable, CollisionController, Bullet, SpaceBackground,
+          ShipControls, GameControls, Collidable, CollisionController, Bullet, SpaceBackground,
           Game, GameMenu, StateMachine, Player, ShipCreator,
           BehaviorTree */
 
@@ -14,10 +14,12 @@ var DEBUG_SHOW_WAY_POINTS = true,
 
     var fsm = StateMachine.create({
           events: [
-            { name: 'initialize',  from: 'none',  to: 'menu' },
-            { name: 'createship',  from: 'menu',  to: 'shipcreation' },
+            { name: 'initialize',  from: 'none',          to: 'menu' },
+            { name: 'createship',  from: 'menu',          to: 'shipcreation' },
             { name: 'startgame',   from: 'shipcreation',  to: 'game' },
-            { name: 'gameover',    from: 'game',  to: 'endscreen' }
+            { name: 'gameover',    from: 'game',          to: 'endscreen' },
+            { name: 'pause',       from: 'game',          to: 'pause' },
+            { name: 'unpause',     from: 'pause',         to: 'game' }
           ],
           callbacks: {
             onentermenu: function() {
@@ -36,11 +38,16 @@ var DEBUG_SHOW_WAY_POINTS = true,
               console.log("START GAME");
               shipCreator.close();
               controls.start();
+            },
+            onenterendscreen: function() {
+              console.log("GAME OVER");
+              mainMessage = new ArcadeText("GAME OVER", { pixelSize: 4, color: '#fff', x: win.innerWidth/2 - 2*9*8, y: win.innerHeight/2 - 2*8 });
+              controls.stop();
             }
           }
         }),
 
-        game = new Game(),
+        game = new Game(fsm),
 
         menu = new GameMenu('Blockspace', function(action) {
           if (action === 'todo') {
@@ -148,7 +155,7 @@ var DEBUG_SHOW_WAY_POINTS = true,
       var self = this;
       if (window.STOP) { return; }
 
-      if (game.pause()) {
+      if (fsm.is('pause')) {
         pauseMessage.draw(context);
         return;
       }
@@ -159,7 +166,7 @@ var DEBUG_SHOW_WAY_POINTS = true,
         canvasElement.height = win.innerHeight;
 
         playerShip.on('destroyed', function() {
-          mainMessage = new ArcadeText("GAME OVER", { pixelSize: 4, color: '#fff', x: win.innerWidth/2 - 2*9*8, y: win.innerHeight/2 - 2*8 });
+          fsm.gameover();
         });
 
       } else {
