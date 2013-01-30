@@ -17,6 +17,7 @@
 //= require libs/btree.min
 
 // Here comes the real code
+//= require timed_text
 //= require waypoint
 //= require game
 //= require player

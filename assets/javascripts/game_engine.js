@@ -1,14 +1,13 @@
 /*globals Base, Vector, Canvas, SpaceShip, SpaceMine, ParticleSystem, CollisionDetection,
           ShipControls, GameControls, Collidable, CollisionController, Bullet, SpaceBackground,
           Game, GameMenu, StateMachine, Player, ShipCreator,
-          BehaviorTree */
+          BehaviorTree, Waypoint, ArcadeText */
 
 var DEBUG_SHOW_WAY_POINTS = true,
     DEBUG_SHOW_VIEW_RANGE = true;
 
 ;(function(win, doc) {
   "use strict";
-
 
   var GameEngine = function(canvasId) {
 
@@ -128,6 +127,8 @@ var DEBUG_SHOW_WAY_POINTS = true,
         mainMessage,
 
         pauseMessage = new ArcadeText("PAUSE", { pixelSize: 4, color: '#fff', x: win.innerWidth/2 - 2*5*8, y: win.innerHeight/2 - 2*8 }),
+
+//        hello = new TimedText('Hello world, how are you today?', { pixelSize: 1, x: win.innerWidth*3/4, y: win.innerHeight*3/4, width: win.innerWidth*1/4}),
 
         controls = new ShipControls(playerShip),
         gameControls = new GameControls(game);
