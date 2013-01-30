@@ -117,6 +117,8 @@ var DEBUG_SHOW_WAY_POINTS = true,
 
         space = new SpaceBackground('canvas-bg'),
 
+        mainMessage,
+
         controls = new ShipControls(playerShip);
 
     game.ships = [playerShip, spaceMine, enemyShip];
@@ -146,6 +148,10 @@ var DEBUG_SHOW_WAY_POINTS = true,
         canvasElement.width = win.innerWidth;
         canvasElement.height = win.innerHeight;
 
+        playerShip.on('destroyed', function() {
+          mainMessage = new ArcadeText("GAME OVER", { pixelSize: 4, color: '#fff', x: win.innerWidth/2 - 2*9*8, y: win.innerHeight/2 - 2*8 });
+        });
+
       } else {
         if (fsm.is('shipcreation')) {
           this.camera = shipCreator.cameraPosition;
@@ -153,6 +159,7 @@ var DEBUG_SHOW_WAY_POINTS = true,
           this.camera = new Vector(-win.innerWidth/2, -win.innerHeight/2).add(playerShip.position);
         }
       }
+
       this.clear();
       space.draw(playerShip.position);
 
@@ -181,6 +188,11 @@ var DEBUG_SHOW_WAY_POINTS = true,
       posDiv.innerHTML = Math.round(playerShip.position.x) + ':' + Math.round(playerShip.position.y);
 
       collisionController.loop(frameDuration);
+
+      if (mainMessage) {
+        mainMessage.draw(context);
+
+      }
     });
 
     return {
