@@ -23,6 +23,39 @@
         }
       }),
       new BehaviorTree.Priority({
+        title: 'shoot target if possible',
+        nodes: [
+          new BehaviorTree.Sequence({
+            nodes: [
+              new BehaviorTree.Task({
+                title: 'check if target in firing range',
+                run: function(ship) {
+                  if (ship.hasMultiDirWeapons() || Math.abs(ship.calcRotationToDo(ship.currentTarget.position)) < 2) {
+                    this.success();
+                  } else {
+                    this.fail();
+                  }
+                }
+              }),
+              new BehaviorTree.Task({
+                title: 'shoot at target',
+                run: function(ship) {
+                  ship.firing(ship.currentTarget.position);
+                  this.success();
+                }
+              })
+            ]
+          }),
+          new BehaviorTree.Task({
+            title: 'stop shooting',
+            run: function(ship) {
+              ship.firing(false);
+              this.success();
+            }
+          })
+        ]
+      }),
+      new BehaviorTree.Priority({
         title: 'follow target',
         nodes: [
           new BehaviorTree.Task({

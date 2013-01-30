@@ -328,6 +328,14 @@
       }
     },
 
+    hasMultiDirWeapons: function() {
+      var has = false;
+      for (var i=this._cannons.length; i--;) {
+        has = has || this._cannons[i].multiDir;
+      }
+      return has;
+    },
+
     // defines what it is
     is: function(what) {
       return 'SpaceShip' === what;

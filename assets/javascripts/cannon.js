@@ -50,6 +50,7 @@
       this.lastFired  = config.lastFired || 0;
       this._audio = new Audio(this._config.audio);
       this.range = this._config.range;
+      this.multiDir = this._config.direction === 'variable';
 
       this._overrideEmitterLoop();
     },
