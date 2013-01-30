@@ -299,6 +299,10 @@
       this.rotationRight = direction === 'right';
     },
 
+    hasCannons: function() {
+      return !!this._cannons.length;
+    },
+
     /**
      *
      * @param {Boolean} accel True if it should accelerate, false or nothing else

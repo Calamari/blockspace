@@ -82,6 +82,7 @@ var DEBUG_SHOW_WAY_POINTS = true,
         enemyBehavior = new BehaviorTree.Priority({
           title: 'follow or waypoints',
           nodes: [
+            'flee if defenseless',
             'follow player',
             'flying waypoints'
           ]

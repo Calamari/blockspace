@@ -37,4 +37,5 @@
 //= require ai/waypoint_behavior
 //= require ai/follow_player_behavior
 //= require ai/shoot_on_sight_behavior
+//= require ai/flee_if_defenseless_behavior
 //= require collision_controller
