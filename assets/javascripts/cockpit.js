@@ -8,8 +8,8 @@
       title: 'cockpit',
       description: 'The command center of every ship. If this is destroyed the ship is as well. This standard cockpit produces a bit of energy to power your ship as well.',
       config: {
-        energyProduced: 5,
-        energyStorage: 40
+        energyProduced: 4,
+        energyStorage: 30
       }
     })
   };

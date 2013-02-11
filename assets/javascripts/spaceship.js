@@ -224,6 +224,19 @@
       this.currentEnergy = Math.min(this._energyStorage, this.currentEnergy + this._energyProduced * passedSeconds);
     },
 
+    hasEnergy: function(energy) {
+      return this.currentEnergy >= energy;
+    },
+
+    drainEnergy: function(energy) {
+      if (this.currentEnergy >= energy) {
+        this.currentEnergy -= energy;
+        return true;
+      } else {
+        return false;
+      }
+    },
+
     loop: function(frameDuration) {
       var passedSeconds = frameDuration/1000,
           config        = this._config,

@@ -14,6 +14,7 @@
         damageValue: 50,
         pixelSize: 3,
         color: [255, 255, 255],
+        energyDrain: 5,
         fireRatio: 1000 // once per second
       }
     }),
@@ -22,11 +23,12 @@
       description: 'Something you definitly need more.',
       config: {
         audio: '/sounds/shoot-bullet',
-        range: 50,
+        range: 100,
         shootSpeed: 300,
         damageValue: 50,
         pixelSize: 4,
         color: [127, 255, 255],
+        energyDrain: 7,
         fireRatio: 400 // once per second
       }
     })
@@ -61,7 +63,7 @@
           ship   = config.ship,
           directionVector;
 
-      if (now - this.lastFired > config.fireRatio) {
+      if (ship.drainEnergy(config.energyDrain) && now - this.lastFired > config.fireRatio) {
         var position = this.cannonNose.clone().rotate(ship.rotation).add(ship.position);
         if (shootPosition && config.direction === 'variable') {
           directionVector = shootPosition.clone().sub(ship.position).normalize(1);
