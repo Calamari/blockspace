@@ -1,4 +1,4 @@
-/*globals Base, Vector, BehaviorTree, SpaceShip, Waypoint */
+/*globals Base, Vector, BehaviorTree, SpaceShip, SpaceMine, Waypoint */
 
 ;(function(win) {
   "use strict";
@@ -44,10 +44,21 @@
               [Engines.default, Hulls.default]
             ],
             game: game
+          }),
+          spaceMine = new SpaceMine({
+            title: 'spaceMine1',
+            particleSystem: game.particleSystem,
+            collisionSystem: game.collisionController.getSystem(),
+            bulletSystem: game.bulletSystem,
+            position: new Vector(-130, -160),
+            friends: [enemyShip, enemyShip2],
+            behavior: 'shoot on sight',
+            game: game
           });
 
       game.ships.push(enemyShip);
       game.ships.push(enemyShip2);
+      game.ships.push(spaceMine);
     }
   };
 

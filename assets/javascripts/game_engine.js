@@ -85,18 +85,6 @@ var DEBUG_SHOW_WAY_POINTS = true,
           }
         }),
 
-
-        // spaceMine = new SpaceMine({
-        //   title: 'spaceMine1',
-        //   particleSystem: particleSystem,
-        //   collisionSystem: collisionController.getSystem(),
-        //   bulletSystem: bulletSystem,
-        //   position: new Vector(-130, -160),
-        //   friends: [enemyShip],
-        //   behavior: 'shoot on sight',
-        //   game: game
-        // }),
-
         space = new SpaceBackground('canvas-bg'),
 
         mainMessage,

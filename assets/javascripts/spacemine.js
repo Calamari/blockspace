@@ -11,10 +11,13 @@
         audio: '/sounds/shoot-bullet',
         range: 200,
         shootSpeed: 200,
-        damageValue: 30,
+        damageValue: 50,
         pixelSize: 3,
         direction: 'variable',
         color: [255, 255, 255],
+        energyDrain: 6,
+        energyProduced: 4,
+        energyStorage: 30,
         fireRatio: 1000 // once per second
       }
     })
@@ -55,6 +58,8 @@
         collisionSystem: null
       }, cannonConfig.config), config);
       this.base(position, config);
+      this.energyProduced = this._config.energyProduced;
+      this.energyStorage = this._config.energyStorage;
       // override cannonNose, because it does not work well with not directional cannons
       this.cannonNose = this.position.clone();
     },
@@ -84,7 +89,7 @@
 
     // defines what it is
     is: function(what) {
-      return 'Cannon' === what || 'Cockpit' === what;
+      return 'Cannon' === what || 'Cockpit' === what || 'Reactor' === what;
     }
   });
 
