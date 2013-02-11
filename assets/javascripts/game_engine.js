@@ -102,6 +102,7 @@ var DEBUG_SHOW_WAY_POINTS = true,
         mainMessage,
 
         pauseMessage = new ArcadeText("PAUSE", { pixelSize: 4, color: '#fff', x: win.innerWidth/2 - 2*5*8, y: win.innerHeight/2 - 2*8 }),
+        energyLevel  = new ArcadeText("Energy: 0", { pixelSize: 1, color: '#ff0', x: 4, y: win.innerHeight - 1*8 - 4 }),
 
 //        hello = new TimedText('Hello world, how are you today?', { pixelSize: 1, x: win.innerWidth*3/4, y: win.innerHeight*3/4, width: win.innerWidth*1/4}),
 
@@ -162,6 +163,9 @@ var DEBUG_SHOW_WAY_POINTS = true,
 
       this.clear();
       space.draw(playerShip.position);
+
+      energyLevel.text('Energy: ' + Math.round(playerShip.currentEnergy*100)/100);
+      energyLevel.draw(context);
 
       if (fsm.is('shipcreation') && shipCreator.blocks) {
         shipCreator.drawBlocks(context);

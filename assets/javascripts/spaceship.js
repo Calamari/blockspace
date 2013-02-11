@@ -26,6 +26,7 @@
       this.title = config.title || 'SpaceShip' + (++shipCount);
       this.maxSpeed = 0;
       this.acceleration = 0;
+      this.currentEnergy = 0;
       this._processBlueprint();
       this.position = config.position;
       this.rotation = config.rotation;
@@ -123,6 +124,7 @@
       this._checkHullIntegrity();
       this._calcCannonValues();
       this._calcEngineValues();
+      this._calcReactorValues();
     },
 
     _calcCannonValues: function() {
@@ -131,6 +133,19 @@
         if (block.is('Cannon')) {
           this._cannons.push(block);
           this.weaponsRange = Math.max(this.weaponsRange || 0, block.range);
+        }
+      }.bind(this));
+    },
+
+    _calcReactorValues: function() {
+      this._reactors = [];
+      this._energyProduced = 0;
+      this._energyStorage = 0;
+      this.forEachBlock(function(block) {
+        if (block.is('Reactor')) {
+          this._reactors.push(block);
+          this._energyProduced += block.energyProduced;
+          this._energyStorage += block.energyStorage;
         }
       }.bind(this));
     },
@@ -166,6 +181,7 @@
       this._checkHullIntegrity();
       this._calcCannonValues();
       this._calcEngineValues();
+      this._calcReactorValues();
     },
 
     _checkHullIntegrity: function() {
@@ -204,6 +220,10 @@
       }
     },
 
+    _generateEnergy: function(passedSeconds) {
+      this.currentEnergy = Math.min(this._energyStorage, this.currentEnergy + this._energyProduced * passedSeconds);
+    },
+
     loop: function(frameDuration) {
       var passedSeconds = frameDuration/1000,
           config        = this._config,
@@ -212,6 +232,8 @@
       if (this._behavior) {
         this._behavior.step();
       }
+
+      this._generateEnergy(passedSeconds);
 
       if (this.isAccel && this._engines.length) {
         this.velocity.add(new Vector(0, -this.acceleration * passedSeconds).rotate(this.rotation));
