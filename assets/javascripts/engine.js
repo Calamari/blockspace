@@ -22,7 +22,8 @@
         maxSpeed: 50,
         rotationSpeed: 60,
         acceleration: 70,
-        price: 2
+        price: 2,
+        energyDrain: 6
       }
     })
   };
@@ -41,6 +42,7 @@
       this.maxSpeed = config.maxSpeed;
       this.acceleration = config.acceleration;
       this.rotationSpeed = config.rotationSpeed;
+      this.energyDrain = config.energyDrain;
       this.engineRear = new Vector(this._config.blockSize/2, this._config.blockSize).add(this.position);
       if (config.particleSystem) {
         this._particleEmitter = config.particleSystem.createEmitter(this.position.x, this.position.y, engineConfig.emitter);

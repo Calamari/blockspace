@@ -160,10 +160,12 @@
       this.maxSpeed = 0;
       this.acceleration = 0;
       this.rotationSpeed = 0;
+      this._engineEnergyDrain = 0;
       this._engines.forEach(function(engine) {
         this.maxSpeed += engine.maxSpeed;
         this.acceleration += engine.acceleration;
         this.rotationSpeed += engine.rotationSpeed;
+        this._engineEnergyDrain += engine.energyDrain;
       }.bind(this));
     },
 
@@ -240,7 +242,8 @@
     loop: function(frameDuration) {
       var passedSeconds = frameDuration/1000,
           config        = this._config,
-          off           = Math.max(Math.abs(this.middlePoint.x), Math.abs(this.middlePoint.y));
+          off           = Math.max(Math.abs(this.middlePoint.x), Math.abs(this.middlePoint.y)),
+          energyMultiplier, neededEnergy;
 
       if (this._behavior) {
         this._behavior.step();
@@ -249,7 +252,15 @@
       this._generateEnergy(passedSeconds);
 
       if (this.isAccel && this._engines.length) {
-        this.velocity.add(new Vector(0, -this.acceleration * passedSeconds).rotate(this.rotation));
+        neededEnergy = this._engineEnergyDrain * passedSeconds;
+        if (this.hasEnergy(neededEnergy)) {
+          energyMultiplier = 1;
+          this.drainEnergy(neededEnergy);
+        } else {
+          energyMultiplier = this.currentEnergy / neededEnergy;
+          this.currentEnergy = 0;
+        }
+        this.velocity.add(new Vector(0, -this.acceleration * energyMultiplier * passedSeconds).rotate(this.rotation));
         if (this.velocity.length() > this.maxSpeed) {
           this.velocity.normalize(this.maxSpeed);
         }
@@ -262,7 +273,7 @@
         // TODO: if engine blocked, damage blocking block
         this.forEachBlock(function(block, x, y) {
           if (block && block.is('Engine') && this._blueprint[y+1] && this._blueprint[y+1][x]) {
-            this._blueprint[y+1][x].damage(ENGINE_DAMAGE * passedSeconds);
+            this._blueprint[y+1][x].damage(ENGINE_DAMAGE * energyMultiplier * passedSeconds);
           }
         });
       }
