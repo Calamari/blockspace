@@ -146,18 +146,6 @@
   Object.extend(ShipPart.prototype, EventEmitter.prototype);
 
 
-  var Cockpits = {
-    'default': new ShipPartDef('Cockpit', 'default', {
-      title: 'cockpit',
-      description: 'The command center of every ship. If this is destroyed the ship is as well. This standard cockpit produces a bit of energy to power your ship as well.'
-    })
-  };
-
-  var Cockpit = ShipPart.extend({
-    _baseColor: [64, 64, 255],
-    type: 'Cockpit'
-  });
-
   var Hulls = {
     'default': new ShipPartDef('Hull', 'default', {
       title: 'A simple hull',
@@ -170,8 +158,6 @@
   });
 
   win.ShipPart = ShipPart;
-  win.Cockpits = Cockpits;
-  win.Cockpit = Cockpit;
   win.Hulls = Hulls;
   win.Hull = Hull;
 }(window));

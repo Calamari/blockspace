@@ -29,6 +29,7 @@
 //= require space_background
 //= require ship_part_def
 //= require ship_parts
+//= require cockpit
 //= require engine
 //= require bullet
 //= require cannon
