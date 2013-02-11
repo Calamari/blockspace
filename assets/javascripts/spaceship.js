@@ -121,10 +121,33 @@
         }
       }
       this._blueprint = blueprint;
+      this._recheckEverything();
+    },
+
+    _recheckEverything: function() {
       this._checkHullIntegrity();
+      this._checkShielding();
       this._calcCannonValues();
       this._calcEngineValues();
       this._calcReactorValues();
+    },
+
+    _checkShielding: function() {
+      this.forEachBlock(function(block) {
+        block.resetShields();
+      });
+      this.forEachBlock(function(shield) {
+        if (shield.is('Shield')) {
+          var radius = shield.radius,
+              pos    = shield.position;
+          this.forEachBlock(function(block) {
+            if (pos.distanceTo(block.position) <= this._config.blockSize * radius) {
+              console.log("adding", shield, "to", block);
+              block.addShield(shield);
+            }
+          });
+        }
+      }.bind(this));
     },
 
     _calcCannonValues: function() {
@@ -180,10 +203,7 @@
           // TODO: remove from _engine and _cannon if needed
         }
       }.bind(this));
-      this._checkHullIntegrity();
-      this._calcCannonValues();
-      this._calcEngineValues();
-      this._calcReactorValues();
+      this._recheckEverything();
     },
 
     _checkHullIntegrity: function() {

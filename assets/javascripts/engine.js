@@ -1,4 +1,4 @@
-/*globals Base, Vector */
+/*globals Base, Vector, ShipPartDef */
 
 // TODO: think about rotationAcceleration and rotationMaxSpeed instead
 // TODO: Or maybe even better: rotation and acceleration should use the mass of the ship

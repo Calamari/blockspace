@@ -73,16 +73,36 @@
       }
     },
 
+    // handling Shields
+    resetShields: function() {
+      this._shields = [];
+    },
+    addShield: function(shield) {
+      this._shields.push(shield);
+    },
+    _shieldAbsorbing: function(damage) {
+      this._shields.forEach(function(shield) {
+        if (damage) {
+          damage -= shield.absorb(damage);
+        }
+      }.bind(this));
+      return damage;
+    },
+
     damage: function(value) {
       this._damagedTime = new Date().getTime();
-      this.health -= value;
-      setTimeout(function() {
-        this._damagedTime = null;
+      // TODO: check shields
+      value = this._shieldAbsorbing(value);
+      if (value > 0) {
+        this.health -= value;
+        setTimeout(function() {
+          this._damagedTime = null;
+          this._config.ship.redraw();
+        }.bind(this), TIME_DAMAGE_IS_VISIBLE);
         this._config.ship.redraw();
-      }.bind(this), TIME_DAMAGE_IS_VISIBLE);
-      this._config.ship.redraw();
-      if (this.health <= 0) {
-        this.destroy();
+        if (this.health <= 0) {
+          this.destroy();
+        }
       }
     },
 

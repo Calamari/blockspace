@@ -30,6 +30,7 @@
 //= require ship_part_def
 //= require ship_parts
 //= require cockpit
+//= require shield
 //= require engine
 //= require bullet
 //= require cannon

@@ -1,5 +1,5 @@
 /*globals Base, SpaceShip, Vector,
-          Cockpits, Engines, Hulls, Cannons */
+          Cockpits, Engines, Hulls, Cannons, Shields */
 
 ;(function(win, doc) {
   "use strict";
@@ -15,9 +15,9 @@
         rotation: 0,
         bulletSystem: this.bulletSystem,
         blueprint: [
-          [Cannons.default],
-          [Cockpits.default],
-          [Engines.default]
+          [Cannons['default'], Shields['default']],
+          [Cockpits['default']],
+          [Engines['default']]
         ],
         player: true
       });
