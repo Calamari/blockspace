@@ -1,7 +1,7 @@
 /*globals Base, Vector, Canvas, SpaceShip, SpaceMine, ParticleSystem, CollisionDetection,
           ShipControls, GameControls, Collidable, CollisionController, Bullet, SpaceBackground,
           Game, GameMenu, StateMachine, Player, ShipCreator,
-          BehaviorTree, Waypoint, ArcadeText */
+          BehaviorTree, Waypoint, ArcadeText, Levels */
 
 var DEBUG_SHOW_WAY_POINTS = true,
     DEBUG_SHOW_VIEW_RANGE = true;
@@ -85,42 +85,17 @@ var DEBUG_SHOW_WAY_POINTS = true,
           }
         }),
 
-        enemyBehavior = new BehaviorTree.Priority({
-          title: 'follow or waypoints',
-          nodes: [
-            'flee if defenseless',
-            'follow player',
-            'flying waypoints'
-          ]
-        }),
 
-        enemyShip = new SpaceShip({
-          position: new Vector(0, -300),
-          particleSystem: particleSystem,
-          collisionSystem: collisionController.getSystem(),
-          rotation: -90,
-          bulletSystem: bulletSystem,
-          title: 'testEnemy1',
-          behavior: enemyBehavior,
-          waypoints: [new Waypoint(-200, -200), new Waypoint(100, -200)],
-          blueprint: [
-            [Cannons.default, Hulls.default],
-            [Hulls.default, Cockpits.default],
-            [Engines.default, Hulls.default]
-          ],
-          game: game
-        }),
-
-        spaceMine = new SpaceMine({
-          title: 'spaceMine1',
-          particleSystem: particleSystem,
-          collisionSystem: collisionController.getSystem(),
-          bulletSystem: bulletSystem,
-          position: new Vector(-130, -160),
-          friends: [enemyShip],
-          behavior: 'shoot on sight',
-          game: game
-        }),
+        // spaceMine = new SpaceMine({
+        //   title: 'spaceMine1',
+        //   particleSystem: particleSystem,
+        //   collisionSystem: collisionController.getSystem(),
+        //   bulletSystem: bulletSystem,
+        //   position: new Vector(-130, -160),
+        //   friends: [enemyShip],
+        //   behavior: 'shoot on sight',
+        //   game: game
+        // }),
 
         space = new SpaceBackground('canvas-bg'),
 
@@ -133,7 +108,14 @@ var DEBUG_SHOW_WAY_POINTS = true,
         controls = new ShipControls(playerShip),
         gameControls = new GameControls(game);
 
-    game.ships = [playerShip, spaceMine, enemyShip];
+    game.set({
+      particleSystem: particleSystem,
+      collisionController: collisionController,
+      bulletSystem: bulletSystem
+    });
+    game.ships = [playerShip];
+
+    Levels.start1(game);
 
     game.ships.forEach(function(ship) {
       ship.on('destroyed', function() {

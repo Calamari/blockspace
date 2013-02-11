@@ -19,6 +19,10 @@
           this.fsm.unpause();
         }
       }
+    },
+
+    set: function(options) {
+      Object.extend(this, options);
     }
   });
 
