@@ -63,7 +63,7 @@
           ship   = config.ship,
           directionVector;
 
-      if (ship.drainEnergy(config.energyDrain) && now - this.lastFired > config.fireRatio) {
+      if (now - this.lastFired > config.fireRatio && ship.drainEnergy(config.energyDrain)) {
         var position = this.cannonNose.clone().rotate(ship.rotation).add(ship.position);
         if (shootPosition && config.direction === 'variable') {
           directionVector = shootPosition.clone().sub(ship.position).normalize(1);
