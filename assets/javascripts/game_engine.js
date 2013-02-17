@@ -87,6 +87,8 @@ var DEBUG_SHOW_WAY_POINTS = true,
 
         space = new SpaceBackground('canvas-bg'),
 
+        radar = new Radar(game),
+
         mainMessage,
 
         pauseMessage = new ArcadeText("PAUSE", { pixelSize: 4, color: '#fff', x: win.innerWidth/2 - 2*5*8, y: win.innerHeight/2 - 2*8 }),
@@ -180,6 +182,8 @@ var DEBUG_SHOW_WAY_POINTS = true,
       posDiv.innerHTML = Math.round(playerShip.position.x) + ':' + Math.round(playerShip.position.y);
 
       collisionController.loop(frameDuration);
+
+      radar.draw(this, context, playerShip.position, win.innerWidth, win.innerHeight, this.camera);
 
       if (mainMessage) {
         mainMessage.draw(context);

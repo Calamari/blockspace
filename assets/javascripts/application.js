@@ -20,6 +20,7 @@
 //= require timed_text
 //= require waypoint
 //= require game
+//= require radar
 //= require levels
 //= require player
 //= require ship_creator

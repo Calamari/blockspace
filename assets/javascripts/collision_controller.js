@@ -42,7 +42,6 @@
     },
 
     _handleShipCollision: function(ship, object) {
-      console.log("ship collision", ship, object);
       var subSystem = new CollisionDetection();
       subSystem.add(object.getCollidable());
       // add all blocks of ship
@@ -56,7 +55,6 @@
     },
 
     _handleShipShipCollision: function(ship1, ship2) {
-      console.log("ship ship collision", ship1, ship2);
       var subSystem = new CollisionDetection();
       // add all blocks of ship
       ship1.forEachBlock(function(block) {
@@ -99,7 +97,6 @@
         // TODO: To be correct, we have to take the ship into account, to NOT put the ships into one another
         overlap = this._calcMinimalDisplacement(collision);
 
-          console.log("calc", ship1.velocity, ship2.velocity);
         if (Math.abs(overlap.x) > Math.abs(overlap.y)) {
           if (Math.abs(ship1.velocity.x) > Math.abs(ship2.velocity.x)) {
             shipToDisplace = ship1;
@@ -115,7 +112,6 @@
           }
           shipToDisplace.velocity.y *= -FRICTION;
         }
-console.log(overlap, shipToDisplace.velocity);
         shipToDisplace.position.add(overlap);
         // shipToDisplace.velocity.skalar(-FRICTION);
         // ship1.velocity.skalar(-FRICTION);
@@ -134,7 +130,6 @@ console.log(overlap, shipToDisplace.velocity);
         ship1.velocity = u2;
         ship2.velocity = u1;
         //USE THIS: http://www.metanetsoftware.com/technique/tutorialA.html
-        console.log("diff", ship1.velocity, ship2.velocity, u1, u2);
         // TODO: calculate damage; 1/10 of velocity?
         // do some speed handling
         // TODO: optimieren mit genauem punkt der kollision (kleine diskrete steps)
@@ -164,7 +159,6 @@ console.log(overlap, shipToDisplace.velocity);
       var p1x = collision[0].project(new Vector(1, 0)),
           p2x = collision[1].project(new Vector(1, 0)),
           overlap = p1x.distanceTo(p2x);
-      console.log(ship, coords, overlap);
       window.STOP=1;
       return coords.skalar(overlap);
     },
