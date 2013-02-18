@@ -12,21 +12,23 @@
       var self = this;
       this._game.ships.forEach(function(ship) {
         if (!ship.isPlayer && self._checkShip(ship.position, playerPosition, canvasWidth, canvasHeight)) {
-          self._drawForShip(canvas, context, ship, playerPosition, camera, Math.min(canvasHeight/2-20, canvasWidth/2-20));
+          self._drawForShip(canvas, context, ship, playerPosition, camera, canvasHeight/2-20, canvasWidth/2-20);
         }
       });
     },
 
-    _drawForShip: function(canvas, context, ship, playerPosition, camera, arrowDistance) {
+    _drawForShip: function(canvas, context, ship, playerPosition, camera, heightHalf, widthHalf) {
       var rotation = new Vector(0, 1).rotationBetween(playerPosition.clone().sub(ship.position)),
-          position = new Vector(0, 1).skalar(arrowDistance),
-          arrow = this._drawArrow(canvas);
+          position = new Vector(0, 1),
+          arrow = this._drawArrow(canvas),
+          arrowDistance;
 
-      // TODO: show the arrow always on the viewport borders
       if (ship.position.x < playerPosition.x) {
         rotation *= -1;
       }
       position = position.rotate(rotation);
+      arrowDistance = Math.min(Math.abs(heightHalf / Math.cos(rotation * Math.PI/180)), Math.abs(widthHalf / Math.cos((rotation-90) * Math.PI/180)));
+      position = position.skalar(arrowDistance);
 
       canvas.drawImage(arrow, -position.x + playerPosition.x - canvas.camera.x , -position.y + playerPosition.y - canvas.camera.y, Canvas.ALIGN.CENTER.MIDDLE, rotation);
     },
