@@ -149,6 +149,7 @@
         case 'Engine': defs = Engines; break;
         case 'Cockpit': defs = Cockpits; break;
         case 'Hull': defs = Hulls; break;
+        case 'Shield': defs = Shields; break;
       }
       return defs[this.subtype];
     },
