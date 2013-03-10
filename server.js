@@ -23,6 +23,10 @@ app.get('/blocks', function(req, res) {
   res.render('blocks.ejs');
 });
 
+app.get('/editor', function(req, res) {
+  res.render('editor.ejs');
+});
+
 app.get('/ships', function(req, res) {
   res.render('ships.ejs');
 });

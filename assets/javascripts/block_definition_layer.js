@@ -38,6 +38,10 @@
       this._block = block;
     },
 
+    toggle: function() {
+      this._visible ? this.hide() : this.show();
+    },
+
     hide: function() {
       this._visible = false;
     },
