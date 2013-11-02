@@ -4,7 +4,8 @@
           BehaviorTree, Waypoint, ArcadeText, Levels */
 
 var DEBUG_SHOW_WAY_POINTS = true,
-    DEBUG_SHOW_VIEW_RANGE = true;
+    DEBUG_SHOW_VIEW_RANGE = true,
+    DEBUG_SHOW_ENERGY     = true;
 
 ;(function(win, doc) {
   "use strict";

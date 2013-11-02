@@ -352,6 +352,11 @@
         context.closePath();
         context.stroke();
       }
+
+      if (DEBUG_SHOW_ENERGY) {
+        context.fillStyle = '#aaa';
+        canvas.drawText('Energy: ' + Math.round(this.currentEnergy, 2), this.position.x - canvas.camera.x + this.width, this.position.y - canvas.camera.y + this.height, 0);
+      }
     },
 
     destroy: function() {

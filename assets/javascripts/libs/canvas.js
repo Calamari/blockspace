@@ -71,6 +71,14 @@
       this.context.restore();
     },
 
+    drawText: function(text, x, y, rotation) {
+      this.context.save();
+      this.context.translate(x, y);
+      this.context.rotate(this.deg2rad(rotation));
+      this.context.fillText(text, 0,0);
+      this.context.restore();
+    },
+
     _loop: function() {
       var self = this,
           now  = new Date(),
