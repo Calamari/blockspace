@@ -21,6 +21,13 @@ body {
   color: #fff;
 }
 
+#showinfos {
+  position: absolute;
+  left: 2em;
+  top: 2em;
+  color: #fff;
+}
+
 #showpos {
   position: absolute;
   right: 0;

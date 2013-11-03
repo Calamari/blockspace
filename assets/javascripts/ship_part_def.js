@@ -7,6 +7,7 @@
     var self = this;
 
     return Object.extend({
+      type: type,
       // used to construct instance of real ship part
       construct: function(position, config) {
         config = config || {};

@@ -3,7 +3,8 @@
 
 ;(function(win, doc, $) {
   "use strict";
-  var BLOCKSIZE = 10;
+  var BLOCKSIZE          = 10,
+      DEFAULT_DESCIPTION = "This is your personal Ship'o'matic 3000. Here you can buy some more parts for your ship and make it awesome.";
 
   var ShipCreator = Base.extend({
     constructor: function(player, gameCanvasId, config) {
@@ -96,6 +97,7 @@
 
     _initContainer: function() {
       this._container = doc.getElementById('creatormenu');
+      this._infosContainer = doc.getElementById('showinfos');
 
       // Headline
       var text = new ArcadeText("Ship'o'matic 3000:", { pixelSize: 2 }),
@@ -123,7 +125,7 @@
       canvas.width = 400;
       canvas.height = 70;
       this._descContext = canvas.getContext('2d');
-      this._writeDescription("This is your personal Ship'o'matic 3000. Here you can buy some more parts for your ship and make it awesome.");
+      this._writeBlockDescription(DEFAULT_DESCIPTION);
 
       // Place the Blocks
       canvas = doc.createElement('canvas');
@@ -139,11 +141,70 @@
       this._placeBlocks(ctx, 'Shields', 120, Shields);
     },
 
-    _writeDescription: function(str) {
+    _writeBlockDescription: function(str) {
       var ctx  = this._descContext,
           text = new ArcadeText(str, { pixelSize: 1, lineWidth: 40, lineSpacing: 3 });
       ctx.clearRect(0, 0, 400, 70);
       text.draw(ctx);
+    },
+
+    _removeBlockDescription: function() {
+      this._writeBlockDescription(DEFAULT_DESCIPTION);
+    },
+
+    _removeBlockInformation: function() {
+      this._infosText && this._infosText.text('');
+      this._shownInfosForDef = null;
+    },
+
+    _showBlockInformation: function(def) {
+      var infos = [],
+          canvas;
+
+      if (this._shownInfosForDef === def) {
+        // We are already showing this object;
+        return;
+      }
+
+      if (!this._infosText) {
+        this._infosText = new ArcadeText('', { pixelSize: 1, lineSpacing: 3 });
+        this._infosCanvas = this._infosText.draw();
+        this._infosContainer.appendChild(this._infosCanvas);
+      }
+
+      this._shownInfosForDef = def;
+      infos.push('Title: ' + def.title);
+      if (def.type !== 'Cockpit') {
+        infos.push('Price: ' + (def.config && def.config.price || 1));
+      }
+      switch (def.type) {
+        case 'Cannon':
+          infos.push('Damage: ' + def.config.damageValue);
+          infos.push('Range: ' + def.config.range);
+          infos.push('Fire Ratio: ' + def.config.fireRatio);
+          infos.push('Bullet Speed: ' + def.config.shootSpeed);
+          infos.push('Energy Drain: ' + def.config.energyDrain);
+          break;
+        case 'Shield':
+          infos.push('Shielding Range: ' + def.config.radius);
+          infos.push('Strength: ' + def.config.strength);
+          infos.push('Energy Drain: ' + def.config.energyDrain);
+          break;
+        case 'Engine':
+          infos.push('Acceleration: ' + def.config.radius);
+          infos.push('Maximum Speed: ' + def.config.maxSpeed);
+          infos.push('Rotation Speed: ' + def.config.rotationSpeed);
+          infos.push('Energy Drain: ' + def.config.energyDrain);
+          break;
+        case 'Cockpit':
+          infos.push('Energy Production: ' + def.config.energyProduced);
+          infos.push('Energy Storage: ' + def.config.energyStorage);
+          break;
+        case 'Hull':
+          break;
+      }
+      this._infosText.text(infos.join("\n"));
+      this._infosText.draw();
     },
 
     // opens the menu and starts mouse controls
@@ -325,18 +386,26 @@
       var y       = event.y - 160, // number from css
           x       = event.x - this.getBoundingClientRect().left,
           self    = this._creator,
-          element = this;
+          element = this,
+
+          hoveredBlock;
 
       element.setAttribute('class', '');
       element.className = '';
       self._blockElements.some(function(item) {
         if (x >= item.x && x <= item.x+10 && y >= item.y && y <= item.y+10) {
-          self._writeDescription(item.block.getDefinition().description);
+          hoveredBlock = item.block;
+          self._writeBlockDescription(hoveredBlock.getDefinition().description);
+          self._showBlockInformation(hoveredBlock.getDefinition());
           element.setAttribute('class', 'pointer');
           element.className = 'pointer';
           return true;
         }
       });
+      if (!hoveredBlock) {
+        self._removeBlockDescription();
+        self._removeBlockInformation();
+      }
     }
   });
 
