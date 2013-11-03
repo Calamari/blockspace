@@ -30,7 +30,8 @@
             velocity: new Vector(0,0),
             particleSystem: particleSystem,
             collisionSystem: collisionController.getSystem(),
-            bulletSystem: bulletSystem
+            bulletSystem: bulletSystem,
+            infinityEnergy: true
           }),
 
           new SpaceShip({
@@ -43,7 +44,8 @@
             velocity: new Vector(0,0),
             particleSystem: particleSystem,
             collisionSystem: collisionController.getSystem(),
-            bulletSystem: bulletSystem
+            bulletSystem: bulletSystem,
+            infinityEnergy: true
           })
         ],
 

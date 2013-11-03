@@ -32,7 +32,8 @@
               velocity: new Vector(0,0),
               particleSystem: particleSystem,
               collisionSystem: collisionController.getSystem(),
-              bulletSystem: bulletSystem
+              bulletSystem: bulletSystem,
+              infinityEnergy: true
             })
           },
           {
@@ -47,7 +48,8 @@
               velocity: new Vector(0,0),
               particleSystem: particleSystem,
               collisionSystem: collisionController.getSystem(),
-              bulletSystem: bulletSystem
+              bulletSystem: bulletSystem,
+              infinityEnergy: true
             })
           },
           {
@@ -67,7 +69,8 @@
               velocity: new Vector(0,0),
               particleSystem: particleSystem,
               collisionSystem: collisionController.getSystem(),
-              bulletSystem: bulletSystem
+              bulletSystem: bulletSystem,
+              infinityEnergy: true
             })
           }
         ],

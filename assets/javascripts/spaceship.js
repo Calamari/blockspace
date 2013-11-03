@@ -251,6 +251,10 @@
     },
 
     drainEnergy: function(energy) {
+      // dont drain when haaving "infinity energy"
+      if (this._config.infinityEnergy) {
+        return true;
+      }
       if (this.currentEnergy >= energy) {
         this.currentEnergy -= energy;
         return true;
