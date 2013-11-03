@@ -96,7 +96,7 @@
         }
         requestAnimFrame(function() {
           self._loop();
-        }, this.fps);
+        }, 1000 / this.fps);
       }
     },
 

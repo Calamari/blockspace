@@ -403,6 +403,7 @@
       }
     },
 
+    // does ship have weapons that can shoot in different directions?
     hasMultiDirWeapons: function() {
       var has = false;
       for (var i=this._cannons.length; i--;) {

@@ -19,7 +19,8 @@
           [Cockpits['default']],
           [Engines['default']]
         ],
-        player: true
+        player: true,
+        game: config.game
       });
     };
 

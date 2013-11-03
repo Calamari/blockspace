@@ -10,6 +10,10 @@ var DEBUG_SHOW_WAY_POINTS = true,
 ;(function(win, doc) {
   "use strict";
 
+  win.showDebug = function() {
+    doc.getElementById('showdebug').innerHTML = Array.prototype.slice.call(arguments).join(', ');
+  };
+
   var GameEngine = function(canvasId) {
 
     var fsm = StateMachine.create({
