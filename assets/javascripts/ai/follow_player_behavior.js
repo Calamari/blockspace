@@ -79,13 +79,17 @@
               }
             }
           }),
-          new BehaviorTree.Task({
-            title: 'accelerate',
-            run: function(ship) {
-              ship.rotate(false);
-              ship.accelerate(true);
-              this.success();
-            }
+          new KeepEnergyDecorator({
+            node: new BehaviorTree.Task({
+              title: 'accelerate',
+              run: function(ship) {
+                ship.rotate(false);
+                //ship.accelerate(!ship.isVelocityRight(ship.currentTarget.position));
+                ship.accelerate(true);
+                this.success();
+              }
+            }),
+            minimum: 8
           })
         ]
       })

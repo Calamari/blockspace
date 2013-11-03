@@ -39,6 +39,7 @@
 //= require game_controls
 //= require spaceship
 //= require spacemine
+//= require ai/keep_energy_decorator
 //= require ai/waypoint_behavior
 //= require ai/follow_player_behavior
 //= require ai/shoot_on_sight_behavior
