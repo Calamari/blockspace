@@ -10,6 +10,7 @@
       this._player = player;
       this._config = config;
       this._selectedBlock = null;
+      this._blockElements = [];
       this.blocks = [];
       this._ship = player.ship;
       this._initContainer();
@@ -70,6 +71,29 @@
       this._creditsText.draw();
     },
 
+    _placeBlocks: function(ctx, description, yOffset, blockDefs) {
+      var text = new ArcadeText(description, { x: 0, y: yOffset, pixelSize: 1 }),
+          xPos = 0,
+
+          BLOCK_SPACING = 15,
+          type, block;
+
+      text.draw(ctx);
+      for (type in blockDefs) {
+        block = blockDefs[type].construct(new Vector(), {
+          maxSpeed: 10,
+          acceleration: 10
+        });
+        block.draw(ctx, xPos, yOffset + 12);
+        this._blockElements.push({
+          x: xPos,
+          y: yOffset + 12,
+          block: block
+        });
+        xPos += BLOCK_SPACING;
+      }
+    },
+
     _initContainer: function() {
       this._container = doc.getElementById('creatormenu');
 
@@ -101,50 +125,18 @@
       this._descContext = canvas.getContext('2d');
       this._writeDescription("This is your personal Ship'o'matic 3000. Here you can buy some more parts for your ship and make it awesome.");
 
-      // Blocks
+      // Place the Blocks
       canvas = doc.createElement('canvas');
       canvas.id = 'creator-blocks';
       this._container.appendChild(canvas);
       ctx = canvas.getContext('2d');
       this._blockCanvas = canvas;
 
-      // Hull block
-      block = Hulls.default.construct(new Vector());
-      this._stdHull = block;
-      block.draw(ctx, 0, 2);
-      text = new ArcadeText('Hull (1)', { x: 40, pixelSize: 2 });
-      text.draw(ctx);
-
-      // Engine block
-      block = Engines.default.construct(new Vector(), {
-        maxSpeed: 10,
-        acceleration: 10
-      });
-      this._stdEngine = block;
-      block.draw(ctx, 0, 32);
-      text = new ArcadeText('Engine (' + block.price + ')', { x: 40, y: 30, pixelSize: 2 });
-      text.draw(ctx);
-
-      // Cannon block
-      block = Cannons.default.construct(new Vector());
-      this._stdCannon = block;
-      block.draw(ctx, 0, 62);
-      text = new ArcadeText('Cannon (' + block.price + ')', { x: 40, y: 60, pixelSize: 2 });
-      text.draw(ctx);
-
-      // Cockpit block
-      block = Cockpits.default.construct(new Vector());
-      this._stdCockpit = block;
-      block.draw(ctx, 0, 92);
-      text = new ArcadeText('Cockpit (only 1)', { x: 40, y: 90, pixelSize: 2 });
-      text.draw(ctx);
-
-      // Shield block
-      block = Shields.default.construct(new Vector());
-      this._stdShield = block;
-      block.draw(ctx, 0, 122);
-      text = new ArcadeText('Shield (' + block.price + ')', { x: 40, y: 120, pixelSize: 2 });
-      text.draw(ctx);
+      this._placeBlocks(ctx, 'Hulls', 0, Hulls);
+      this._placeBlocks(ctx, 'Engines', 30, Engines);
+      this._placeBlocks(ctx, 'Cannons', 60, Cannons);
+      this._placeBlocks(ctx, 'Cockpits (can\'t be exchanged)', 90, Cockpits);
+      this._placeBlocks(ctx, 'Shields', 120, Shields);
     },
 
     _writeDescription: function(str) {
@@ -179,7 +171,7 @@
           self._reconstructPlayerShip();
           self._config.onDone();
         } else {
-          alert("Ship not complete.\n TODO: make a better error message for this ;-)");
+          alert("Ship not complete.\n You need at least an engine, a cockpit and a cannon.");
         }
       });
       this._container.style.display = 'block';
@@ -281,7 +273,16 @@
         if (blockOnPos) {
           additionalCredits = blockOnPos.price;
         }
-        if ((self._player.credits + additionalCredits) >= block.price && self._isBlockAdjacentTo(block.position) && !self._isCockpitPosition(block.position)) {
+        if ((self._player.credits + additionalCredits) < block.price) {
+          // TODO show this to the user
+          console.log("Cannot afford that.");
+        } else if (!self._isBlockAdjacentTo(block.position)) {
+          // TODO show this to the user
+          console.log("The Block has to be connected to the ship.");
+        } else if(self._isCockpitPosition(block.position)) {
+          // TODO show this to the user
+          console.log("You cannot replace your Cockpit.");
+        } else {
           self.blocks.push(block.clone());
           self._player.credits -= block.price;
           self._removeBlock(blockOnPos);
@@ -308,46 +309,34 @@
     },
 
     _blockClickHandler: function(event) {
-      var canvasOffset = 160, // from css
-          y = event.y - canvasOffset,
+      var y    = event.y - 160, // from css
+          x    = event.x - this.getBoundingClientRect().left,
           self = this._creator;
 
-      // remove block from blocks
-      if (this._creator._selectedBlock) {
-        // TODO
-      }
-
-      if (y > 0 && y < 20) {
-        self._selectedBlock = self._selectedBlock !== 'hull' ? self._stdHull.clone() : null;
-      } else if (y > 30 && y < 50) {
-        self._selectedBlock = self._selectedBlock !== 'engine' ? self._stdEngine.clone() : null;
-      } else if (y > 60 && y < 80) {
-        self._selectedBlock = self._selectedBlock !== 'cannon' ? self._stdCannon.clone() : null;
-      }
+      self._blockElements.some(function(item) {
+        if (x >= item.x && x <= item.x+10 && y >= item.y && y <= item.y+10) {
+          self._selectedBlock = self._selectedBlock === item.block ? null : item.block.clone();
+          return true;
+        }
+      });
     },
 
     _blockMouseMoveHandler: function(event) {
-      var canvasOffset = 160, // from css
-          y    = event.y - canvasOffset,
-          self = this._creator;
+      var y       = event.y - 160, // number from css
+          x       = event.x - this.getBoundingClientRect().left,
+          self    = this._creator,
+          element = this;
 
-      this.setAttribute('class', 'pointer');
-      this.className = 'pointer';
-
-      if (y > 0 && y < 20) {
-        self._writeDescription(self._stdHull.getDefinition().description);
-      } else if (y > 30 && y < 50) {
-        self._writeDescription(self._stdEngine.getDefinition().description);
-      } else if (y > 60 && y < 80) {
-        self._writeDescription(self._stdCannon.getDefinition().description);
-      } else if (y > 90 && y < 110) {
-        self._writeDescription(self._stdCockpit.getDefinition().description);
-      } else if (y > 120 && y < 140) {
-        self._writeDescription(self._stdShield.getDefinition().description);
-      } else {
-        this.setAttribute('class', '');
-        this.className = '';
-      }
+      element.setAttribute('class', '');
+      element.className = '';
+      self._blockElements.some(function(item) {
+        if (x >= item.x && x <= item.x+10 && y >= item.y && y <= item.y+10) {
+          self._writeDescription(item.block.getDefinition().description);
+          element.setAttribute('class', 'pointer');
+          element.className = 'pointer';
+          return true;
+        }
+      });
     }
   });
 

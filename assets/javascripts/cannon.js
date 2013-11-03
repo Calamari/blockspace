@@ -27,6 +27,7 @@
         shootSpeed: 300,
         damageValue: 50,
         pixelSize: 4,
+        price: 4,
         color: [127, 255, 255],
         energyDrain: 7,
         fireRatio: 400 // once per second
