@@ -112,7 +112,7 @@
       block = Hulls.default.construct(new Vector());
       this._stdHull = block;
       block.draw(ctx, 0, 2);
-      text = new ArcadeText('Hull', { x: 40, pixelSize: 2 });
+      text = new ArcadeText('Hull (1)', { x: 40, pixelSize: 2 });
       text.draw(ctx);
 
       // Engine block
@@ -122,21 +122,28 @@
       });
       this._stdEngine = block;
       block.draw(ctx, 0, 32);
-      text = new ArcadeText('Engine', { x: 40, y: 30, pixelSize: 2 });
+      text = new ArcadeText('Engine (' + block.price + ')', { x: 40, y: 30, pixelSize: 2 });
       text.draw(ctx);
 
       // Cannon block
       block = Cannons.default.construct(new Vector());
       this._stdCannon = block;
       block.draw(ctx, 0, 62);
-      text = new ArcadeText('Cannon', { x: 40, y: 60, pixelSize: 2 });
+      text = new ArcadeText('Cannon (' + block.price + ')', { x: 40, y: 60, pixelSize: 2 });
       text.draw(ctx);
 
       // Cockpit block
       block = Cockpits.default.construct(new Vector());
       this._stdCockpit = block;
       block.draw(ctx, 0, 92);
-      text = new ArcadeText('Cockpit', { x: 40, y: 90, pixelSize: 2 });
+      text = new ArcadeText('Cockpit (only 1)', { x: 40, y: 90, pixelSize: 2 });
+      text.draw(ctx);
+
+      // Shield block
+      block = Shields.default.construct(new Vector());
+      this._stdShield = block;
+      block.draw(ctx, 0, 122);
+      text = new ArcadeText('Shield (' + block.price + ')', { x: 40, y: 120, pixelSize: 2 });
       text.draw(ctx);
     },
 
@@ -335,6 +342,8 @@
         self._writeDescription(self._stdCannon.getDefinition().description);
       } else if (y > 90 && y < 110) {
         self._writeDescription(self._stdCockpit.getDefinition().description);
+      } else if (y > 120 && y < 140) {
+        self._writeDescription(self._stdShield.getDefinition().description);
       } else {
         this.setAttribute('class', '');
         this.className = '';
