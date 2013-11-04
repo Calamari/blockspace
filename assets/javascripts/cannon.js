@@ -13,6 +13,7 @@
         shootSpeed: 200,
         damageValue: 50,
         pixelSize: 3,
+        price: 3,
         bulletColor: [255, 255, 255],
         energyDrain: 5,
         fireRatio: 1000 // once per second
@@ -43,7 +44,6 @@
     constructor: function(position, config) {
       var cannonConfig = Cannons[config.subtype || 'default'];
       config = Object.extend(Object.extend({
-        price: 3,
         direction: new Vector(0, -1),
         collisionSystem: null
       }, cannonConfig ? cannonConfig.config : {}), config);
