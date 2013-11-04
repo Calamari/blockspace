@@ -13,7 +13,7 @@
         shootSpeed: 200,
         damageValue: 50,
         pixelSize: 3,
-        color: [255, 255, 255],
+        bulletColor: [255, 255, 255],
         energyDrain: 5,
         fireRatio: 1000 // once per second
       }
@@ -28,7 +28,7 @@
         damageValue: 50,
         pixelSize: 4,
         price: 4,
-        color: [127, 255, 255],
+        bulletColor: [127, 255, 255],
         energyDrain: 7,
         fireRatio: 400 // once per second
       }
@@ -80,7 +80,7 @@
     _shoot: function(position, directionVector) {
       var config = this._config,
           bullet = new Bullet({
-            color:     config.color.join(','),
+            color:     config.bulletColor.join(','),
             pixelSize: config.pixelSize,
             range:     config.range,
             x: position.x,

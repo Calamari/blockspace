@@ -14,7 +14,7 @@
         damageValue: 50,
         pixelSize: 3,
         direction: 'variable',
-        color: [255, 255, 255],
+        bulletColor: [255, 255, 255],
         energyDrain: 6,
         energyProduced: 4,
         energyStorage: 30,
