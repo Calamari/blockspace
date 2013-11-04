@@ -1,5 +1,5 @@
 /*globals Base, SpaceShip, Vector, ArcadeText,
-          Cockpits, Engines, Hulls, Cannons */
+          Cockpits, Engines, Hulls, Cannons, Reactors */
 
 ;(function(win, doc, $) {
   "use strict";
@@ -130,6 +130,7 @@
       // Place the Blocks
       canvas = doc.createElement('canvas');
       canvas.id = 'creator-blocks';
+      canvas.height = 190;
       this._container.appendChild(canvas);
       ctx = canvas.getContext('2d');
       this._blockCanvas = canvas;
@@ -139,6 +140,7 @@
       this._placeBlocks(ctx, 'Cannons', 60, Cannons);
       this._placeBlocks(ctx, 'Cockpits (can\'t be exchanged)', 90, Cockpits);
       this._placeBlocks(ctx, 'Shields', 120, Shields);
+      this._placeBlocks(ctx, 'Reactors', 150, Reactors);
     },
 
     _writeBlockDescription: function(str) {
@@ -197,6 +199,7 @@
           infos.push('Energy Drain: ' + def.config.energyDrain);
           break;
         case 'Cockpit':
+        case 'Reactor':
           infos.push('Energy Production: ' + def.config.energyProduced);
           infos.push('Energy Storage: ' + def.config.energyStorage);
           break;

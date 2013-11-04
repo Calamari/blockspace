@@ -150,6 +150,7 @@
         case 'Cockpit': defs = Cockpits; break;
         case 'Hull': defs = Hulls; break;
         case 'Shield': defs = Shields; break;
+        case 'Reactor': defs = Reactors; break;
       }
       return defs[this.subtype];
     },
