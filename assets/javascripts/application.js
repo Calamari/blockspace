@@ -23,6 +23,7 @@
 //= require game
 //= require radar
 //= require levels
+//= require mission
 //= require player
 //= require ship_creator
 //= require game_engine

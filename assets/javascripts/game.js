@@ -9,6 +9,25 @@
       this.fsm = fsm;
     },
 
+    addShip: function(ship) {
+      var game = this;
+      // TODO: check if ship is already in here
+      ship.on('destroyed', function() {
+        // remove ship from drawing objects
+        game.removeShip(ship);
+      });
+      this.ships.push(ship);
+    },
+
+    removeShip: function(ship) {
+      for (var i=this.ships.length; i--;) {
+        if (this.ships[i] === ship) {
+          this.ships.splice(i, 1);
+          break;
+        }
+      }
+    },
+
     pause: function(value) {
       if (value === undef) {
         return this.fsm.is('pause');

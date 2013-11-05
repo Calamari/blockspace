@@ -42,6 +42,8 @@ var DEBUG_SHOW_WAY_POINTS = true,
               console.log("START GAME");
               shipCreator.close();
               controls.start();
+              var mission = new Mission1(game);
+              mission.start();
             },
             onenterendscreen: function() {
               console.log("GAME OVER");
@@ -109,26 +111,12 @@ var DEBUG_SHOW_WAY_POINTS = true,
       collisionController: collisionController,
       bulletSystem: bulletSystem
     });
-    game.ships = [playerShip];
-
-    Levels.start1(game);
-
-    game.ships.forEach(function(ship) {
-      ship.on('destroyed', function() {
-        // remove ship from drawing objects
-        for (var i=game.ships.length; i--;) {
-          if (game.ships[i] === ship) {
-            game.ships.splice(i, 1);
-            break;
-          }
-        }
-      });
-    });
+    game.addShip(playerShip);
 
     fsm.initialize();
     // FOR TESTING:
-   fsm.createship();
-   fsm.startgame();
+    fsm.createship();
+    fsm.startgame();
 
     canvas = new Canvas('canvas', 60, function(context, frameDuration, totalDuration, frameNumber) {
       var self = this;
