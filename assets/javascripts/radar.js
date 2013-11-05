@@ -6,24 +6,30 @@
   var Radar = Base.extend({
     constructor: function(game) {
       this._game = game;
+      this._drawnArrow = {};
     },
 
     draw: function(canvas, context, playerPosition, canvasWidth, canvasHeight, camera) {
-      var self = this;
-      this._game.ships.forEach(function(ship) {
+      var self = this,
+          game = this._game;
+      game.ships.forEach(function(ship) {
         if (!ship.isPlayer && self._checkShip(ship.position, playerPosition, canvasWidth, canvasHeight)) {
-          self._drawForShip(canvas, context, ship, playerPosition, camera, canvasHeight/2-20, canvasWidth/2-20);
+          self._drawForPosition(canvas, context, ship.position, playerPosition, camera, canvasHeight/2-20, canvasWidth/2-20, '#a00');
         }
       });
+      if (game.activeMission && game.activeMission.centralPosition &&
+          self._checkShip(game.activeMission.centralPosition, playerPosition, canvasWidth, canvasHeight)) {
+        self._drawForPosition(canvas, context, game.activeMission.centralPosition, playerPosition, camera, canvasHeight/2-20, canvasWidth/2-20, '#dda');
+      }
     },
 
-    _drawForShip: function(canvas, context, ship, playerPosition, camera, heightHalf, widthHalf) {
-      var rotation = new Vector(0, 1).rotationBetween(playerPosition.clone().sub(ship.position)),
+    _drawForPosition: function(canvas, context, pointPosition, playerPosition, camera, heightHalf, widthHalf, color) {
+      var rotation = new Vector(0, 1).rotationBetween(playerPosition.clone().sub(pointPosition)),
           position = new Vector(0, 1),
-          arrow = this._drawArrow(canvas),
+          arrow = this._drawArrow(canvas, color),
           arrowDistance;
 
-      if (ship.position.x < playerPosition.x) {
+      if (pointPosition.x < playerPosition.x) {
         rotation *= -1;
       }
       position = position.rotate(rotation);
@@ -33,16 +39,16 @@
       canvas.drawImage(arrow, -position.x + playerPosition.x - canvas.camera.x , -position.y + playerPosition.y - canvas.camera.y, Canvas.ALIGN.CENTER.MIDDLE, rotation);
     },
 
-    _drawArrow: function(canvas) {
-      this._drawnArrow = this._drawnArrow || canvas.renderToCanvas(20, 20, function(ctx) {
-        ctx.fillStyle = '#a00';
+    _drawArrow: function(canvas, color) {
+      this._drawnArrow[color] = this._drawnArrow[color] || canvas.renderToCanvas(20, 20, function(ctx) {
+        ctx.fillStyle = color;
         ctx.beginPath();
         ctx.moveTo(10, 0);
         ctx.lineTo(16, 20);
         ctx.lineTo(2, 20);
         ctx.fill();
       });
-      return this._drawnArrow;
+      return this._drawnArrow[color];
     },
 
     _checkShip: function(shipPosition, playerPosition, canvasWidth, canvasHeight) {

@@ -44,6 +44,7 @@ var DEBUG_SHOW_WAY_POINTS = true,
               controls.start();
               var mission = new Mission1(game);
               mission.start();
+              game.setActiveMission(mission);
             },
             onenterendscreen: function() {
               console.log("GAME OVER");

@@ -1,12 +1,13 @@
 /*globals Base, Vector, BehaviorTree, SpaceShip, SpaceMine, Waypoint */
 
 ;(function(win) {
-  "use strict";
+  'use strict';
 
   var Mission = Base.extend({
     constructor: function(game) {
       this._game = game;
       this._ships = [];
+      this.centralPosition = null;
     },
     _loop: function(passedSeconds) {},
     _isSuccess: function() { return false; },
@@ -26,6 +27,7 @@
   });
   var Mission1 = Mission.extend({
     _createShips: function() {
+      this.centralPosition = new Vector(-500, -300);
       var game = this._game;
       var enemyBehavior = new BehaviorTree.Priority({
             title: 'follow or waypoints',
@@ -72,7 +74,7 @@
             particleSystem: game.particleSystem,
             collisionSystem: game.collisionController.getSystem(),
             bulletSystem: game.bulletSystem,
-            position: new Vector(-130, -160),
+            position: new Vector(this.centralPosition.x+60, this.centralPosition.y),
             friends: [enemyShip, enemyShip2],
             behavior: 'shoot on sight',
             game: game

@@ -9,6 +9,14 @@
       this.fsm = fsm;
     },
 
+    setActiveMission: function(mission) {
+      this.activeMission = mission;
+    },
+
+    removeActiveMission: function() {
+      this.activeMission = null;
+    },
+
     addShip: function(ship) {
       var game = this;
       // TODO: check if ship is already in here
