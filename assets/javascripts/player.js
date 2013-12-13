@@ -15,7 +15,7 @@
         rotation: 0,
         bulletSystem: this.bulletSystem,
         blueprint: [
-          [Cannons['default'], Shields['default']],
+          [Cannons['default']],
           [Cockpits['default']],
           [Engines['default']]
         ],

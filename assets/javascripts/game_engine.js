@@ -78,7 +78,7 @@ var DEBUG_SHOW_WAY_POINTS = true,
         collisionController = new CollisionController(),
 
         player = new Player({
-          credits: 3,
+          credits: 12,
           particleSystem: particleSystem,
           collisionController: collisionController,
           bulletSystem: bulletSystem,
@@ -117,7 +117,7 @@ var DEBUG_SHOW_WAY_POINTS = true,
     fsm.initialize();
     // FOR TESTING:
     fsm.createship();
-    fsm.startgame();
+    //fsm.startgame();
 
     canvas = new Canvas('canvas', 60, function(context, frameDuration, totalDuration, frameNumber) {
       var self = this;
