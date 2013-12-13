@@ -46,6 +46,7 @@
             title: 'testEnemy1',
             behavior: enemyBehavior,
             waypoints: [new Waypoint(-200, -200), new Waypoint(100, -200)],
+            infinityEnergy: true,
             blueprint: [
               [Cannons.default, Hulls.default],
               [Hulls.default, Cockpits.default],
@@ -62,6 +63,7 @@
             title: 'testEnemy2',
             behavior: enemyBehavior,
             waypoints: [new Waypoint(-400, -400), new Waypoint(200, -280)],
+            infinityEnergy: true,
             blueprint: [
               [Cannons.default, Hulls.default],
               [Hulls.default, Cockpits.default],
