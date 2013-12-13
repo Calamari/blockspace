@@ -15,5 +15,8 @@
     "ejs": "0.8.x",
     "connect-assets": "2.x"
   },
+  "scripts": {
+    "start": "node server.js"
+  },
   "devDependencies": {}
 }
