@@ -4,3 +4,9 @@ Once, it should be a game about flying through a vast, blocky space. Now it's ju
 
 But it is a nice show case for the [BahaviorTree](http://github.com/Calamari/BehaviorTree.js) implementation. Just look into the `assets/javascripts/ai` folder for the definition of behaviors and the `assets/javascripts/levels.js` for the usage.
 
+## Starting
+
+```
+npm install
+npm start
+```
